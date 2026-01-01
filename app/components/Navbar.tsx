@@ -10,9 +10,18 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
 
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border/50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Mobile Cart Button (Left) */}
+        {/* Mobile Menu Button (Left) */}
         <div className="md:hidden flex items-center">
-          <AsyncCartButton cart={cart} openCart={openCart} />
+          <button
+            className="text-foreground p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
         </div>
 
         <Link
@@ -67,18 +76,9 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
           <AsyncCartButton cart={cart} openCart={openCart} />
         </div>
 
-        {/* Mobile Menu Button (Right) */}
+        {/* Mobile Cart Button (Right) */}
         <div className="md:hidden flex items-center">
-          <button
-            className="text-foreground p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+          <AsyncCartButton cart={cart} openCart={openCart} />
         </div>
       </div>
 

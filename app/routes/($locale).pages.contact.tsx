@@ -29,8 +29,7 @@ export default function ContactPage() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-lg">Email Us</h3>
-                                <p className="text-muted-foreground">support@dropmydeal.com</p>
-                                <p className="text-muted-foreground">partners@dropmydeal.com</p>
+                                <p className="text-muted-foreground">dealdrop@freekaamaal.com</p>
                             </div>
                         </div>
 
@@ -39,8 +38,8 @@ export default function ContactPage() {
                                 <Phone className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-lg">Call Us</h3>
-                                <p className="text-muted-foreground">+91 98765 43210</p>
+                                <h3 className="font-bold text-lg">Whatsapp</h3>
+                                <p className="text-muted-foreground">+91-120-4290234</p>
                                 <p className="text-xs text-muted-foreground">Mon-Fri, 9am - 6pm IST</p>
                             </div>
                         </div>
@@ -50,10 +49,11 @@ export default function ContactPage() {
                                 <MapPin className="h-5 w-5 text-primary" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-lg">Visit Us</h3>
+                                <h3 className="font-bold text-lg">Head Office</h3>
                                 <p className="text-muted-foreground">
-                                    123 Startup Hub, Tech Park,<br />
-                                    Bangalore, Karnataka 560001
+                                    FreeKaaMaal.com Woost Internet Pvt Ltd<br />
+                                    Office no. 208A, ITHUM IT PARK,<br />
+                                    A 40, Sector 62, Noida, Uttar Pradesh
                                 </p>
                             </div>
                         </div>

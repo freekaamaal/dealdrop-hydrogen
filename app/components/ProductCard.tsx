@@ -16,6 +16,7 @@ export function ProductCard({
   product: ProductCardFragment;
   loading?: HTMLImageElement['loading'];
   className?: string;
+  onClick?: () => void;
 }) {
   const cardProduct = product?.variants ? product : getProductPlaceholder();
   if (!cardProduct?.variants?.nodes?.length) return null;
@@ -54,7 +55,7 @@ export function ProductCard({
   };
 
   return (
-    <Link to={`/products/${product.handle}`} prefetch="intent">
+    <Link to={`/products/${product.handle}`} prefetch="intent" onClick={onClick}>
       <div
         className={`
         group relative card-premium rounded-3xl overflow-hidden
