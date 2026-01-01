@@ -36,24 +36,16 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
   const seo = seoPayload.home({ url: request.url });
 
-  const { collections } = await storefront.query(HOMEPAGE_QUERY);
-
-  // Helper to find collection by handle
-  const getCollection = (handle: string) =>
-    collections.nodes.find((c) => c.handle === handle);
-
-  const featuredCollection = getCollection('featured-products');
-  const upcomingCollection = getCollection('upcoming-drops');
-  const heroCollection = getCollection('hero-deal');
+  const { hero, featured, upcoming } = await storefront.query(HOMEPAGE_QUERY);
 
   return defer({
     seo,
     analytics: {
       pageType: AnalyticsPageType.home,
     },
-    featuredProducts: featuredCollection?.products.nodes || [],
-    upcomingDeals: upcomingCollection?.products.nodes || [],
-    heroProduct: heroCollection?.products.nodes[0] || null,
+    featuredProducts: featured?.products.nodes || [],
+    upcomingDeals: upcoming?.products.nodes || [],
+    heroProduct: hero?.products.nodes[0] || null,
   });
 }
 
@@ -265,7 +257,7 @@ export default function Homepage() {
                   Buy Now - Limited Time!
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Link to={`/ products / ${heroData.handle} `} className="block">
+                <Link to={`/products/${heroData.handle}`} className="block">
                   <Button
                     size="lg"
                     variant="outline"
@@ -727,42 +719,50 @@ export default function Homepage() {
 
 const HOMEPAGE_QUERY = `#graphql
   query Homepage($country: CountryCode, $language: LanguageCode)
-      @inContext(country: $country, language: $language) {
-        collections(first: 10) {
+  @inContext(country: $country, language: $language) {
+    hero: collection(handle: "hero-deal") {
+      ...CollectionFragment
+    }
+    featured: collection(handle: "featured-products") {
+      ...CollectionFragment
+    }
+    upcoming: collection(handle: "upcoming-drops") {
+      ...CollectionFragment
+    }
+  }
+
+  fragment CollectionFragment on Collection {
+    id
+    handle
+    title
+    products(first: 8, sortKey: MANUAL) {
       nodes {
-            id
-            handle
-            title
-            products(first: 8, sortKey: MANUAL) {
+        id
+        title
+        description
+        descriptionHtml
+        publishedAt
+        handle
+        variants(first: 1) {
           nodes {
-                id
-                title
-                description
-                descriptionHtml
-                publishedAt
-                handle
-                variants(first: 1) {
-              nodes {
-                    id
-                image {
-                      url
-                      altText
-                      width
-                      height
-                    }
-                price {
-                      amount
-                      currencyCode
-                    }
-                compareAtPrice {
-                      amount
-                      currencyCode
-                    }
-                  }
-                }
-              }
+            id
+            image {
+              url
+              altText
+              width
+              height
+            }
+            price {
+              amount
+              currencyCode
+            }
+            compareAtPrice {
+              amount
+              currencyCode
             }
           }
         }
       }
-      ` as const;
+    }
+  }
+` as const;
