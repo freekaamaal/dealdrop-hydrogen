@@ -1,0 +1,71 @@
+
+> demo-store@2.1.6 build
+> shopify hydrogen build --codegen
+
+[warn] Data fetching is changing to a single fetch in React Router v7
+┃ You can use the `v3_singleFetch` future flag to opt-in early.
+┃ -> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch
+┗
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+vite v5.2.12 building for production...
+✓ 0 modules transformed.
+transforming...
+x Build failed in 375ms
+╭─ error ──────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  [vite:esbuild] Transform failed with 1 error:                               │
+│  /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/($local  │
+│  e)._index.tsx?__remix-build-client-route:71:30: ERROR: Syntax error "`"     │
+│  file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/(  │
+│  $locale)._index.tsx?__remix-build-client-route:71:30                        │
+│                                                                              │
+│  Syntax error "`"                                                            │
+│  69 |    const handleBuyNow = () => {                                        │
+│  70 |      if (heroProduct) {                                                │
+│  71 |        window.location.href = \`/products/\${heroProduct.handle}\`;    │
+│     |                                ^                                       │
+│  72 |      } else {                                                          │
+│  73 |          window.location.href = '#featured-products';                  │
+│                                                                              │
+│                                                                              │
+│  To investigate the issue, examine this stack trace:                         │
+│    at (app/routes/($locale)._index.tsx?__remix-build-client-route:71)        │
+│    at (file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/ro  │
+│    utes/($locale)._index.tsx?__remix-build-client-route:71)                  │
+│    at failureErrorWithLog (vite/node_modules/esbuild/lib/main.js:1651)       │
+│    at (vite/node_modules/esbuild/lib/main.js:849)                            │
+│    at <computed> (vite/node_modules/esbuild/lib/main.js:704)                 │
+│    at handleIncomingPacket (vite/node_modules/esbuild/lib/main.js:764)       │
+│    at readFromStdout (vite/node_modules/esbuild/lib/main.js:680)             │
+│    at emit (node:events:507)                                                 │
+│    at emit (node:domain:489)                                                 │
+│    at addChunk (node:internal/streams/readable:559)                          │
+│    at readableAddChunkPushByteMode (node:internal/streams/readable:510)      │
+│    at push (node:internal/streams/readable:390)                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[vite:esbuild] Transform failed with 1 error:
+/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/($locale)._index.tsx?__remix-build-client-route:71:30: ERROR: Syntax error "`"
+file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/($locale)._index.tsx?__remix-build-client-route:71:30
+
+Syntax error "`"
+69 |    const handleBuyNow = () => {
+70 |      if (heroProduct) {
+71 |        window.location.href = \`/products/\${heroProduct.handle}\`;
+   |                                ^
+72 |      } else {
+73 |          window.location.href = '#featured-products';
+
+    at failureErrorWithLog (/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/node_modules/vite/node_modules/esbuild/lib/main.js:1651:15)
+    at /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/node_modules/vite/node_modules/esbuild/lib/main.js:849:29
+    at responseCallbacks.<computed> (/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/node_modules/vite/node_modules/esbuild/lib/main.js:704:9)
+    at handleIncomingPacket (/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/node_modules/vite/node_modules/esbuild/lib/main.js:764:9)
+    at Socket.readFromStdout (/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/node_modules/vite/node_modules/esbuild/lib/main.js:680:7)
+    at Socket.emit (node:events:507:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Socket.Readable.push (node:internal/streams/readable:390:5)

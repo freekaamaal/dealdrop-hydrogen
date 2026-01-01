@@ -199,6 +199,53 @@ export type GetShopPrimaryDomainQuery = {
   shop: {primaryDomain: Pick<StorefrontAPI.Domain, 'url'>};
 };
 
+export type HomepageQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type HomepageQuery = {
+  collections: {
+    nodes: Array<
+      Pick<StorefrontAPI.Collection, 'id' | 'handle' | 'title'> & {
+        products: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Product,
+              | 'id'
+              | 'title'
+              | 'description'
+              | 'descriptionHtml'
+              | 'publishedAt'
+              | 'handle'
+            > & {
+              variants: {
+                nodes: Array<
+                  Pick<StorefrontAPI.ProductVariant, 'id'> & {
+                    image?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.Image,
+                        'url' | 'altText' | 'width' | 'height'
+                      >
+                    >;
+                    price: Pick<
+                      StorefrontAPI.MoneyV2,
+                      'amount' | 'currencyCode'
+                    >;
+                    compareAtPrice?: StorefrontAPI.Maybe<
+                      Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                    >;
+                  }
+                >;
+              };
+            }
+          >;
+        };
+      }
+    >;
+  };
+};
+
 export type ApiAllProductsQueryVariables = StorefrontAPI.Exact<{
   query?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
   count?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
@@ -1040,6 +1087,10 @@ interface GeneratedQueryTypes {
   '#graphql\n      query getShopPrimaryDomain { shop { primaryDomain { url } } }\n    ': {
     return: GetShopPrimaryDomainQuery;
     variables: GetShopPrimaryDomainQueryVariables;
+  };
+  '#graphql\n  query Homepage($country: CountryCode, $language: LanguageCode)\n      @inContext(country: $country, language: $language) {\n        collections(first: 10) {\n      nodes {\n            id\n            handle\n            title\n            products(first: 8, sortKey: MANUAL) {\n          nodes {\n                id\n                title\n                description\n                descriptionHtml\n                publishedAt\n                handle\n                variants(first: 1) {\n              nodes {\n                    id\n                image {\n                      url\n                      altText\n                      width\n                      height\n                    }\n                price {\n                      amount\n                      currencyCode\n                    }\n                compareAtPrice {\n                      amount\n                      currencyCode\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n      ': {
+    return: HomepageQuery;
+    variables: HomepageQueryVariables;
   };
   '#graphql\n  query ApiAllProducts(\n    $query: String\n    $count: Int\n    $reverse: Boolean\n    $country: CountryCode\n    $language: LanguageCode\n    $sortKey: ProductSortKeys\n  ) @inContext(country: $country, language: $language) {\n    products(first: $count, sortKey: $sortKey, reverse: $reverse, query: $query) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    publishedAt\n    handle\n    vendor\n    variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        image {\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        selectedOptions {\n          name\n          value\n        }\n        product {\n          handle\n          title\n        }\n      }\n    }\n  }\n\n': {
     return: ApiAllProductsQuery;

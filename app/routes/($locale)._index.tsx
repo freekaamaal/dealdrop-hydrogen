@@ -68,46 +68,46 @@ export default function Homepage() {
 
   const handleBuyNow = () => {
     if (heroProduct) {
-      window.location.href = \`/products/\${heroProduct.handle}\`;
+      window.location.href = `/products/${heroProduct.handle}`;
     } else {
-        window.location.href = '#featured-products';
+      window.location.href = '#featured-products';
     }
   };
 
   // Asset paths
   const fallbackHeroImage = '/assets/hero-deal.jpg';
-  
+
   // Hero Data (Unwrap dynamic or fallback)
   const heroData = heroProduct ? {
-      title: heroProduct.title,
-      image: heroProduct.variants.nodes[0]?.image?.url || fallbackHeroImage,
-      price: heroProduct.variants.nodes[0]?.price,
-      compareAtPrice: heroProduct.variants.nodes[0]?.compareAtPrice,
-      description: heroProduct.descriptionHtml ? heroProduct.description.substring(0, 100) + '...' : "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
-      handle: heroProduct.handle
+    title: heroProduct.title,
+    image: heroProduct.variants.nodes[0]?.image?.url || fallbackHeroImage,
+    price: heroProduct.variants.nodes[0]?.price,
+    compareAtPrice: heroProduct.variants.nodes[0]?.compareAtPrice,
+    description: heroProduct.descriptionHtml ? heroProduct.description.substring(0, 100) + '...' : "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
+    handle: heroProduct.handle
   } : {
-      title: "Premium Wireless Headphones",
-      image: fallbackHeroImage,
-      price: { amount: '7999.00', currencyCode: 'INR' },
-      compareAtPrice: { amount: '12999.00', currencyCode: 'INR' },
-      description: "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
-      handle: "v2-snowboard"
+    title: "Premium Wireless Headphones",
+    image: fallbackHeroImage,
+    price: { amount: '7999.00', currencyCode: 'INR' },
+    compareAtPrice: { amount: '12999.00', currencyCode: 'INR' },
+    description: "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
+    handle: "v2-snowboard"
   };
 
   // Helper to transform Shopify Product to DealCard Props
   const mapProductToDeal = (product: any, status: 'live' | 'upcoming') => {
-      const variant = product.variants.nodes[0];
-      return {
-          id: product.id,
-          title: product.title,
-          description: product.description || '',
-          image: variant?.image?.url || '',
-          mrp: parseFloat(variant?.compareAtPrice?.amount || variant?.price?.amount || '0'),
-          dealPrice: parseFloat(variant?.price?.amount || '0'),
-          status: status,
-          handle: product.handle,
-          publishedAt: product.publishedAt
-      };
+    const variant = product.variants.nodes[0];
+    return {
+      id: product.id,
+      title: product.title,
+      description: product.description || '',
+      image: variant?.image?.url || '',
+      mrp: parseFloat(variant?.compareAtPrice?.amount || variant?.price?.amount || '0'),
+      dealPrice: parseFloat(variant?.price?.amount || '0'),
+      status: status,
+      handle: product.handle,
+      publishedAt: product.publishedAt
+    };
   };
 
 
@@ -200,7 +200,7 @@ export default function Homepage() {
                   {/* Discount Circle */}
                   <div className="absolute top-6 right-6 w-16 h-16 gradient-rose rounded-full flex items-center justify-center glow-rose">
                     <span className="text-primary-foreground font-display font-bold text-lg">
-                        {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
+                      {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
                     </span>
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export default function Homepage() {
                   Buy Now - Limited Time!
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Link to={`/ products / ${ heroData.handle } `} className="block">
+                <Link to={`/ products / ${heroData.handle} `} className="block">
                   <Button
                     size="lg"
                     variant="outline"
@@ -464,9 +464,9 @@ export default function Homepage() {
                 <DealCard key={deal.id} {...mapProductToDeal(deal, 'upcoming')} />
               ))
             ) : (
-                <div className="col-span-3 text-center py-10 text-muted-foreground">
-                  <p>No upcoming deals found. Create a collection named 'Upcoming Drops' to see products here.</p>
-                </div>
+              <div className="col-span-3 text-center py-10 text-muted-foreground">
+                <p>No upcoming deals found. Create a collection named 'Upcoming Drops' to see products here.</p>
+              </div>
             )}
 
             {/* Notify Card */}
@@ -518,9 +518,9 @@ export default function Homepage() {
                 <DealCard key={product.id} {...mapProductToDeal(product, 'live')} />
               ))
             ) : (
-                <div className="col-span-3 text-center py-10 text-muted-foreground">
-                   <p>No featured products found. Create a collection named 'Featured Products' to see products here.</p>
-                </div>
+              <div className="col-span-3 text-center py-10 text-muted-foreground">
+                <p>No featured products found. Create a collection named 'Featured Products' to see products here.</p>
+              </div>
             )}
           </div>
         </div>
@@ -547,7 +547,7 @@ export default function Homepage() {
               <div
                 key={index}
                 className="card-premium rounded-3xl p-8 space-y-6 hover:scale-[1.02] smooth-transition"
-                style={{ animationDelay: `${ index * 0.1 } s` }}
+                style={{ animationDelay: `${index * 0.1} s` }}
               >
                 {/* Rating */}
                 <div className="flex gap-1">
