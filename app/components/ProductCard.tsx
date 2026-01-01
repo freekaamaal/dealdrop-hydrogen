@@ -8,15 +8,14 @@ import type { ProductCardFragment } from 'storefrontapi.generated';
 import { isDiscounted } from '~/lib/utils';
 import { getProductPlaceholder } from '~/lib/placeholders';
 
-product,
+export function ProductCard({
+  product,
   loading,
   className,
-  onClick,
 }: {
   product: ProductCardFragment;
-  loading ?: HTMLImageElement['loading'];
-  className ?: string;
-  onClick ?: () => void;
+  loading?: HTMLImageElement['loading'];
+  className?: string;
 }) {
   const cardProduct = product?.variants ? product : getProductPlaceholder();
   if (!cardProduct?.variants?.nodes?.length) return null;
@@ -55,7 +54,7 @@ product,
   };
 
   return (
-    <Link to={`/products/${product.handle}`} prefetch="intent" onClick={onClick}>
+    <Link to={`/products/${product.handle}`} prefetch="intent">
       <div
         className={`
         group relative card-premium rounded-3xl overflow-hidden

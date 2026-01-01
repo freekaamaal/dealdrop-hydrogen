@@ -1,15 +1,15 @@
 import clsx from 'clsx';
-import {useEffect, useId, useMemo} from 'react';
-import {useFetcher} from '@remix-run/react';
+import { useEffect, useId, useMemo } from 'react';
+import { useFetcher } from '@remix-run/react';
 import type {
   Product,
   ProductSortKeys,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import {Heading, Text} from '~/components/Text';
-import {ProductCard} from '~/components/ProductCard';
-import {Skeleton} from '~/components/Skeleton';
-import {usePrefixPathWithLocale} from '~/lib/utils';
+import { Heading, Text } from '~/components/Text';
+import { ProductCard } from '~/components/ProductCard';
+import { Skeleton } from '~/components/Skeleton';
+import { usePrefixPathWithLocale } from '~/lib/utils';
 
 interface FeaturedProductsProps {
   count: number;
@@ -40,10 +40,10 @@ export function FeaturedProducts({
   reverse,
   sortKey = 'BEST_SELLING',
 }: FeaturedProductsProps) {
-  const {load, data} = useFetcher<{products: Product[]}>();
+  const { load, data } = useFetcher<{ products: Product[] }>();
   const queryString = useMemo(
     () =>
-      Object.entries({count, sortKey, query, reverse})
+      Object.entries({ count, sortKey, query, reverse })
         .map(([key, val]) => (val ? `${key}=${val}` : null))
         .filter(Boolean)
         .join('&'),
@@ -112,12 +112,12 @@ function FeatureProductsContent({
   return (
     <>
       {products.map((product) => (
-        <ProductCard
-          product={product}
-          key={product.id}
-          onClick={onClick}
-          quickAdd
-        />
+        <div key={product.id} onClick={onClick}>
+          <ProductCard
+            product={product}
+            quickAdd
+          />
+        </div>
       ))}
     </>
   );
