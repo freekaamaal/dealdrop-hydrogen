@@ -15,12 +15,12 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#070708]/80 backdrop-blur-xl transition-all duration-300">
-      <div className="container mx-auto px-4 h-[73px] flex items-center justify-between">
-        {/* Logo */}
+      <div className="container mx-auto px-4 h-[73px] flex items-center justify-between relative">
+        {/* Mobile: Logo Centered absolutely. Desktop: Static left */}
         <Link
           to="/"
           prefetch="intent"
-          className="block w-[240px] md:w-[280px] hover:opacity-90 transition-opacity"
+          className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 w-[160px] md:w-[280px] hover:opacity-90 transition-opacity z-10"
         >
           <img
             src="/assets/logo.png"
@@ -29,8 +29,11 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
           />
         </Link>
 
+        {/* Placeholder for Left Icon on Mobile to balance (if needed) or just empty to let justify-between work for right icons */}
+        <div className="md:hidden w-10"></div>
+
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-8 ml-8">
           <NavLink
             to="/"
             className={({ isActive }) => (isActive ? activeLinkStyle : linkStyle)}
@@ -57,7 +60,7 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 z-20">
           {/* User Icon (Placeholder) */}
           <button className="text-primary hover:text-accent transition-colors p-2 rounded-full hover:bg-white/5">
             <IconUser />

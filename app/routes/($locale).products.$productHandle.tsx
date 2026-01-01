@@ -447,12 +447,29 @@ export function ProductForm({
   storeDomain: string;
 }) {
   const isOutOfStock = !selectedVariant?.availableForSale;
+  const [quantity, setQuantity] = useState(1);
+  const [showNotify, setShowNotify] = useState(false);
+  const [notifyEmail, setNotifyEmail] = useState('');
+  const [notifySent, setNotifySent] = useState(false);
+
+  const handleNotifySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, send to API
+    console.log('Notify email:', notifyEmail, 'for variant:', selectedVariant?.id);
+    setNotifySent(true);
+  };
+
+  const handleQuantityChange = (val: number) => {
+    if (val < 1) return;
+    setQuantity(val);
+  };
 
   return (
-    <div className="grid gap-4">
-      {productOptions.map((option, optionIndex) => (
-        <div key={option.name} className="flex flex-col">
-          <h4 className="font-bold mb-2 text-sm">{option.name}</h4>
+    <div className="grid gap-6">
+      {/* Options */}
+      {productOptions.map((option) => (
+        <div key={option.name} className="flex flex-col space-y-2">
+          <h4 className="font-bold text-sm text-foreground">{option.name}</h4>
           <div className="flex flex-wrap gap-2">
             {option.optionValues.map((value) => (
               <Link
@@ -461,10 +478,10 @@ export function ProductForm({
                 preventScrollReset
                 replace
                 className={clsx(
-                  'px-4 py-2 border rounded text-sm font-medium transition-all',
+                  'px-4 py-2 border rounded-lg text-sm font-medium transition-all duration-200',
                   value.selected
-                    ? 'border-accent bg-accent/5 text-accent'
-                    : 'border-gray-200 hover:border-gray-300',
+                    ? 'border-primary bg-primary/10 text-primary shadow-sm'
+                    : 'border-border hover:border-primary/50 text-muted-foreground hover:text-foreground',
                 )}
               >
                 {value.name}
@@ -474,15 +491,91 @@ export function ProductForm({
         </div>
       ))}
 
-      <div className="grid gap-2 mt-4">
-        <AddToCartButton
-          lines={[{ merchandiseId: selectedVariant?.id!, quantity: 1 }]}
-          variant="primary"
-          className="w-full bg-accent hover:bg-orange-600 text-white font-bold py-4 rounded text-lg shadow-md transition-transform transform active:scale-95"
-          disabled={isOutOfStock}
-        >
-          {isOutOfStock ? 'Sold Out' : 'Get This Deal Now'}
-        </AddToCartButton>
+      {/* Actions */}
+      <div className="space-y-4 pt-2">
+        {isOutOfStock ? (
+          <div className="space-y-4">
+            {!showNotify ? (
+              <Button
+                variant="secondary"
+                className="w-full bg-[#E76E50] hover:bg-[#D65D40] text-white font-bold h-14 rounded-2xl text-lg shadow-lg smooth-transition"
+                onClick={() => setShowNotify(true)}
+              >
+                Notify Me When Available
+              </Button>
+            ) : !notifySent ? (
+              <form onSubmit={handleNotifySubmit} className="space-y-3 animate-fade-in">
+                <p className="text-sm text-muted-foreground">
+                  Enter your email to get notified when this drops again:
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    required
+                    placeholder="your@email.com"
+                    className="flex-1 rounded-xl border border-border bg-background px-4 py-2 focus:ring-2 focus:ring-primary outline-none transition-all"
+                    value={notifyEmail}
+                    onChange={(e) => setNotifyEmail(e.target.value)}
+                  />
+                  <Button type="submit" className="bg-primary text-primary-foreground font-bold rounded-xl px-6">
+                    Send
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <div className="bg-primary/10 text-primary p-4 rounded-2xl text-center animate-fade-in border border-primary/20">
+                <p className="font-bold">You're on the list! 🚀</p>
+                <p className="text-sm">We'll email you as soon as it's back.</p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <>
+            {/* Quantity + Add to Cart Row */}
+            <div className="flex gap-4 items-stretch">
+              {/* Quantity Selector */}
+              <div className="flex items-center border border-border rounded-xl bg-card h-14 px-2 shadow-sm">
+                <button
+                  onClick={() => handleQuantityChange(quantity - 1)}
+                  className="w-10 h-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors text-xl font-medium"
+                  disabled={quantity <= 1}
+                >
+                  −
+                </button>
+                <div className="w-10 text-center font-bold text-lg">{quantity}</div>
+                <button
+                  onClick={() => handleQuantityChange(quantity + 1)}
+                  className="w-10 h-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors text-xl font-medium"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* Add To Cart (Secondary) */}
+              <AddToCartButton
+                lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
+                variant="secondary"
+                className="flex-1 bg-[#1A1A1A] hover:bg-black text-white font-bold h-14 rounded-xl text-base shadow-md transition-transform transform active:scale-[0.98]"
+              >
+                Add to cart
+              </AddToCartButton>
+            </div>
+
+            {/* Buy Now (Primary) */}
+            <AddToCartButton
+              lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
+              variant="primary"
+              className="w-full h-14 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53] text-white hover:brightness-110"
+            >
+              Buy it now
+            </AddToCartButton>
+
+            <p className="text-xs text-muted-foreground/80 flex items-center gap-2 mt-2">
+              <IconCheckCircle className="w-4 h-4 text-green-500" />
+              Waitlist is typically 1-2 months. Secure yours now.
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
