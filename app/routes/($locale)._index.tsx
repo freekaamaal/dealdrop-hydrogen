@@ -131,24 +131,28 @@ export default function Homepage() {
   // Blog posts (Static for now)
   const blogPosts = [
     {
-      title: 'How to Maximize Your Savings on Flash Sales',
+      title: 'Behind the Scenes: How We Offer Such Low Prices',
       excerpt:
-        'Learn the best strategies to grab deals before they sell out...',
-      date: 'Dec 28, 2024',
-      readTime: '3 min read',
-    },
-    {
-      title: 'Top 10 Electronics Deals of 2024',
-      excerpt:
-        "A roundup of the most incredible discounts we've offered this year...",
-      date: 'Dec 25, 2024',
-      readTime: '5 min read',
-    },
-    {
-      title: 'Why Brands Choose DropMyDeal for Flash Sales',
-      excerpt: 'The win-win model that benefits both brands and customers...',
-      date: 'Dec 20, 2024',
+        'Ever wondered how we secure such massive discounts? Discover the secret sauce behind our deal-hunting process...',
+      date: 'Jan 01, 2026',
       readTime: '4 min read',
+      url: '/blogs/news/behind-the-scenes-how-we-offer-such-low-prices'
+    },
+    {
+      title: 'Top Tips for Scoring the Best Flash Sale Deals',
+      excerpt:
+        "Don't miss out on the next big drop. Learn the pro strategies to checkout faster and secure your savings...",
+      date: 'Jan 01, 2026',
+      readTime: '3 min read',
+      url: '/blogs/news/top-tips-for-scoring-the-best-flash-sale-deals'
+    },
+    // Keeping a 3rd one for layout balance, generic
+    {
+      title: 'Why Brands Love Partnering With DropMyDeal',
+      excerpt: 'The unique platform that connects premium brands with savvy shoppers for mutual benefit...',
+      date: 'Dec 28, 2025',
+      readTime: '5 min read',
+      url: '#'
     },
   ];
 
@@ -636,7 +640,9 @@ export default function Homepage() {
             {blogPosts.map((post, index) => (
               <a
                 key={index}
-                href="#"
+                href={post.url}
+                target={post.url.startsWith('http') ? '_blank' : undefined}
+                rel={post.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                 className="group card-premium rounded-3xl overflow-hidden hover:scale-[1.02] smooth-transition"
               >
                 <div className="h-48 bg-gradient-to-br from-secondary to-muted relative overflow-hidden">

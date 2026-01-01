@@ -1,119 +1,98 @@
-import {Heart, Instagram, Twitter, Youtube, Mail} from 'lucide-react';
-import {Link} from '@remix-run/react';
+import { Link } from '@remix-run/react';
+import { ArrowRight, Mail } from 'lucide-react';
+import { Button } from '~/components/ui/button';
 
 export function Footer() {
   return (
-    <footer className="bg-card border-t border-border mt-20">
-      <div className="container mx-auto px-4 py-12">
-        {/* Main Footer Content */}
-        <div className="grid md:grid-cols-4 gap-8 mb-12">
-          {/* Brand */}
-          <div className="md:col-span-2 space-y-4">
-            <img
-              src="/assets/logo.png"
-              alt="DropMyDeal"
-              className="h-10 w-auto"
-            />
-            <p className="text-muted-foreground text-sm max-w-sm">
-              Flash deals on premium products. Brands showcase, users save.
-              Limited time offers updated daily.
-            </p>
-            <div className="flex gap-4">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-primary smooth-transition hover:scale-110"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-primary smooth-transition hover:scale-110"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-primary smooth-transition hover:scale-110"
-              >
-                <Youtube className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full glass-card flex items-center justify-center text-muted-foreground hover:text-primary smooth-transition hover:scale-110"
-              >
-                <Mail className="h-5 w-5" />
-              </a>
+    <footer className="bg-card border-t border-border mt-20 pt-16 pb-8">
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-2 gap-16 lg:gap-24 mb-16">
+          {/* Left Column: About & Newsletter */}
+          <div className="space-y-10">
+            {/* About Us */}
+            <div className="space-y-4">
+              <h3 className="font-bold text-lg text-foreground">About us</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed max-w-lg">
+                Welcome to Deal Drop by FreeKaaMaal.com, your go-to destination
+                for unbeatable daily deals. Every day, we handpick one amazing
+                product and offer it at a jaw-dropping discount—up to 80% off!
+                Our mission is to bring you the best value for your money with
+                deals that you won’t find anywhere else. With limited stock and a
+                ticking clock, each deal is available for just 24 hours or until
+                it sells out. Don’t miss out—sign up for our alerts and never
+                miss a deal!
+              </p>
+            </div>
+
+            {/* Newsletter */}
+            <div className="space-y-4">
+              <h3 className="font-bold text-lg text-foreground">Newsletter</h3>
+              <div className="flex gap-2 max-w-md">
+                <div className="relative flex-1">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full h-11 pl-10 pr-4 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary outline-none text-sm transition-all"
+                  />
+                </div>
+                <Button size="icon" className="h-11 w-11 rounded-lg shrink-0">
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Right Column: Quick Links */}
           <div>
-            <h4 className="font-display font-bold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <h3 className="font-bold text-lg text-foreground mb-6">
+              Quick Links
+            </h3>
+            <ul className="space-y-3 text-sm text-muted-foreground">
               <li>
-                <Link
-                  to="/"
-                  className="hover:text-foreground smooth-transition"
-                >
-                  Live Deals
+                <Link to="/pages/about-us" className="hover:text-primary transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/pages/privacy-policy" className="hover:text-primary transition-colors">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/past-deals"
-                  className="hover:text-foreground smooth-transition"
+                  to="/pages/return-and-cancellation-policies"
+                  className="hover:text-primary transition-colors"
                 >
-                  Past Drops
+                  Return Policy
                 </Link>
               </li>
               <li>
                 <Link
-                  to="#how-it-works"
-                  className="hover:text-foreground smooth-transition"
+                  to="/pages/terms-and-conditions"
+                  className="hover:text-primary transition-colors"
                 >
-                  How It Works
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link to="/pages/shipping-policy" className="hover:text-primary transition-colors">
+                  Shipping Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/pages/faqs" className="hover:text-primary transition-colors">
+                  FAQs
                 </Link>
               </li>
               <li>
                 <a
-                  href="https://freekaamaal.com"
+                  href="https://freekaamaal.com/press"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-foreground smooth-transition"
+                  className="hover:text-primary transition-colors"
                 >
-                  FreeKaaMaal
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-foreground smooth-transition">
-                  For Brands
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4 className="font-display font-bold mb-4">Support</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <a href="#" className="hover:text-foreground smooth-transition">
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-foreground smooth-transition">
-                  Contact Us
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-foreground smooth-transition">
-                  Terms of Service
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-foreground smooth-transition">
-                  Privacy Policy
+                  Press
                 </a>
               </li>
             </ul>
@@ -121,19 +100,12 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <span>Made with</span>
-            <Heart className="h-4 w-4 text-primary fill-primary animate-pulse-soft" />
-            <span>by FreeKaaMaal</span>
-          </div>
-
-          <div className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} DropMyDeal.com by FreeKaaMaal. All
-            rights reserved.
-          </div>
+        <div className="border-t border-border pt-8 text-center text-xs text-muted-foreground">
+          © {new Date().getFullYear()}, Powered by FreeKaaMaal.com ( Woost
+          Internet Private Limited)
         </div>
       </div>
     </footer>
   );
 }
+
