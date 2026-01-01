@@ -20,7 +20,7 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
         <Link
           to="/"
           prefetch="intent"
-          className="block w-[180px] md:w-[220px] hover:opacity-90 transition-opacity"
+          className="block w-[240px] md:w-[280px] hover:opacity-90 transition-opacity"
         >
           <img
             src="/assets/logo.png"

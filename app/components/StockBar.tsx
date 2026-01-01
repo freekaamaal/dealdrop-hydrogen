@@ -1,11 +1,13 @@
-import {Package, AlertTriangle} from 'lucide-react';
+import { Package, AlertTriangle } from 'lucide-react';
 
 interface StockBarProps {
   remaining: number;
   total: number;
 }
 
-const StockBar = ({remaining, total}: StockBarProps) => {
+const StockBar = ({ remaining, total }: StockBarProps) => {
+  if (remaining === undefined || remaining === null || remaining <= 0) return null;
+
   const percentage = (remaining / total) * 100;
   const isLow = percentage < 30;
   const isCritical = percentage < 15;
@@ -18,19 +20,17 @@ const StockBar = ({remaining, total}: StockBarProps) => {
             <AlertTriangle className="h-5 w-5 text-destructive animate-pulse-soft" />
           ) : (
             <Package
-              className={`h-5 w-5 ${
-                isLow ? 'text-primary' : 'text-muted-foreground'
-              }`}
+              className={`h-5 w-5 ${isLow ? 'text-primary' : 'text-muted-foreground'
+                }`}
             />
           )}
           <span
-            className={`font-semibold ${
-              isCritical
+            className={`font-semibold ${isCritical
                 ? 'text-destructive'
                 : isLow
-                ? 'text-primary'
-                : 'text-foreground'
-            }`}
+                  ? 'text-primary'
+                  : 'text-foreground'
+              }`}
           >
             {isCritical ? 'Almost Gone!' : isLow ? 'Selling Fast!' : 'In Stock'}
           </span>
@@ -42,14 +42,13 @@ const StockBar = ({remaining, total}: StockBarProps) => {
 
       <div className="h-3 bg-muted rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all duration-700 ease-out relative ${
-            isCritical
+          className={`h-full rounded-full transition-all duration-700 ease-out relative ${isCritical
               ? 'bg-destructive'
               : isLow
-              ? 'bg-primary animate-pulse-soft'
-              : 'bg-primary/70'
-          }`}
-          style={{width: `${percentage}%`}}
+                ? 'bg-primary animate-pulse-soft'
+                : 'bg-primary/70'
+            }`}
+          style={{ width: `${percentage}%` }}
         >
           {/* Animated shimmer on the progress bar */}
           <div className="absolute inset-0 bg-shimmer bg-[length:200%_100%] animate-shimmer opacity-50" />
