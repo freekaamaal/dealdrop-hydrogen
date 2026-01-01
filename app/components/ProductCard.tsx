@@ -8,15 +8,15 @@ import type { ProductCardFragment } from 'storefrontapi.generated';
 import { isDiscounted } from '~/lib/utils';
 import { getProductPlaceholder } from '~/lib/placeholders';
 
-export function ProductCard({
-  product,
+product,
   loading,
   className,
+  onClick,
 }: {
   product: ProductCardFragment;
-  loading?: HTMLImageElement['loading'];
-  className?: string;
-  onClick?: () => void;
+  loading ?: HTMLImageElement['loading'];
+  className ?: string;
+  onClick ?: () => void;
 }) {
   const cardProduct = product?.variants ? product : getProductPlaceholder();
   if (!cardProduct?.variants?.nodes?.length) return null;
