@@ -1,0 +1,77 @@
+
+> demo-store@2.1.6 build
+> shopify hydrogen build --codegen
+
+[warn] Data fetching is changing to a single fetch in React Router v7
+┃ You can use the `v3_singleFetch` future flag to opt-in early.
+┃ -> https://remix.run/docs/en/2.13.1/start/future-flags#v3_singleFetch
+┗
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+vite v5.2.12 building for production...
+transforming...
+✓ 2025 modules transformed.
+x Build failed in 13.22s
+╭─ error ──────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  app/routes/($locale).products.$productHandle.tsx (37:9): "getExcerpt" is    │
+│  not exported by "app/lib/utils.ts", imported by                             │
+│  "app/routes/($locale).products.$productHandle.tsx".                         │
+│  file: /Users/macbookpro/Dealdrop SHopify                                    │
+│  theme/hydrogen-store/app/routes/($locale).products.$productHandle.tsx:37:9  │
+│                                                                              │
+│  35: import { ProductGallery } from '~/components/ProductGallery';           │
+│  36: import { IconCaret, IconCheck, IconClose } from '~/components/Icon';    │
+│  37: import { getExcerpt } from '~/lib/utils';                               │
+│               ^                                                              │
+│  38: import { seoPayload } from '~/lib/seo.server';                          │
+│  39: import type { Storefront } from '~/lib/type';                           │
+│                                                                              │
+│                                                                              │
+│  To investigate the issue, examine this stack trace:                         │
+│    at (file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/ro  │
+│    utes/($locale).products.$productHandle.tsx:37)                            │
+│    at getRollupError (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-  │
+│    store/node_modules/rollup/dist/es/shared/parseAst.js:396)                 │
+│    at error (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/nod  │
+│    e_modules/rollup/dist/es/shared/parseAst.js:392)                          │
+│    at error (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/nod  │
+│    e_modules/rollup/dist/es/shared/node-entry.js:13858)                      │
+│    at traceVariable (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-s  │
+│    tore/node_modules/rollup/dist/es/shared/node-entry.js:14306)              │
+│    at findVariable (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-st  │
+│    ore/node_modules/rollup/dist/es/shared/node-entry.js:11984)               │
+│    at findVariable (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-st  │
+│    ore/node_modules/rollup/dist/es/shared/node-entry.js:7432)                │
+│    at findVariable (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-st  │
+│    ore/node_modules/rollup/dist/es/shared/node-entry.js:7432)                │
+│    at bind (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node  │
+│    _modules/rollup/dist/es/shared/node-entry.js:6908)                        │
+│    at bind (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node  │
+│    _modules/rollup/dist/es/shared/node-entry.js:4775)                        │
+│    at bind (Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node  │
+│    _modules/rollup/dist/es/shared/node-entry.js:9135)                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+app/routes/($locale).products.$productHandle.tsx (37:9): "getExcerpt" is not exported by "app/lib/utils.ts", imported by "app/routes/($locale).products.$productHandle.tsx".
+file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/($locale).products.$productHandle.tsx:37:9
+
+35: import { ProductGallery } from '~/components/ProductGallery';
+36: import { IconCaret, IconCheck, IconClose } from '~/components/Icon';
+37: import { getExcerpt } from '~/lib/utils';
+             ^
+38: import { seoPayload } from '~/lib/seo.server';
+39: import type { Storefront } from '~/lib/type';
+
+    at getRollupError (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/parseAst.js:396:41)
+    at error (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/parseAst.js:392:42)
+    at Module.error (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:13858:16)
+    at Module.traceVariable (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:14306:29)
+    at ModuleScope.findVariable (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:11984:39)
+    at FunctionScope.findVariable (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:7432:38)
+    at FunctionBodyScope.findVariable (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:7432:38)
+    at Identifier.bind (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:6908:40)
+    at CallExpression.bind (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:4775:23)
+    at CallExpression.bind (file:///Users/macbookpro/Dealdrop%20SHopify%20theme/hydrogen-store/node_modules/rollup/dist/es/shared/node-entry.js:9135:15)
