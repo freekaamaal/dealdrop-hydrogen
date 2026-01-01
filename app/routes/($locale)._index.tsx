@@ -27,6 +27,7 @@ import PriceDisplay from '~/components/PriceDisplay';
 import StockBar from '~/components/StockBar';
 import DealCard from '~/components/DealCard';
 import { Button } from '~/components/ui/button';
+import { NewsletterForm } from '~/components/NewsletterForm';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'DropMyDeal | Daily Drops' }];
@@ -136,7 +137,8 @@ export default function Homepage() {
         'Ever wondered how we secure such massive discounts? Discover the secret sauce behind our deal-hunting process...',
       date: 'Jan 01, 2026',
       readTime: '4 min read',
-      url: '/journal/behind-the-scenes-how-we-offer-such-low-prices'
+      url: '/journal/behind-the-scenes-how-we-offer-such-low-prices',
+      image: '/assets/blog-tech.png'
     },
     {
       title: 'Top Tips for Scoring the Best Flash Sale Deals',
@@ -144,7 +146,8 @@ export default function Homepage() {
         "Don't miss out on the next big drop. Learn the pro strategies to checkout faster and secure your savings...",
       date: 'Jan 01, 2026',
       readTime: '3 min read',
-      url: '/journal/top-tips-for-scoring-the-best-flash-sale-deals'
+      url: '/journal/top-tips-for-scoring-the-best-flash-sale-deals',
+      image: '/assets/blog-shopping.png'
     },
     // Keeping a 3rd one for layout balance, generic
     {
@@ -152,7 +155,8 @@ export default function Homepage() {
       excerpt: 'The unique platform that connects premium brands with savvy shoppers for mutual benefit...',
       date: 'Dec 28, 2025',
       readTime: '5 min read',
-      url: '#'
+      url: '#',
+      image: '/assets/blog-deals.png'
     },
   ];
 
@@ -240,33 +244,29 @@ export default function Homepage() {
 
               <StockBar remaining={23} total={100} />
 
-              {/* Features */}
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="flex items-center gap-3 glass-card rounded-xl p-3">
-                  <Shield className="h-5 w-5 text-primary" />
-                  <span className="text-sm text-muted-foreground">
-                    1 Year Warranty
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 glass-card rounded-xl p-3">
-                  <Truck className="h-5 w-5 text-primary" />
-                  <span className="text-sm text-muted-foreground">
-                    Free Shipping
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 glass-card rounded-xl p-3">
-                  <CheckCircle2 className="h-5 w-5 text-primary" />
-                  <span className="text-sm text-muted-foreground">
-                    7-Day Returns
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 glass-card rounded-xl p-3">
-                  <Star className="h-5 w-5 text-primary" />
-                  <span className="text-sm text-muted-foreground">
-                    Verified Seller
-                  </span>
-                </div>
-              </div>
+              {/* Features (Dynamic) */}
+              {heroProduct?.tags && (
+                (() => {
+                  const heroFeatures = heroProduct.tags
+                    .filter((t: string) => t.startsWith('Feature:'))
+                    .map((t: string) => t.replace('Feature:', '').trim());
+
+                  if (heroFeatures.length === 0) return null;
+
+                  return (
+                    <div className="grid grid-cols-2 gap-4 pt-2">
+                      {heroFeatures.map((feature: string, i: number) => (
+                        <div key={i} className="flex items-center gap-3 glass-card rounded-xl p-3">
+                          <CheckCircle2 className="h-5 w-5 text-primary" />
+                          <span className="text-sm text-muted-foreground">
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()
+              )}
 
               {/* CTA Buttons */}
               <div className="space-y-4 pt-4">
@@ -483,18 +483,7 @@ export default function Homepage() {
             )}
 
             {/* Notify Card */}
-            <div className="card-premium rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4">
-              <div className="w-16 h-16 rounded-full gradient-rose flex items-center justify-center">
-                <Gift className="h-8 w-8 text-primary-foreground" />
-              </div>
-              <h3 className="font-display font-bold text-xl">Get Notified</h3>
-              <p className="text-muted-foreground text-sm">
-                Be the first to know when new deals drop
-              </p>
-              <Button className="gradient-rose text-primary-foreground button-glow">
-                Enable Alerts
-              </Button>
-            </div>
+            <NotifyCard />
           </div>
         </div>
       </section>
@@ -662,10 +651,11 @@ export default function Homepage() {
                 rel={post.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                 className="group card-premium rounded-3xl overflow-hidden hover:scale-[1.02] smooth-transition"
               >
-                <div className="h-48 bg-gradient-to-br from-secondary to-muted relative overflow-hidden">
-                  <div className="absolute inset-0 gradient-rose-soft opacity-50" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <span className="glass-card px-3 py-1 rounded-full text-xs text-muted-foreground">
+                <div className="h-48 relative overflow-hidden">
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 smooth-transition" />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 smooth-transition" />
+                  <div className="absolute bottom-4 left-4 right-4 z-10">
+                    <span className="glass-card px-3 py-1 rounded-full text-xs text-white">
                       {post.readTime}
                     </span>
                   </div>
@@ -705,20 +695,8 @@ export default function Homepage() {
                 Get instant notifications when new flash deals go live. Be the
                 first to grab the best prices.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="gradient-rose text-primary-foreground font-bold h-14 px-8 rounded-2xl button-glow"
-                >
-                  Join the Drop Club
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="font-semibold h-14 px-8 rounded-2xl"
-                >
-                  For Brands
-                </Button>
+              <div className="w-full">
+                <NewsletterForm />
               </div>
             </div>
           </div>
@@ -766,6 +744,7 @@ const HOMEPAGE_QUERY = `#graphql
         descriptionHtml
         publishedAt
         handle
+        tags
         variants(first: 1) {
           nodes {
             id
@@ -788,4 +767,34 @@ const HOMEPAGE_QUERY = `#graphql
       }
     }
   }
+
 ` as const;
+
+function NotifyCard() {
+  const [showInput, setShowInput] = useState(false);
+
+  return (
+    <div className="card-premium rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4 h-full">
+      <div className="w-16 h-16 rounded-full gradient-rose flex items-center justify-center">
+        <Gift className="h-8 w-8 text-primary-foreground" />
+      </div>
+      <h3 className="font-display font-bold text-xl">Get Notified</h3>
+      <p className="text-muted-foreground text-sm">
+        Be the first to know when new deals drop
+      </p>
+
+      {!showInput ? (
+        <Button
+          onClick={() => setShowInput(true)}
+          className="gradient-rose text-primary-foreground button-glow"
+        >
+          Enable Alerts
+        </Button>
+      ) : (
+        <div className="w-full animate-fade-in">
+          <NewsletterForm />
+        </div>
+      )}
+    </div>
+  );
+}

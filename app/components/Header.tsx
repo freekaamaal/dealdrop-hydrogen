@@ -17,17 +17,22 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#070708]/80 backdrop-blur-xl transition-all duration-300">
       <div className="container mx-auto px-4 h-[73px] flex items-center justify-between relative">
         {/* Mobile: Logo Centered absolutely. Desktop: Static left */}
-        <Link
-          to="/"
-          prefetch="intent"
-          className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 w-[160px] md:w-[280px] hover:opacity-90 transition-opacity z-10"
+        <div
+          className="absolute top-0 flex items-center justify-center md:static md:block pointer-events-none md:pointer-events-auto z-10"
+          style={{ left: '50%', transform: 'translateX(-50%)', height: '100%' }}
         >
-          <img
-            src="/assets/logo.png"
-            alt="DropMyDeal"
-            className="w-full h-auto"
-          />
-        </Link>
+          <Link
+            to="/"
+            prefetch="intent"
+            className="pointer-events-auto hover:opacity-90 transition-opacity flex items-center justify-center h-full"
+          >
+            <img
+              src="/assets/logo-v2.png?v=5"
+              alt="DropMyDeal"
+              className="w-[200px] md:w-[320px] max-w-[80vw] h-auto object-contain"
+            />
+          </Link>
+        </div>
 
         {/* Placeholder for Left Icon on Mobile to balance (if needed) or just empty to let justify-between work for right icons */}
         <div className="md:hidden w-10"></div>

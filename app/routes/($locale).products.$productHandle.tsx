@@ -145,14 +145,14 @@ export default function Product() {
     }
   }, [tags]);
 
-  const features = [
-    'Active Noise Cancellation (ANC) technology',
-    '30-hour battery life with quick charging',
-    'Premium memory foam ear cushions',
-    'Bluetooth 5.0 with multipoint connection',
-    'Built-in microphone for crystal clear calls',
-    'Foldable design with carrying case included',
-  ];
+  // Dynamic Features Logic: Parse tags starting with 'Feature:'
+  // Example tag: "Feature: 1 Year Warranty"
+  const features = tags
+    .filter((tag: string) => tag.startsWith('Feature:'))
+    .map((tag: string) => tag.replace('Feature:', '').trim());
+
+  // Fallback for demo if no tags present (optional, can be removed if strict "hide" is desired)
+  // For now, per user request "if not available.. just dnt show this", so we keep it empty if no tags.
 
   if (!selectedVariant?.price) return null;
 
@@ -261,58 +261,27 @@ export default function Product() {
                 />
               </div>
 
-              {/* Key Features */}
-              <div className="bg-muted/30 rounded-2xl p-6 space-y-4 border border-border/50">
-                <h3 className="font-bold text-lg flex items-center gap-2">
-                  <IconCheck className="text-primary h-5 w-5" />
-                  Key Features
-                </h3>
-                <ul className="space-y-3">
-                  {features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <div className="mt-1 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
-                      <span className="text-muted-foreground text-sm">
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Key Features (Dynamic) */}
+              {features.length > 0 && (
+                <div className="bg-muted/30 rounded-2xl p-6 space-y-4 border border-border/50">
+                  <h3 className="font-bold text-lg flex items-center gap-2">
+                    <IconCheck className="text-primary h-5 w-5" />
+                    Key Features
+                  </h3>
+                  <ul className="space-y-3">
+                    {features.map((feature: string, i: number) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <div className="mt-1 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                        <span className="text-muted-foreground text-sm">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-              {/* Trust Badges */}
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  {
-                    icon: IconShield,
-                    title: '1 Year Warranty',
-                    sub: 'Full coverage',
-                  },
-                  { icon: IconTruck, title: 'Free Shipping', sub: 'All India' },
-                  {
-                    icon: IconRotateCcw,
-                    title: '7-Day Returns',
-                    sub: 'Easy process',
-                  },
-                  {
-                    icon: IconCheckCircle,
-                    title: 'Verified Seller',
-                    sub: 'Trusted',
-                  },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-4 bg-card rounded-xl border border-border hover:border-primary/50 transition-colors group"
-                  >
-                    <item.icon className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
-                    <div>
-                      <p className="font-semibold text-sm">{item.title}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {item.sub}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+
             </div>
           </div>
 

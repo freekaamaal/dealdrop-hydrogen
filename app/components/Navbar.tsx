@@ -1,19 +1,22 @@
-import {Link, NavLink} from '@remix-run/react';
-import {ShoppingBag, Menu, X, User} from 'lucide-react';
-import {useState} from 'react';
+import { Link, NavLink } from '@remix-run/react';
+import { ShoppingBag, Menu, X, User } from 'lucide-react';
+import { useState } from 'react';
 
-import {Button} from '~/components/ui/button';
-export function Navbar({cart, openCart}: {cart?: any; openCart?: () => void}) {
+import { Button } from '~/components/ui/button';
+export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border/50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link
+          to="/"
+          className="absolute left-1/2 -translate-x-1/2 md:static md:transform-none flex items-center gap-3 group"
+        >
           <img
-            src="/assets/logo.png"
+            src="/assets/logo-v2.png"
             alt="DropMyDeal"
-            className="h-8 md:h-10 w-auto smooth-transition group-hover:scale-105"
+            className="w-[200px] h-auto md:w-auto md:h-16 smooth-transition group-hover:scale-105"
           />
         </Link>
 
@@ -72,7 +75,7 @@ export function Navbar({cart, openCart}: {cart?: any; openCart?: () => void}) {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-foreground p-2"
+          className="md:hidden text-foreground p-2 ml-auto"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? (

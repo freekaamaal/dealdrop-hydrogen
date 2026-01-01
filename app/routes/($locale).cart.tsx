@@ -60,9 +60,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const headers = cart.setCartId(result.cart.id);
 
   const redirectTo = formData.get('redirectTo') ?? null;
+  let checkoutUrl = null;
+
   if (redirectTo === '/checkout') {
-    status = 303;
-    headers.set('Location', result.cart.checkoutUrl);
+    // Return the URL for client-side redirection
+    checkoutUrl = result.cart.checkoutUrl;
   } else if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
     status = 303;
     headers.set('Location', redirectTo);
@@ -75,6 +77,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       cart: cartResult,
       userErrors,
       errors,
+      checkoutUrl,
     },
     { status, headers },
   );

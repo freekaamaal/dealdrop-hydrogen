@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import {useRef} from 'react';
+import { useRef } from 'react';
 import useScroll from 'react-use/esm/useScroll';
 import {
   flattenConnection,
@@ -17,12 +17,12 @@ import type {
   CartLineUpdateInput,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import {Button} from '~/components/Button';
-import {Text, Heading} from '~/components/Text';
-import {Link} from '~/components/Link';
-import {IconRemove} from '~/components/Icon';
-import {FeaturedProducts} from '~/components/FeaturedProducts';
-import {getInputStyleClasses} from '~/lib/utils';
+import { Button } from '~/components/Button';
+import { Text, Heading } from '~/components/Text';
+import { Link } from '~/components/Link';
+import { IconRemove } from '~/components/Icon';
+import { FeaturedProducts } from '~/components/FeaturedProducts';
+import { getInputStyleClasses } from '~/lib/utils';
 
 type Layouts = 'page' | 'drawer';
 
@@ -64,7 +64,7 @@ export function CartDetails({
       <CartLines lines={cart?.lines} layout={layout} />
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
-          <CartDiscounts discountCodes={cart.discountCodes} />
+          {/* <CartDiscounts discountCodes={cart.discountCodes} /> */}
           <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
         </CartSummary>
       )}
@@ -85,7 +85,7 @@ function CartDiscounts({
   const codes: string[] =
     discountCodes
       ?.filter((discount) => discount.applicable)
-      ?.map(({code}) => code) || [];
+      ?.map(({ code }) => code) || [];
 
   return (
     <>
@@ -98,7 +98,7 @@ function CartDiscounts({
               <button>
                 <IconRemove
                   aria-hidden="true"
-                  style={{height: 18, marginRight: 4}}
+                  style={{ height: 18, marginRight: 4 }}
                 />
               </button>
             </UpdateDiscountForm>
@@ -159,7 +159,7 @@ function CartLines({
 }) {
   const currentLines = cartLines ? flattenConnection(cartLines) : [];
   const scrollRef = useRef(null);
-  const {y} = useScroll(scrollRef);
+  const { y } = useScroll(scrollRef);
 
   const className = clsx([
     y > 0 ? 'border-t' : '',
@@ -183,7 +183,7 @@ function CartLines({
   );
 }
 
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
+function CartCheckoutActions({ checkoutUrl }: { checkoutUrl: string }) {
   if (!checkoutUrl) return null;
 
   return (
@@ -218,7 +218,7 @@ function CartSummary({
         Order summary
       </h2>
       <dl className="grid">
-        <div className="flex items-center justify-between font-medium">
+        <div className="flex items-center justify-between font-medium text-neutral-900 dark:text-neutral-100">
           <Text as="dt">Subtotal</Text>
           <Text as="dd" data-test="subtotal">
             {cost?.subtotalAmount?.amount ? (
@@ -239,12 +239,12 @@ type OptimisticData = {
   quantity?: number;
 };
 
-function CartLineItem({line}: {line: CartLine}) {
+function CartLineItem({ line }: { line: CartLine }) {
   const optimisticData = useOptimisticData<OptimisticData>(line?.id);
 
   if (!line?.id) return null;
 
-  const {id, quantity, merchandise} = line;
+  const { id, quantity, merchandise } = line;
 
   if (typeof quantity === 'undefined' || !merchandise?.product) return null;
 
@@ -274,17 +274,17 @@ function CartLineItem({line}: {line: CartLine}) {
         <div className="grid gap-2">
           <Heading as="h3" size="copy">
             {merchandise?.product?.handle ? (
-              <Link to={`/products/${merchandise.product.handle}`}>
+              <Link to={`/products/${merchandise.product.handle}`} className="text-neutral-900 dark:text-neutral-100">
                 {merchandise?.product?.title || ''}
               </Link>
             ) : (
-              <Text>{merchandise?.product?.title || ''}</Text>
+              <Text className="text-neutral-900 dark:text-neutral-100">{merchandise?.product?.title || ''}</Text>
             )}
           </Heading>
 
           <div className="grid pb-2">
             {(merchandise?.selectedOptions || []).map((option) => (
-              <Text color="subtle" key={option.name}>
+              <Text color="subtle" key={option.name} className="text-neutral-600 dark:text-neutral-400">
                 {option.name}: {option.value}
               </Text>
             ))}
@@ -297,7 +297,7 @@ function CartLineItem({line}: {line: CartLine}) {
             <ItemRemoveButton lineId={id} />
           </div>
         </div>
-        <Text>
+        <Text className="text-neutral-900 dark:text-neutral-100 font-medium">
           <CartLinePrice line={line} as="span" />
         </Text>
       </div>
@@ -305,7 +305,7 @@ function CartLineItem({line}: {line: CartLine}) {
   );
 }
 
-function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
+function ItemRemoveButton({ lineId }: { lineId: CartLine['id'] }) {
   return (
     <CartForm
       route="/cart"
@@ -315,18 +315,18 @@ function ItemRemoveButton({lineId}: {lineId: CartLine['id']}) {
       }}
     >
       <button
-        className="flex items-center justify-center w-10 h-10 border rounded"
+        className="flex items-center justify-center w-10 h-10 border rounded text-neutral-600 hover:text-red-500"
         type="submit"
       >
         <span className="sr-only">Remove</span>
         <IconRemove aria-hidden="true" />
       </button>
-      <OptimisticInput id={lineId} data={{action: 'remove'}} />
+      <OptimisticInput id={lineId} data={{ action: 'remove' }} />
     </CartForm>
   );
 }
 
-function CartLineQuantityAdjust({line}: {line: CartLine}) {
+function CartLineQuantityAdjust({ line }: { line: CartLine }) {
   const optimisticId = line?.id;
   const optimisticData = useOptimisticData<OptimisticData>(optimisticId);
 
@@ -334,7 +334,7 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
 
   const optimisticQuantity = optimisticData?.quantity || line.quantity;
 
-  const {id: lineId} = line;
+  const { id: lineId } = line;
   const prevQuantity = Number(Math.max(0, optimisticQuantity - 1).toFixed(0));
   const nextQuantity = Number((optimisticQuantity + 1).toFixed(0));
 
@@ -344,29 +344,29 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
         Quantity, {optimisticQuantity}
       </label>
       <div className="flex items-center border rounded">
-        <UpdateCartButton lines={[{id: lineId, quantity: prevQuantity}]}>
+        <UpdateCartButton lines={[{ id: lineId, quantity: prevQuantity }]}>
           <button
             name="decrease-quantity"
             aria-label="Decrease quantity"
-            className="w-10 h-10 transition text-primary/50 hover:text-primary disabled:text-primary/10"
+            className="w-10 h-10 transition text-neutral-600 hover:text-neutral-900 disabled:text-neutral-400"
             value={prevQuantity}
             disabled={optimisticQuantity <= 1}
           >
             <span>&#8722;</span>
             <OptimisticInput
               id={optimisticId}
-              data={{quantity: prevQuantity}}
+              data={{ quantity: prevQuantity }}
             />
           </button>
         </UpdateCartButton>
 
-        <div className="px-2 text-center" data-test="item-quantity">
+        <div className="px-2 text-center text-neutral-900 dark:text-neutral-100" data-test="item-quantity">
           {optimisticQuantity}
         </div>
 
-        <UpdateCartButton lines={[{id: lineId, quantity: nextQuantity}]}>
+        <UpdateCartButton lines={[{ id: lineId, quantity: nextQuantity }]}>
           <button
-            className="w-10 h-10 transition text-primary/50 hover:text-primary"
+            className="w-10 h-10 transition text-neutral-600 hover:text-neutral-900"
             name="increase-quantity"
             value={nextQuantity}
             aria-label="Increase quantity"
@@ -374,7 +374,7 @@ function CartLineQuantityAdjust({line}: {line: CartLine}) {
             <span>&#43;</span>
             <OptimisticInput
               id={optimisticId}
-              data={{quantity: nextQuantity}}
+              data={{ quantity: nextQuantity }}
             />
           </button>
         </UpdateCartButton>
@@ -436,7 +436,7 @@ export function CartEmpty({
   onClose?: () => void;
 }) {
   const scrollRef = useRef(null);
-  const {y} = useScroll(scrollRef);
+  const { y } = useScroll(scrollRef);
 
   const container = {
     drawer: clsx([
