@@ -60,6 +60,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/pages/contact" className="hover:text-primary transition-colors">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
                 <Link
                   to="/pages/return-and-cancellation-policies"
                   className="hover:text-primary transition-colors"
