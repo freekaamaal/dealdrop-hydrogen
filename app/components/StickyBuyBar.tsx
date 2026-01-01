@@ -4,6 +4,7 @@ import { Zap } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
 import { useAside } from '~/components/Aside';
+import { AddToCartButton } from '~/components/AddToCartButton';
 
 export function StickyBuyBar({ product, selectedVariant }) {
   const [isVisible, setIsVisible] = useState(false);
