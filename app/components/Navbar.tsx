@@ -7,16 +7,22 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
+
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border/50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        {/* Mobile Cart Button (Left) */}
+        <div className="md:hidden flex items-center">
+          <AsyncCartButton cart={cart} openCart={openCart} />
+        </div>
+
         <Link
           to="/"
-          className="absolute left-1/2 -translate-x-1/2 md:static md:transform-none flex items-center gap-3 group"
+          className="flex items-center gap-3 group"
         >
           <img
             src="/assets/logo-v2.png"
             alt="DropMyDeal"
-            className="w-[200px] h-auto md:w-auto md:h-16 smooth-transition group-hover:scale-105"
+            className="w-[160px] md:w-auto h-auto md:h-16 smooth-transition group-hover:scale-105"
           />
         </Link>
 
@@ -58,38 +64,11 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
           >
             <User className="h-5 w-5" />
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-foreground relative"
-            onClick={openCart}
-          >
-            <ShoppingBag className="h-5 w-5" />
-            {cart?.totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 gradient-rose text-primary-foreground text-xs rounded-full flex items-center justify-center font-bold">
-                {cart.totalQuantity}
-              </span>
-            )}
-          </Button>
+          <AsyncCartButton cart={cart} openCart={openCart} />
         </div>
 
-        {/* Mobile Cart Button */}
-        <div className="md:hidden flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-muted-foreground hover:text-foreground relative"
-            onClick={openCart}
-          >
-            <ShoppingBag className="h-5 w-5" />
-            {cart?.totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 gradient-rose text-primary-foreground text-xs rounded-full flex items-center justify-center font-bold">
-                {cart.totalQuantity}
-              </span>
-            )}
-          </Button>
-
-          {/* Mobile Menu Button */}
+        {/* Mobile Menu Button (Right) */}
+        <div className="md:hidden flex items-center">
           <button
             className="text-foreground p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -140,26 +119,47 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
               <Button variant="outline" className="flex-1">
                 <User className="h-4 w-4 mr-2" /> Account
               </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="relative"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (openCart) openCart();
-                }}
-              >
-                <ShoppingBag className="h-4 w-4" />
-                {cart?.totalQuantity > 0 && (
-                  <span className="absolute -top-1 -right-1 w-3 h-3 gradient-rose text-primary-foreground text-[10px] rounded-full flex items-center justify-center font-bold">
-                    {cart.totalQuantity}
-                  </span>
-                )}
-              </Button>
             </div>
           </div>
         </div>
       )}
     </nav>
+  );
+}
+
+import { Await } from '@remix-run/react';
+import { Suspense } from 'react';
+
+function AsyncCartButton({ cart, openCart }: { cart?: any; openCart?: () => void }) {
+  return (
+    <Suspense fallback={<CartButtonContent count={0} openCart={openCart} />}>
+      <Await resolve={cart}>
+        {(resolvedCart) => (
+          <CartButtonContent
+            count={resolvedCart?.totalQuantity || 0}
+            openCart={openCart}
+          />
+        )}
+      </Await>
+    </Suspense>
+  );
+}
+
+function CartButtonContent({ count, openCart }: { count: number; openCart?: () => void }) {
+  const isColored = count > 0;
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      className={`active:scale-95 transition-all relative ${isColored ? 'text-primary' : 'text-muted-foreground'}`}
+      onClick={openCart}
+    >
+      <ShoppingBag className={`h-5 w-5 ${isColored ? 'fill-primary/10' : ''}`} />
+      {count > 0 && (
+        <span className="absolute -top-1 -right-1 w-4 h-4 gradient-rose text-primary-foreground text-xs rounded-full flex items-center justify-center font-bold">
+          {count}
+        </span>
+      )}
+    </Button>
   );
 }

@@ -10,30 +10,33 @@ Browserslist: caniuse-lite is outdated. Please run:
   npx update-browserslist-db@latest
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
 vite v5.2.12 building for production...
-✓ 0 modules transformed.
 transforming...
-x Build failed in 375ms
+✓ 126 modules transformed.
+x Build failed in 2.02s
 ╭─ error ──────────────────────────────────────────────────────────────────────╮
 │                                                                              │
 │  [vite:esbuild] Transform failed with 1 error:                               │
-│  /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/($local  │
-│  e)._index.tsx?__remix-build-client-route:71:30: ERROR: Syntax error "`"     │
-│  file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/(  │
-│  $locale)._index.tsx?__remix-build-client-route:71:30                        │
+│  /Users/macbookpro/Dealdrop SHopify                                          │
+│  theme/hydrogen-store/app/components/Navbar.tsx:10:2: ERROR: Unexpected      │
+│  "return"                                                                    │
+│  file: /Users/macbookpro/Dealdrop SHopify                                    │
+│  theme/hydrogen-store/app/components/Navbar.tsx:10:2                         │
 │                                                                              │
-│  Syntax error "`"                                                            │
-│  69 |    const handleBuyNow = () => {                                        │
-│  70 |      if (heroProduct) {                                                │
-│  71 |        window.location.href = \`/products/\${heroProduct.handle}\`;    │
-│     |                                ^                                       │
-│  72 |      } else {                                                          │
-│  73 |          window.location.href = '#featured-products';                  │
+│  Unexpected "return"                                                         │
+│  8  |                                                                        │
+│  9  |    return (                                                            │
+│  10 |    return (                                                            │
+│     |    ^                                                                   │
+│  11 |      <nav className="sticky top-0 z-50 backdrop-blur-xl                │
+│  bg-background/80 border-b border-border/50">                                │
+│  12 |        <div className="container mx-auto px-4 py-4 flex items-center   │
+│  justify-between">                                                           │
 │                                                                              │
 │                                                                              │
 │  To investigate the issue, examine this stack trace:                         │
-│    at (app/routes/($locale)._index.tsx?__remix-build-client-route:71)        │
-│    at (file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/ro  │
-│    utes/($locale)._index.tsx?__remix-build-client-route:71)                  │
+│    at (app/components/Navbar.tsx:10)                                         │
+│    at (file: /Users/macbookpro/Dealdrop SHopify                              │
+│    theme/hydrogen-store/app/components/Navbar.tsx:10)                        │
 │    at failureErrorWithLog (vite/node_modules/esbuild/lib/main.js:1651)       │
 │    at (vite/node_modules/esbuild/lib/main.js:849)                            │
 │    at <computed> (vite/node_modules/esbuild/lib/main.js:704)                 │
@@ -48,16 +51,16 @@ x Build failed in 375ms
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
 [vite:esbuild] Transform failed with 1 error:
-/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/($locale)._index.tsx?__remix-build-client-route:71:30: ERROR: Syntax error "`"
-file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/routes/($locale)._index.tsx?__remix-build-client-route:71:30
+/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/components/Navbar.tsx:10:2: ERROR: Unexpected "return"
+file: /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/app/components/Navbar.tsx:10:2
 
-Syntax error "`"
-69 |    const handleBuyNow = () => {
-70 |      if (heroProduct) {
-71 |        window.location.href = \`/products/\${heroProduct.handle}\`;
-   |                                ^
-72 |      } else {
-73 |          window.location.href = '#featured-products';
+Unexpected "return"
+8  |  
+9  |    return (
+10 |    return (
+   |    ^
+11 |      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border/50">
+12 |        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
 
     at failureErrorWithLog (/Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/node_modules/vite/node_modules/esbuild/lib/main.js:1651:15)
     at /Users/macbookpro/Dealdrop SHopify theme/hydrogen-store/node_modules/vite/node_modules/esbuild/lib/main.js:849:29
