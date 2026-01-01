@@ -73,17 +73,34 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
           </Button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-foreground p-2 ml-auto"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
+        {/* Mobile Cart Button */}
+        <div className="md:hidden flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground relative"
+            onClick={openCart}
+          >
+            <ShoppingBag className="h-5 w-5" />
+            {cart?.totalQuantity > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 gradient-rose text-primary-foreground text-xs rounded-full flex items-center justify-center font-bold">
+                {cart.totalQuantity}
+              </span>
+            )}
+          </Button>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="text-foreground p-2"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -123,8 +140,21 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
               <Button variant="outline" className="flex-1">
                 <User className="h-4 w-4 mr-2" /> Account
               </Button>
-              <Button variant="outline" size="icon" className="relative">
+              <Button
+                variant="outline"
+                size="icon"
+                className="relative"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (openCart) openCart();
+                }}
+              >
                 <ShoppingBag className="h-4 w-4" />
+                {cart?.totalQuantity > 0 && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 gradient-rose text-primary-foreground text-[10px] rounded-full flex items-center justify-center font-bold">
+                    {cart.totalQuantity}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
