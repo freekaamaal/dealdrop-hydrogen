@@ -555,17 +555,18 @@ export function ProductForm({
               <AddToCartButton
                 lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
                 variant="secondary"
-                className="flex-1 bg-[#1A1A1A] hover:bg-black text-white font-bold h-14 rounded-xl text-base shadow-md transition-transform transform active:scale-[0.98]"
+                className="flex-1 bg-[#1A1A1A] hover:bg-black text-white font-bold h-14 rounded-xl text-base shadow-md transition-transform transform active:scale-[0.98] relative z-20"
               >
                 Add to cart
               </AddToCartButton>
             </div>
 
-            {/* Buy Now (Primary) */}
+            {/* Buy Now (Primary - Checkout) */}
             <AddToCartButton
               lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
+              redirectTo="/checkout"
               variant="primary"
-              className="w-full h-14 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53] text-white hover:brightness-110"
+              className="w-full h-14 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53] text-white hover:brightness-110 relative z-20"
             >
               Buy it now
             </AddToCartButton>

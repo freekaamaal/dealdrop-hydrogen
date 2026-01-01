@@ -158,13 +158,13 @@ export default function Homepage() {
 
   return (
     <>
-      <section className="relative py-12 md:py-20 overflow-hidden">
+      <section className="relative py-8 md:py-16 overflow-hidden">
         {/* Background Glow Effect */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/8 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10">
           {/* Live Badge */}
-          <div className="flex items-center justify-center gap-3 mb-8 animate-fade-in">
+          <div className="flex items-center justify-center gap-3 mb-6 animate-fade-in">
             <div className="flex items-center gap-2 gradient-rose text-primary-foreground px-4 py-2 rounded-full">
               <span className="w-2 h-2 bg-primary-foreground rounded-full animate-pulse" />
               <span className="text-sm font-bold uppercase tracking-wider">
@@ -174,26 +174,22 @@ export default function Homepage() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center max-w-6xl mx-auto">
-            {/* Product Image */}
-            <div className="order-2 lg:order-1 animate-scale-in">
+
+            {/* Desktop Image Column (Hidden on Mobile) */}
+            <div className="hidden lg:block order-last lg:order-first animate-scale-in">
               <div className="relative">
                 {/* Glow behind image */}
                 <div className="absolute inset-0 gradient-rose rounded-3xl blur-3xl opacity-15 scale-95" />
-
-                <div className="relative card-premium rounded-3xl overflow-hidden p-6 md:p-10">
+                <div className="relative card-premium rounded-3xl overflow-hidden p-10">
                   <img
                     src={heroData.image}
                     alt={heroData.title}
                     className="w-full h-auto object-contain animate-float"
                   />
-
-                  {/* Featured Badge */}
                   <div className="absolute top-6 left-6 flex items-center gap-2 gradient-rose text-primary-foreground px-4 py-2 rounded-full font-bold text-sm shadow-lg">
                     <Zap className="h-4 w-4" />
                     Flash Deal
                   </div>
-
-                  {/* Discount Circle */}
                   <div className="absolute top-6 right-6 w-16 h-16 gradient-rose rounded-full flex items-center justify-center glow-rose">
                     <span className="text-primary-foreground font-display font-bold text-lg">
                       {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
@@ -203,8 +199,8 @@ export default function Homepage() {
               </div>
             </div>
 
-            {/* Deal Info */}
-            <div className="order-1 lg:order-2 space-y-6 animate-fade-in">
+            {/* Content Column */}
+            <div className="space-y-6 animate-fade-in">
               <div>
                 <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
                   Today's Drop
@@ -212,6 +208,27 @@ export default function Homepage() {
                 <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
                   <span className="block">{heroData.title}</span>
                 </h1>
+
+                {/* Mobile Image (Visible only on Mobile, Just after Title) */}
+                <div className="lg:hidden my-6">
+                  <div className="relative card-premium rounded-3xl overflow-hidden p-6">
+                    <img
+                      src={heroData.image}
+                      alt={heroData.title}
+                      className="w-full h-auto object-contain"
+                    />
+                    <div className="absolute top-4 left-4 flex items-center gap-2 gradient-rose text-primary-foreground px-3 py-1 rounded-full font-bold text-xs shadow-lg">
+                      <Zap className="h-3 w-3" />
+                      Flash Deal
+                    </div>
+                    <div className="absolute top-4 right-4 w-12 h-12 gradient-rose rounded-full flex items-center justify-center glow-rose shadow-lg">
+                      <span className="text-primary-foreground font-display font-bold text-sm">
+                        {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <p className="text-lg text-muted-foreground">
                   {heroData.description}
                 </p>
@@ -276,7 +293,7 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Why DealDrop Section */}
+      {/* Why DropMyDeal Section */}
       <section className="py-16 md:py-24" id="why-dropmydeal">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -534,7 +551,7 @@ export default function Homepage() {
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
               Join thousands of satisfied shoppers who've saved big with
-              DealDrop
+              DropMyDeal
             </p>
           </div>
 

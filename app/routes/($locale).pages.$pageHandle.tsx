@@ -3,20 +3,20 @@ import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
-import {getSeoMeta} from '@shopify/hydrogen';
+import { getSeoMeta } from '@shopify/hydrogen';
 
-import {PageHeader} from '~/components/Text';
-import {routeHeaders} from '~/data/cache';
-import {seoPayload} from '~/lib/seo.server';
+import { PageHeader } from '~/components/Text';
+import { routeHeaders } from '~/data/cache';
+import { seoPayload } from '~/lib/seo.server';
 
 export const headers = routeHeaders;
 
-export async function loader({request, params, context}: LoaderFunctionArgs) {
+export async function loader({ request, params, context }: LoaderFunctionArgs) {
   invariant(params.pageHandle, 'Missing page handle');
 
-  const {page} = await context.storefront.query(PAGE_QUERY, {
+  const { page } = await context.storefront.query(PAGE_QUERY, {
     variables: {
       handle: params.pageHandle,
       language: context.storefront.i18n.language,
@@ -24,29 +24,31 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
   });
 
   if (!page) {
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
-  const seo = seoPayload.page({page, url: request.url});
+  const seo = seoPayload.page({ page, url: request.url });
 
-  return json({page, seo});
+  return json({ page, seo });
 }
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Page() {
-  const {page} = useLoaderData<typeof loader>();
+  const { page } = useLoaderData<typeof loader>();
 
   return (
     <>
-      <PageHeader heading={page.title}>
-        <div
-          dangerouslySetInnerHTML={{__html: page.body}}
-          className="prose dark:prose-invert"
-        />
-      </PageHeader>
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <PageHeader heading={page.title}>
+          <div
+            dangerouslySetInnerHTML={{ __html: page.body }}
+            className="prose dark:prose-invert max-w-none text-foreground bg-background"
+          />
+        </PageHeader>
+      </div>
     </>
   );
 }

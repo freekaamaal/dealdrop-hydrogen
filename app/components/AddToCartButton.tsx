@@ -1,7 +1,7 @@
-import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
-import type {FetcherWithComponents} from '@remix-run/react';
+import { CartForm, type OptimisticCartLineInput } from '@shopify/hydrogen';
+import type { FetcherWithComponents } from '@remix-run/react';
 
-import {Button} from '~/components/Button';
+import { Button } from '~/components/Button';
 
 export function AddToCartButton({
   children,
@@ -25,6 +25,7 @@ export function AddToCartButton({
       route="/cart"
       inputs={{
         lines,
+        ...(props.redirectTo && { redirectTo: props.redirectTo }),
       }}
       action={CartForm.ACTIONS.LinesAdd}
     >
