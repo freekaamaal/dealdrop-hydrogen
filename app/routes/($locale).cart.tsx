@@ -1,21 +1,21 @@
-import {useLoaderData} from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import {
   type LoaderFunctionArgs,
   type ActionFunctionArgs,
   json,
 } from '@shopify/remix-oxygen';
-import {CartForm, type CartQueryDataReturn, Analytics} from '@shopify/hydrogen';
+import { CartForm, type CartQueryDataReturn, Analytics } from '@shopify/hydrogen';
 
-import {isLocalPath} from '~/lib/utils';
-import {Cart} from '~/components/Cart';
+import { isLocalPath } from '~/lib/utils';
+import { Cart } from '~/components/Cart';
 
-export async function action({request, context}: ActionFunctionArgs) {
-  const {cart} = context;
+export async function action({ request, context }: ActionFunctionArgs) {
+  const { cart } = context;
 
   const formData = await request.formData();
 
-  const {action, inputs} = CartForm.getFormInput(formData);
+  const { action, inputs } = CartForm.getFormInput(formData);
   invariant(action, 'No cartAction defined');
 
   let status = 200;
@@ -60,12 +60,15 @@ export async function action({request, context}: ActionFunctionArgs) {
   const headers = cart.setCartId(result.cart.id);
 
   const redirectTo = formData.get('redirectTo') ?? null;
-  if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
+  if (redirectTo === '/checkout') {
+    status = 303;
+    headers.set('Location', result.cart.checkoutUrl);
+  } else if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
     status = 303;
     headers.set('Location', redirectTo);
   }
 
-  const {cart: cartResult, errors, userErrors} = result;
+  const { cart: cartResult, errors, userErrors } = result;
 
   return json(
     {
@@ -73,12 +76,12 @@ export async function action({request, context}: ActionFunctionArgs) {
       userErrors,
       errors,
     },
-    {status, headers},
+    { status, headers },
   );
 }
 
-export async function loader({context}: LoaderFunctionArgs) {
-  const {cart} = context;
+export async function loader({ context }: LoaderFunctionArgs) {
+  const { cart } = context;
   return json(await cart.get());
 }
 

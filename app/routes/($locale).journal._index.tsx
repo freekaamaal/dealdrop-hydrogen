@@ -3,27 +3,27 @@ import {
   type MetaArgs,
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
-import {flattenConnection, getSeoMeta, Image} from '@shopify/hydrogen';
+import { useLoaderData } from '@remix-run/react';
+import { flattenConnection, getSeoMeta, Image } from '@shopify/hydrogen';
 
-import {PageHeader, Section} from '~/components/Text';
-import {Link} from '~/components/Link';
-import {Grid} from '~/components/Grid';
-import {getImageLoadingPriority, PAGINATION_SIZE} from '~/lib/const';
-import {seoPayload} from '~/lib/seo.server';
-import {routeHeaders} from '~/data/cache';
-import type {ArticleFragment} from 'storefrontapi.generated';
+import { PageHeader, Section } from '~/components/Text';
+import { Link } from '~/components/Link';
+import { Grid } from '~/components/Grid';
+import { getImageLoadingPriority, PAGINATION_SIZE } from '~/lib/const';
+import { seoPayload } from '~/lib/seo.server';
+import { routeHeaders } from '~/data/cache';
+import type { ArticleFragment } from 'storefrontapi.generated';
 
-const BLOG_HANDLE = 'Journal';
+const BLOG_HANDLE = 'news';
 
 export const headers = routeHeaders;
 
 export const loader = async ({
   request,
-  context: {storefront},
+  context: { storefront },
 }: LoaderFunctionArgs) => {
-  const {language, country} = storefront.i18n;
-  const {blog} = await storefront.query(BLOGS_QUERY, {
+  const { language, country } = storefront.i18n;
+  const { blog } = await storefront.query(BLOGS_QUERY, {
     variables: {
       blogHandle: BLOG_HANDLE,
       pageBy: PAGINATION_SIZE,
@@ -32,11 +32,11 @@ export const loader = async ({
   });
 
   if (!blog?.articles) {
-    throw new Response('Not found', {status: 404});
+    throw new Response('Not found', { status: 404 });
   }
 
   const articles = flattenConnection(blog.articles).map((article) => {
-    const {publishedAt} = article!;
+    const { publishedAt } = article!;
     return {
       ...article,
       publishedAt: new Intl.DateTimeFormat(`${language}-${country}`, {
@@ -47,17 +47,17 @@ export const loader = async ({
     };
   });
 
-  const seo = seoPayload.blog({blog, url: request.url});
+  const seo = seoPayload.blog({ blog, url: request.url });
 
-  return json({articles, seo});
+  return json({ articles, seo });
 };
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
+export const meta = ({ matches }: MetaArgs<typeof loader>) => {
   return getSeoMeta(...matches.map((match) => (match.data as any).seo));
 };
 
 export default function Journals() {
-  const {articles} = useLoaderData<typeof loader>();
+  const { articles } = useLoaderData<typeof loader>();
 
   return (
     <>

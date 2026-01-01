@@ -136,7 +136,7 @@ export default function Homepage() {
         'Ever wondered how we secure such massive discounts? Discover the secret sauce behind our deal-hunting process...',
       date: 'Jan 01, 2026',
       readTime: '4 min read',
-      url: '/blogs/news/behind-the-scenes-how-we-offer-such-low-prices'
+      url: '/journal/behind-the-scenes-how-we-offer-such-low-prices'
     },
     {
       title: 'Top Tips for Scoring the Best Flash Sale Deals',
@@ -144,7 +144,7 @@ export default function Homepage() {
         "Don't miss out on the next big drop. Learn the pro strategies to checkout faster and secure your savings...",
       date: 'Jan 01, 2026',
       readTime: '3 min read',
-      url: '/blogs/news/top-tips-for-scoring-the-best-flash-sale-deals'
+      url: '/journal/top-tips-for-scoring-the-best-flash-sale-deals'
     },
     // Keeping a 3rd one for layout balance, generic
     {

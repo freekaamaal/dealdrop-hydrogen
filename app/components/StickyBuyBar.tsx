@@ -1,13 +1,13 @@
-import {Money} from '@shopify/hydrogen';
-import {useEffect, useState} from 'react';
-import {Zap} from 'lucide-react';
+import { Money } from '@shopify/hydrogen';
+import { useEffect, useState } from 'react';
+import { Zap } from 'lucide-react';
 
-import {Button} from '~/components/ui/button';
-import {useAside} from '~/components/Aside';
+import { Button } from '~/components/ui/button';
+import { useAside } from '~/components/Aside';
 
-export function StickyBuyBar({product, selectedVariant}) {
+export function StickyBuyBar({ product, selectedVariant }) {
   const [isVisible, setIsVisible] = useState(false);
-  const {open} = useAside();
+  const { open } = useAside();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,14 +49,15 @@ export function StickyBuyBar({product, selectedVariant}) {
             %
           </p>
         </div>
-        <Button
-          size="lg"
+        <AddToCartButton
+          lines={[{ merchandiseId: selectedVariant?.id, quantity: 1 }]}
+          redirectTo="/checkout"
+          variant="primary"
           className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-12 rounded-xl button-glow smooth-transition active:scale-95"
-          onClick={() => open('cart')}
         >
-          <Zap className="mr-2 h-4 w-4" />
+          <Zap className="mr-2 h-4 w-4 inline-block" />
           Buy Now
-        </Button>
+        </AddToCartButton>
       </div>
     </div>
   );
