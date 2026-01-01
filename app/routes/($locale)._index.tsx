@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from '@remix-run/react';
+import { useState, useEffect } from 'react';
+import { Link, useLoaderData } from '@remix-run/react';
 import {
   Sparkles,
   Shield,
@@ -18,8 +18,8 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { Await, useLoaderData, type MetaFunction } from '@remix-run/react';
 import { AnalyticsPageType } from '@shopify/hydrogen';
+import { Image, Money } from '@shopify/hydrogen';
 
 import { seoPayload } from '~/lib/seo.server';
 import CountdownTimer from '~/components/CountdownTimer';
@@ -35,15 +35,31 @@ export const meta: MetaFunction = () => {
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
   const seo = seoPayload.home({ url: request.url });
+
+  const { collections } = await storefront.query(HOMEPAGE_QUERY);
+
+  // Helper to find collection by handle
+  const getCollection = (handle: string) =>
+    collections.nodes.find((c) => c.handle === handle);
+
+  const featuredCollection = getCollection('featured-products');
+  const upcomingCollection = getCollection('upcoming-drops');
+  const heroCollection = getCollection('hero-deal');
+
   return defer({
     seo,
     analytics: {
       pageType: AnalyticsPageType.home,
     },
+    featuredProducts: featuredCollection?.products.nodes || [],
+    upcomingDeals: upcomingCollection?.products.nodes || [],
+    heroProduct: heroCollection?.products.nodes[0] || null,
   });
 }
 
 export default function Homepage() {
+  const { featuredProducts, upcomingDeals, heroProduct } = useLoaderData<typeof loader>();
+
   const [dealEndTime] = useState(() => {
     const endTime = new Date();
     endTime.setHours(endTime.getHours() + 6);
@@ -51,139 +67,51 @@ export default function Homepage() {
   });
 
   const handleBuyNow = () => {
-    window.open('https://freekaamaal.com', '_blank');
+    if (heroProduct) {
+      window.location.href = \`/products/\${heroProduct.handle}\`;
+    } else {
+        window.location.href = '#featured-products';
+    }
   };
 
   // Asset paths
-  const heroImage = '/assets/hero-deal.jpg';
-  const pastDeal1 = '/assets/past-deal-1.jpg';
-  const pastDeal2 = '/assets/past-deal-2.jpg';
-  const pastDeal3 = '/assets/past-deal-3.jpg';
+  const fallbackHeroImage = '/assets/hero-deal.jpg';
+  
+  // Hero Data (Unwrap dynamic or fallback)
+  const heroData = heroProduct ? {
+      title: heroProduct.title,
+      image: heroProduct.variants.nodes[0]?.image?.url || fallbackHeroImage,
+      price: heroProduct.variants.nodes[0]?.price,
+      compareAtPrice: heroProduct.variants.nodes[0]?.compareAtPrice,
+      description: heroProduct.descriptionHtml ? heroProduct.description.substring(0, 100) + '...' : "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
+      handle: heroProduct.handle
+  } : {
+      title: "Premium Wireless Headphones",
+      image: fallbackHeroImage,
+      price: { amount: '7999.00', currencyCode: 'INR' },
+      compareAtPrice: { amount: '12999.00', currencyCode: 'INR' },
+      description: "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
+      handle: "v2-snowboard"
+  };
 
-  // Sample upcoming deals
-  const upcomingDeals = [
-    {
-      id: 'upcoming-1',
-      title: 'Hydrogen Snowboard',
-      publishedAt: '2023-12-30T12:00:00Z',
-      handle: 'v2-snowboard',
-      variants: {
-        nodes: [
-          {
-            id: 'var-1',
-            availableForSale: true,
-            image: {
-              url: 'https://cdn.shopify.com/s/files/1/0551/8009/9715/products/Hydrogen-Snowboard_5.jpg?v=1637704205',
-            },
-            price: { amount: '1299.00', currencyCode: 'USD' },
-            compareAtPrice: { amount: '4999.00', currencyCode: 'USD' },
-          },
-        ],
-      },
-      mrp: 4999,
-      dealPrice: 1299,
-      status: 'upcoming' as const,
-      handle: 'v2-snowboard',
-    },
-    {
-      id: 'upcoming-2',
-      title: 'Smart Fitness Band Pro',
-      publishedAt: '2023-12-31T18:00:00Z',
-      handle: 'v2-snowboard',
-      variants: {
-        nodes: [
-          {
-            id: 'var-2',
-            availableForSale: true,
-            image: {
-              url: 'https://images.unsplash.com/photo-1557935728-e6d1eaeda55b?w=800&q=80',
-            },
-            price: { amount: '999.00', currencyCode: 'USD' },
-            compareAtPrice: { amount: '3999.00', currencyCode: 'USD' },
-          },
-        ],
-      },
-      mrp: 3999,
-      dealPrice: 999,
-      status: 'upcoming' as const,
-      handle: 'v2-snowboard',
-    },
-  ];
+  // Helper to transform Shopify Product to DealCard Props
+  const mapProductToDeal = (product: any, status: 'live' | 'upcoming') => {
+      const variant = product.variants.nodes[0];
+      return {
+          id: product.id,
+          title: product.title,
+          description: product.description || '',
+          image: variant?.image?.url || '',
+          mrp: parseFloat(variant?.compareAtPrice?.amount || variant?.price?.amount || '0'),
+          dealPrice: parseFloat(variant?.price?.amount || '0'),
+          status: status,
+          handle: product.handle,
+          publishedAt: product.publishedAt
+      };
+  };
 
-  // Mock Featured Products
-  const featuredProducts = [
-    {
-      id: 'featured-1',
-      title: 'Urban Explorer Backpack',
-      publishedAt: '2023-12-25T10:00:00Z',
-      handle: 'v2-snowboard',
-      variants: {
-        nodes: [
-          {
-            id: 'var-3',
-            availableForSale: true,
-            image: {
-              url: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
-            },
-            price: { amount: '799.00', currencyCode: 'USD' },
-            compareAtPrice: { amount: '2499.00', currencyCode: 'USD' },
-          },
-        ],
-      },
-      mrp: 2499,
-      dealPrice: 799,
-      status: 'live' as const,
-      handle: 'v2-snowboard',
-    },
-    {
-      id: 'featured-2',
-      title: 'Noise Cancelling Headphones',
-      publishedAt: '2023-12-28T14:00:00Z',
-      handle: 'v2-snowboard',
-      variants: {
-        nodes: [
-          {
-            id: 'var-4',
-            availableForSale: true,
-            image: {
-              url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
-            },
-            price: { amount: '1999.00', currencyCode: 'USD' },
-            compareAtPrice: { amount: '5999.00', currencyCode: 'USD' },
-          },
-        ],
-      },
-      mrp: 5999,
-      dealPrice: 1999,
-      status: 'live' as const,
-      handle: 'v2-snowboard',
-    },
-    {
-      id: 'featured-3',
-      title: 'Minimalist Analog Watch',
-      publishedAt: '2023-12-20T09:00:00Z',
-      handle: 'v2-snowboard',
-      variants: {
-        nodes: [
-          {
-            id: 'var-5',
-            availableForSale: true,
-            image: {
-              url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
-            },
-            price: { amount: '649.00', currencyCode: 'USD' },
-            compareAtPrice: { amount: '1999.00', currencyCode: 'USD' },
-          },
-        ],
-      },
-      mrp: 1999,
-      dealPrice: 649,
-      status: 'live' as const,
-      handle: 'v2-snowboard',
-    },
-  ];
 
-  // Testimonials
+  // Testimonials (Static)
   const testimonials = [
     {
       name: 'Priya Sharma',
@@ -208,7 +136,7 @@ export default function Homepage() {
     },
   ];
 
-  // Blog posts
+  // Blog posts (Static for now)
   const blogPosts = [
     {
       title: 'How to Maximize Your Savings on Flash Sales',
@@ -258,8 +186,8 @@ export default function Homepage() {
 
                 <div className="relative card-premium rounded-3xl overflow-hidden p-6 md:p-10">
                   <img
-                    src={heroImage}
-                    alt="Premium Wireless Headphones"
+                    src={heroData.image}
+                    alt={heroData.title}
                     className="w-full h-auto object-contain animate-float"
                   />
 
@@ -272,7 +200,7 @@ export default function Homepage() {
                   {/* Discount Circle */}
                   <div className="absolute top-6 right-6 w-16 h-16 gradient-rose rounded-full flex items-center justify-center glow-rose">
                     <span className="text-primary-foreground font-display font-bold text-lg">
-                      38%
+                        {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
                     </span>
                   </div>
                 </div>
@@ -286,16 +214,14 @@ export default function Homepage() {
                   Today's Drop
                 </p>
                 <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-                  Premium Wireless
-                  <span className="text-gradient block">Headphones</span>
+                  <span className="block">{heroData.title}</span>
                 </h1>
                 <p className="text-lg text-muted-foreground">
-                  Studio-quality sound meets all-day comfort. Active noise
-                  cancellation and 30-hour battery life.
+                  {heroData.description}
                 </p>
               </div>
 
-              <PriceDisplay mrp={12999} dealPrice={7999} size="large" />
+              <PriceDisplay mrp={parseFloat(heroData.compareAtPrice?.amount || '0')} dealPrice={parseFloat(heroData.price?.amount || '0')} size="large" />
 
               <CountdownTimer targetDate={dealEndTime} />
 
@@ -339,7 +265,7 @@ export default function Homepage() {
                   Buy Now - Limited Time!
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Link to="/products/v2-snowboard" className="block">
+                <Link to={`/ products / ${ heroData.handle } `} className="block">
                   <Button
                     size="lg"
                     variant="outline"
@@ -524,7 +450,7 @@ export default function Homepage() {
               </h2>
             </div>
             <Link
-              to="/past-deals"
+              to="/collections/upcoming-drops"
               className="hidden md:flex items-center gap-2 text-muted-foreground hover:text-foreground smooth-transition"
             >
               <span>View All</span>
@@ -533,9 +459,15 @@ export default function Homepage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {upcomingDeals.map((deal) => (
-              <DealCard key={deal.id} {...deal} />
-            ))}
+            {upcomingDeals.length > 0 ? (
+              upcomingDeals.map((deal: any) => (
+                <DealCard key={deal.id} {...mapProductToDeal(deal, 'upcoming')} />
+              ))
+            ) : (
+                <div className="col-span-3 text-center py-10 text-muted-foreground">
+                  <p>No upcoming deals found. Create a collection named 'Upcoming Drops' to see products here.</p>
+                </div>
+            )}
 
             {/* Notify Card */}
             <div className="card-premium rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4">
@@ -555,7 +487,7 @@ export default function Homepage() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16 md:py-24 relative">
+      <section className="py-16 md:py-24 relative" id="featured-products">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -572,7 +504,7 @@ export default function Homepage() {
               </h2>
             </div>
             <Link
-              to="/past-deals"
+              to="/collections/featured-products"
               className="hidden md:flex items-center gap-2 text-muted-foreground hover:text-foreground smooth-transition"
             >
               <span>View All</span>
@@ -581,9 +513,15 @@ export default function Homepage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredProducts.map((product) => (
-              <DealCard key={product.id} {...product} />
-            ))}
+            {featuredProducts.length > 0 ? (
+              featuredProducts.map((product: any) => (
+                <DealCard key={product.id} {...mapProductToDeal(product, 'live')} />
+              ))
+            ) : (
+                <div className="col-span-3 text-center py-10 text-muted-foreground">
+                   <p>No featured products found. Create a collection named 'Featured Products' to see products here.</p>
+                </div>
+            )}
           </div>
         </div>
       </section>
@@ -609,7 +547,7 @@ export default function Homepage() {
               <div
                 key={index}
                 className="card-premium rounded-3xl p-8 space-y-6 hover:scale-[1.02] smooth-transition"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                style={{ animationDelay: `${ index * 0.1 } s` }}
               >
                 {/* Rating */}
                 <div className="flex gap-1">
@@ -786,3 +724,45 @@ export default function Homepage() {
     </>
   );
 }
+
+const HOMEPAGE_QUERY = `#graphql
+  query Homepage($country: CountryCode, $language: LanguageCode)
+      @inContext(country: $country, language: $language) {
+        collections(first: 10) {
+      nodes {
+            id
+            handle
+            title
+            products(first: 8, sortKey: MANUAL) {
+          nodes {
+                id
+                title
+                description
+                descriptionHtml
+                publishedAt
+                handle
+                variants(first: 1) {
+              nodes {
+                    id
+                image {
+                      url
+                      altText
+                      width
+                      height
+                    }
+                price {
+                      amount
+                      currencyCode
+                    }
+                compareAtPrice {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      ` as const;
