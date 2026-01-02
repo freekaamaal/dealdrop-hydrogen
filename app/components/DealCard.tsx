@@ -93,7 +93,7 @@ const DealCard = ({
             {title}
           </h3>
 
-          <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 hidden md:block">
+          <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 hidden md:block">
             {description}
           </p>
 
