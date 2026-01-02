@@ -27,9 +27,9 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
             className="pointer-events-auto hover:opacity-90 transition-opacity flex items-center justify-center h-full"
           >
             <img
-              src="/assets/logo-v2.png?v=5"
+              src="/assets/logo-v2.png?v=9"
               alt="DropMyDeal"
-              className="w-[200px] md:w-[320px] max-w-[80vw] h-auto object-contain"
+              className="w-[200px] md:w-[280px] max-w-[80vw] h-auto object-contain py-2"
             />
           </Link>
         </div>

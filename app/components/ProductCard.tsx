@@ -97,25 +97,25 @@ export function ProductCard({
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-3">
-          <h3 className="font-display font-bold text-lg line-clamp-2 group-hover:text-primary smooth-transition">
+        <div className="p-3 md:p-5 space-y-2 md:space-y-3">
+          <h3 className="font-display font-bold text-sm md:text-lg line-clamp-2 group-hover:text-primary smooth-transition leading-tight">
             {title}
           </h3>
 
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 hidden md:block">
             {description}
           </p>
 
-          <div className="flex items-baseline gap-3 pt-2">
+          <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 pt-1 md:pt-2">
             {compareAtPrice && (
               <Money
                 data={compareAtPrice}
-                className="text-sm text-muted-foreground line-through"
+                className="text-xs md:text-sm text-muted-foreground line-through"
               />
             )}
             <Money
               data={price}
-              className="text-2xl font-display font-bold text-foreground"
+              className="text-base md:text-2xl font-display font-bold text-foreground"
             />
           </div>
         </div>

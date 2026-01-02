@@ -162,22 +162,21 @@ export default function Homepage() {
 
   return (
     <>
-      <section className="relative py-8 md:py-16 overflow-hidden">
-        {/* Background Glow Effect */}
+      <section className="relative py-4 md:py-16 overflow-hidden">
         {/* Background Glow Effect - Removed for cleaner look */}
 
         <div className="container mx-auto px-4 relative z-10">
           {/* Live Badge */}
-          <div className="flex items-center justify-center gap-3 mb-6 animate-fade-in">
-            <div className="flex items-center gap-2 gradient-urgency text-primary-foreground px-4 py-2 rounded-full">
+          <div className="flex items-center justify-center gap-3 mb-4 animate-fade-in">
+            <div className="flex items-center gap-2 gradient-urgency text-primary-foreground px-3 py-1.5 rounded-full">
               <span className="w-2 h-2 bg-primary-foreground rounded-full animate-pulse" />
-              <span className="text-sm font-bold uppercase tracking-wider">
+              <span className="text-xs font-bold uppercase tracking-wider">
                 Live Now
               </span>
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center max-w-6xl mx-auto">
 
             {/* Desktop Image Column (Hidden on Mobile) */}
             <div className="hidden lg:block order-last lg:order-first animate-scale-in">
@@ -204,36 +203,36 @@ export default function Homepage() {
             </div>
 
             {/* Content Column */}
-            <div className="space-y-6 animate-fade-in">
+            <div className="space-y-4 animate-fade-in">
               <div>
-                <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+                <p className="text-primary font-semibold text-xs uppercase tracking-wider mb-2">
                   Today's Drop
                 </p>
-                <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold text-foreground leading-tight tracking-tight">
+                <h1 className="text-2xl md:text-5xl lg:text-7xl font-display font-bold text-foreground leading-tight tracking-tight">
                   <span className="block">{heroData.title}</span>
                 </h1>
 
                 {/* Mobile Image (Visible only on Mobile, Just after Title) */}
-                <div className="lg:hidden my-6">
-                  <div className="relative card-premium rounded-3xl overflow-hidden p-6">
+                <div className="lg:hidden my-4">
+                  <div className="relative card-premium rounded-3xl overflow-hidden p-4">
                     <img
                       src={heroData.image}
                       alt={heroData.title}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain max-h-[300px] mx-auto"
                     />
-                    <div className="absolute top-4 left-4 flex items-center gap-2 gradient-urgency text-primary-foreground px-3 py-1 rounded-full font-bold text-xs shadow-lg">
+                    <div className="absolute top-3 left-3 flex items-center gap-1.5 gradient-urgency text-primary-foreground px-2 py-1 rounded-full font-bold text-[10px] shadow-lg">
                       <Zap className="h-3 w-3" />
                       Flash Deal
                     </div>
-                    <div className="absolute top-4 right-4 w-12 h-12 gradient-urgency rounded-full flex items-center justify-center glow-cta shadow-lg">
-                      <span className="text-primary-foreground font-display font-bold text-sm">
+                    <div className="absolute top-3 right-3 w-10 h-10 gradient-urgency rounded-full flex items-center justify-center glow-cta shadow-lg">
+                      <span className="text-primary-foreground font-display font-bold text-xs">
                         {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-lg text-muted-foreground">
+                <p className="text-base text-muted-foreground leading-relaxed">
                   {heroData.description}
                 </p>
               </div>
@@ -294,69 +293,69 @@ export default function Homepage() {
       </section>
 
       {/* Why DropMyDeal Section */}
-      <section className="py-16 md:py-24" id="why-dropmydeal">
+      <section className="py-8 md:py-24" id="why-dropmydeal">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+          <div className="text-center mb-8 md:mb-16">
+            <p className="text-primary font-semibold text-xs uppercase tracking-wider mb-2">
               The DropMyDeal Difference
             </p>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <h2 className="font-display text-2xl md:text-5xl font-bold mb-2">
               Why <span className="text-gradient">DropMyDeal</span>?
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-lg">
               We connect top brands with deal-savvy shoppers. Brands get
               exposure, you get unbeatable discounts.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            <div className="text-center space-y-4 card-premium rounded-3xl p-8 animate-fade-in hover:scale-[1.02] smooth-transition group">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-urgency mb-4 group-hover:glow-cta smooth-transition">
-                <Percent className="h-8 w-8 text-primary-foreground" />
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 max-w-6xl mx-auto">
+            <div className="text-center space-y-2 card-premium rounded-3xl p-4 md:p-8 animate-fade-in hover:scale-[1.02] smooth-transition group">
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-urgency mb-2 md:mb-4 group-hover:glow-cta smooth-transition">
+                <Percent className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
               </div>
-              <h3 className="font-display text-xl font-bold">
+              <h3 className="font-display text-sm md:text-xl font-bold">
                 Massive Discounts
               </h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs md:text-sm leading-tight">
                 Up to 80% off on premium products. Real savings, no gimmicks.
               </p>
             </div>
 
             <div
-              className="text-center space-y-4 card-premium rounded-3xl p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
+              className="text-center space-y-2 card-premium rounded-3xl p-4 md:p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
               style={{ animationDelay: '0.1s' }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-urgency mb-4 group-hover:glow-cta smooth-transition">
-                <Timer className="h-8 w-8 text-primary-foreground" />
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-urgency mb-2 md:mb-4 group-hover:glow-cta smooth-transition">
+                <Timer className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
               </div>
-              <h3 className="font-display text-xl font-bold">Flash Sales</h3>
-              <p className="text-muted-foreground text-sm">
+              <h3 className="font-display text-sm md:text-xl font-bold">Flash Sales</h3>
+              <p className="text-muted-foreground text-xs md:text-sm leading-tight">
                 Limited-time deals that last hours, not days. Act fast!
               </p>
             </div>
 
             <div
-              className="text-center space-y-4 card-premium rounded-3xl p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
+              className="text-center space-y-2 card-premium rounded-3xl p-4 md:p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
               style={{ animationDelay: '0.2s' }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-rose mb-4 group-hover:glow-rose smooth-transition">
-                <Award className="h-8 w-8 text-primary-foreground" />
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-rose mb-2 md:mb-4 group-hover:glow-rose smooth-transition">
+                <Award className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
               </div>
-              <h3 className="font-display text-xl font-bold">Curated Brands</h3>
-              <p className="text-muted-foreground text-sm">
+              <h3 className="font-display text-sm md:text-xl font-bold">Curated Brands</h3>
+              <p className="text-muted-foreground text-xs md:text-sm leading-tight">
                 Only verified brands. Every product is genuine and warranted.
               </p>
             </div>
 
             <div
-              className="text-center space-y-4 card-premium rounded-3xl p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
+              className="text-center space-y-2 card-premium rounded-3xl p-4 md:p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
               style={{ animationDelay: '0.3s' }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-rose mb-4 group-hover:glow-rose smooth-transition">
-                <Users className="h-8 w-8 text-primary-foreground" />
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-rose mb-2 md:mb-4 group-hover:glow-rose smooth-transition">
+                <Users className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
               </div>
-              <h3 className="font-display text-xl font-bold">Win-Win Model</h3>
-              <p className="text-muted-foreground text-sm">
+              <h3 className="font-display text-sm md:text-xl font-bold">Win-Win Model</h3>
+              <p className="text-muted-foreground text-xs md:text-sm leading-tight">
                 Brands gain customers, you save money. Everybody wins.
               </p>
             </div>
@@ -365,39 +364,38 @@ export default function Homepage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 md:py-24 relative" id="how-it-works">
+      <section className="py-8 md:py-24 relative" id="how-it-works">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-16">
-            <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+          <div className="text-center mb-8 md:mb-16">
+            <p className="text-primary font-semibold text-xs uppercase tracking-wider mb-2">
               Simple & Transparent
             </p>
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+            <h2 className="font-display text-2xl md:text-5xl font-bold mb-2">
               How It <span className="text-gradient">Works</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-lg">
               Three simple steps to massive savings
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-5xl mx-auto">
             {/* Step 1 */}
             <div className="relative">
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-3 md:space-y-6">
                 <div className="relative inline-block">
-                  <div className="w-20 h-20 rounded-full gradient-rose flex items-center justify-center glow-rose">
-                    <span className="text-primary-foreground font-display text-3xl font-bold">
+                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full gradient-rose flex items-center justify-center glow-rose">
+                    <span className="text-primary-foreground font-display text-xl md:text-3xl font-bold">
                       1
                     </span>
                   </div>
                 </div>
-                <h3 className="font-display text-xl font-bold">
+                <h3 className="font-display text-sm md:text-xl font-bold">
                   Browse Live Deals
                 </h3>
-                <p className="text-muted-foreground">
-                  Check out today's flash sale featuring premium products at
-                  jaw-dropping prices.
+                <p className="text-muted-foreground text-xs md:text-base leading-tight">
+                  Check out today's flash sale featuring premium products.
                 </p>
               </div>
               {/* Connector */}
@@ -406,20 +404,19 @@ export default function Homepage() {
 
             {/* Step 2 */}
             <div className="relative">
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-3 md:space-y-6">
                 <div className="relative inline-block">
-                  <div className="w-20 h-20 rounded-full gradient-rose flex items-center justify-center glow-rose">
-                    <span className="text-primary-foreground font-display text-3xl font-bold">
+                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full gradient-urgency flex items-center justify-center glow-cta">
+                    <span className="text-primary-foreground font-display text-xl md:text-3xl font-bold">
                       2
                     </span>
                   </div>
                 </div>
-                <h3 className="font-display text-xl font-bold">
-                  Grab Before It's Gone
+                <h3 className="font-display text-sm md:text-xl font-bold">
+                  Grab It Fast
                 </h3>
-                <p className="text-muted-foreground">
-                  Act fast! Each deal has limited stock and a countdown timer.
-                  Once it's gone, it's gone.
+                <p className="text-muted-foreground text-xs md:text-base leading-tight">
+                  Deals are limited by time and stock. Don't wait!
                 </p>
               </div>
               {/* Connector */}
@@ -427,21 +424,22 @@ export default function Homepage() {
             </div>
 
             {/* Step 3 */}
-            <div className="text-center space-y-6">
-              <div className="relative inline-block">
-                <div className="w-20 h-20 rounded-full gradient-rose flex items-center justify-center glow-rose">
-                  <span className="text-primary-foreground font-display text-3xl font-bold">
-                    3
-                  </span>
+            <div className="relative col-span-2 md:col-span-1 border-t pt-4 md:border-0 md:pt-0 mt-2 md:mt-0">
+              <div className="text-center space-y-3 md:space-y-6">
+                <div className="relative inline-block">
+                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full gradient-rose flex items-center justify-center glow-rose">
+                    <span className="text-primary-foreground font-display text-xl md:text-3xl font-bold">
+                      3
+                    </span>
+                  </div>
                 </div>
+                <h3 className="font-display text-sm md:text-xl font-bold">
+                  Save Big
+                </h3>
+                <p className="text-muted-foreground text-xs md:text-base leading-tight">
+                  Enjoy premium products at a fraction of the cost.
+                </p>
               </div>
-              <h3 className="font-display text-xl font-bold">
-                Enjoy Your Savings
-              </h3>
-              <p className="text-muted-foreground">
-                Your order is shipped directly from the brand with full warranty
-                and easy returns.
-              </p>
             </div>
           </div>
         </div>
@@ -471,13 +469,13 @@ export default function Homepage() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {upcomingDeals.length > 0 ? (
               upcomingDeals.map((deal: any) => (
                 <DealCard key={deal.id} {...mapProductToDeal(deal, 'upcoming')} />
               ))
             ) : (
-              <div className="col-span-3 text-center py-10 text-muted-foreground">
+              <div className="col-span-2 lg:col-span-3 text-center py-10 text-muted-foreground">
                 <p>No upcoming deals found. Create a collection named 'Upcoming Drops' to see products here.</p>
               </div>
             )}
@@ -514,13 +512,13 @@ export default function Homepage() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {featuredProducts.length > 0 ? (
               featuredProducts.map((product: any) => (
                 <DealCard key={product.id} {...mapProductToDeal(product, 'live')} />
               ))
             ) : (
-              <div className="col-span-3 text-center py-10 text-muted-foreground">
+              <div className="col-span-2 lg:col-span-3 text-center py-10 text-muted-foreground">
                 <p>No featured products found. Create a collection named 'Featured Products' to see products here.</p>
               </div>
             )}

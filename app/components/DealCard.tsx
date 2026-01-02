@@ -76,28 +76,28 @@ const DealCard = ({
           <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
 
           {/* Status Badge */}
-          <div className="absolute top-4 right-4">{getStatusBadge()}</div>
+          <div className="absolute top-2 right-2 md:top-4 md:right-4">{getStatusBadge()}</div>
 
           {/* Discount Badge */}
-          <div className="absolute top-4 left-4">
-            <div className="gradient-urgency text-primary-foreground px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-1">
-              <TrendingDown className="w-4 h-4" />
+          <div className="absolute top-2 left-2 md:top-4 md:left-4">
+            <div className="gradient-urgency text-primary-foreground px-2 py-1 md:px-3 md:py-1.5 rounded-full text-xs md:text-sm font-bold flex items-center gap-1">
+              <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />
               {discount}%
             </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-3">
-          <h3 className="font-display font-bold text-lg line-clamp-2 group-hover:text-primary smooth-transition">
+        <div className="p-3 md:p-5 space-y-2 md:space-y-3">
+          <h3 className="font-display font-bold text-sm md:text-lg line-clamp-2 group-hover:text-primary smooth-transition leading-tight">
             {title}
           </h3>
 
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-xs md:text-sm text-muted-foreground line-clamp-2 hidden md:block">
             {description}
           </p>
 
-          <div className="flex items-baseline gap-3 pt-2">
+          <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 pt-1 md:pt-2">
             <span className="text-sm text-muted-foreground line-through">
               ₹{mrp.toLocaleString('en-IN')}
             </span>
