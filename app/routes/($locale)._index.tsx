@@ -293,7 +293,7 @@ export default function Homepage() {
       </section>
 
       {/* Why DropMyDeal Section */}
-      <section className="py-8 md:py-24" id="why-dropmydeal">
+      <section className="py-6 md:py-12" id="why-dropmydeal">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8 md:mb-16">
             <p className="text-primary font-semibold text-xs uppercase tracking-wider mb-2">
@@ -364,7 +364,7 @@ export default function Homepage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-8 md:py-24 relative" id="how-it-works">
+      <section className="py-6 md:py-12 relative" id="how-it-works">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -446,7 +446,7 @@ export default function Homepage() {
       </section>
 
       {/* Upcoming Drops Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -487,7 +487,7 @@ export default function Homepage() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-16 md:py-24 relative" id="featured-products">
+      <section className="py-16 md:py-12 relative" id="featured-products">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -527,7 +527,7 @@ export default function Homepage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-12">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
@@ -583,7 +583,7 @@ export default function Homepage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 md:py-24 relative">
+      <section className="py-16 md:py-12 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/3 to-transparent pointer-events-none" />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -617,7 +617,7 @@ export default function Homepage() {
       </section>
 
       {/* Blog Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -678,7 +678,7 @@ export default function Homepage() {
       </section>
 
       {/* CTA Banner */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-12">
         <div className="container mx-auto px-4">
           <div className="relative overflow-hidden card-premium rounded-3xl p-8 md:p-12 lg:p-16">
             {/* Background Glow */}

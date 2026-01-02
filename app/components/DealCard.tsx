@@ -39,7 +39,7 @@ const DealCard = ({
         );
       case 'upcoming':
         return (
-          <Badge variant="outline" className="border-primary text-primary">
+          <Badge variant="outline" className="bg-black/80 text-white border-0 backdrop-blur-md font-semibold">
             <Clock className="w-3 h-3 mr-1" />
             Upcoming
           </Badge>

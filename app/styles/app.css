@@ -75,6 +75,10 @@
     --shadow-card: 0 4px 24px -4px hsl(0 0% 0% / 0.08);
     --shadow-soft: 0 2px 12px -2px hsl(0 0% 0% / 0.06);
     --shadow-lg: 0 10px 40px -10px hsl(0 0% 0% / 0.12);
+    --shadow-rose: 0 10px 40px -10px hsl(330 80% 55% / 0.4);
+
+    /* Missing Gradients */
+    --gradient-rose: linear-gradient(135deg, hsl(330 80% 55%), hsl(345 90% 60%));
 
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -114,6 +118,14 @@
 
   .glow-cta {
     box-shadow: var(--shadow-cta);
+  }
+
+  .gradient-rose {
+    background: var(--gradient-rose);
+  }
+
+  .glow-rose {
+    box-shadow: var(--shadow-rose);
   }
 
   .card-premium {
