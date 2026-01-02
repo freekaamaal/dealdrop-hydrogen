@@ -87,9 +87,9 @@ export function ProductCard({
 
           {/* Discount Badge */}
           {discount > 0 && (
-            <div className="absolute top-4 left-4">
-              <div className="gradient-urgency text-primary-foreground px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-1">
-                <TrendingDown className="w-4 h-4" />
+            <div className="absolute top-2 left-2 md:top-3 md:left-3">
+              <div className="gradient-urgency text-primary-foreground px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                <TrendingDown className="w-3 h-3" />
                 {discount}%
               </div>
             </div>
@@ -97,25 +97,25 @@ export function ProductCard({
         </div>
 
         {/* Content */}
-        <div className="p-3 md:p-5 space-y-2 md:space-y-3">
-          <h3 className="font-display font-bold text-sm md:text-lg line-clamp-2 group-hover:text-primary smooth-transition leading-tight">
+        <div className="p-2 md:p-3 space-y-1.5 md:space-y-2">
+          <h3 className="font-display font-bold text-sm md:text-base line-clamp-2 group-hover:text-primary smooth-transition leading-tight">
             {title}
           </h3>
 
-          <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 hidden md:block">
+          <p className="text-xs text-muted-foreground line-clamp-1 hidden md:block">
             {description?.length > 60 ? description.substring(0, 60) + '...' : description}
           </p>
 
-          <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 pt-1 md:pt-2">
+          <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 pt-1 md:pt-1">
             {compareAtPrice && (
               <Money
                 data={compareAtPrice}
-                className="text-xs md:text-sm text-muted-foreground line-through"
+                className="text-xs text-muted-foreground line-through"
               />
             )}
             <Money
               data={price}
-              className="text-base md:text-2xl font-display font-bold text-foreground"
+              className="text-base md:text-xl font-display font-bold text-foreground"
             />
           </div>
         </div>

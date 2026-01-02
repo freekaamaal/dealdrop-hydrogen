@@ -686,7 +686,7 @@ async function getRecommendedProducts(
   productId: string,
 ) {
   const products = await storefront.query(RECOMMENDED_PRODUCTS_QUERY, {
-    variables: { productId, count: 12 },
+    variables: { productId, count: 5 },
   });
 
   invariant(products, 'No data returned from Shopify API');

@@ -19,12 +19,12 @@ export function ProductSwimlane({
 }: ProductSwimlaneProps) {
   return (
     <Section heading={title} padding="y" {...props}>
-      <div className="swimlane hiddenScroll flex gap-4 snap-x overflow-x-auto md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12">
-        {products.nodes.map((product) => (
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 px-4 md:px-0">
+        {products.nodes.slice(0, 5).map((product) => (
           <ProductCard
             product={product}
             key={product.id}
-            className="snap-start w-60"
+            className="w-full"
           />
         ))}
       </div>

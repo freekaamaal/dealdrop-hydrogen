@@ -55,7 +55,7 @@ export function NewsletterForm() {
             <Button
                 type="submit"
                 size="lg"
-                className="absolute right-1.5 top-1.5 bottom-1.5 gradient-urgency text-primary-foreground font-bold px-6 rounded-xl hover:scale-105 active:scale-95 smooth-transition shadow-lg"
+                className="w-full sm:w-auto sm:absolute sm:right-1.5 sm:top-1.5 sm:bottom-1.5 gradient-urgency text-primary-foreground font-bold px-6 rounded-xl hover:scale-105 active:scale-95 smooth-transition shadow-lg"
                 disabled={status === 'submitting'}
             >
                 {status === 'submitting' ? 'Joining...' : 'Join Drop Club'}

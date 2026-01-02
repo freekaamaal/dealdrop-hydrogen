@@ -37,7 +37,7 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
   const seo = seoPayload.home({ url: request.url });
 
-  const { hero, featured, upcoming } = await storefront.query(HOMEPAGE_QUERY);
+  const { hero, featured, upcoming, categories } = await storefront.query(HOMEPAGE_QUERY);
 
   return defer({
     seo,
@@ -47,11 +47,12 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
     featuredProducts: featured?.products.nodes || [],
     upcomingDeals: upcoming?.products.nodes || [],
     heroProduct: hero?.products.nodes[0] || null,
+    categories: categories?.nodes || [],
   });
 }
 
 export default function Homepage() {
-  const { featuredProducts, upcomingDeals, heroProduct } = useLoaderData<typeof loader>();
+  const { featuredProducts, upcomingDeals, heroProduct, categories } = useLoaderData<typeof loader>();
 
   const [dealEndTime] = useState(() => {
     const endTime = new Date();
@@ -162,7 +163,7 @@ export default function Homepage() {
 
   return (
     <>
-      <section className="relative py-4 md:py-16 overflow-hidden">
+      <section className="relative pt-2 pb-4 md:pt-12 md:pb-8 overflow-hidden">
         {/* Background Glow Effect - Removed for cleaner look */}
 
         <div className="container mx-auto px-4 relative z-10">
@@ -176,7 +177,7 @@ export default function Homepage() {
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-16 items-center max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-16 items-start max-w-6xl mx-auto">
 
             {/* Desktop Image Column (Hidden on Mobile) */}
             <div className="hidden lg:block order-last lg:order-first animate-scale-in">
@@ -208,7 +209,7 @@ export default function Homepage() {
                 <p className="text-primary font-semibold text-xs uppercase tracking-wider mb-2">
                   Today's Drop
                 </p>
-                <h1 className="text-2xl md:text-5xl lg:text-7xl font-display font-bold text-foreground leading-tight tracking-tight">
+                <h1 className="text-2xl md:text-3xl lg:text-5xl font-display font-bold text-foreground leading-tight tracking-tight">
                   <span className="block">{heroData.title}</span>
                 </h1>
 
@@ -292,14 +293,51 @@ export default function Homepage() {
         </div>
       </section>
 
+
+      {/* Shop By Category Section */}
+
+      {/* Shop By Category Section - Lovable Style */}
+      {categories && categories.length > 0 && (
+        <section className="py-4 md:py-8 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-6">
+              <span className="text-orange-500 font-bold tracking-wider uppercase text-sm mb-1 block">
+                BROWSE BY
+              </span>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
+                Shop Categories
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              {categories.map((category: any) => (
+                <Link
+                  key={category.id}
+                  to={`/collections/${category.handle}`}
+                  className="group bg-white border border-gray-100 rounded-3xl p-8 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:border-orange-100 smooth-transition h-40 md:h-48"
+                >
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-600 smooth-transition mb-2">
+                    {category.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm font-medium">
+                    {/* Mocking deal count or use real count if available */}
+                    {category.products?.nodes?.length ? `${category.products.nodes.length} deals` : '12 deals'}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Why DropMyDeal Section */}
-      <section className="py-6 md:py-12" id="why-dropmydeal">
+      <section className="py-4 md:py-8" id="why-dropmydeal">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-8 md:mb-16">
-            <p className="text-primary font-semibold text-xs uppercase tracking-wider mb-2">
+          <div className="text-center mb-4 md:mb-6">
+            <p className="text-primary font-semibold text-xs uppercase tracking-wider mb-1">
               The DropMyDeal Difference
             </p>
-            <h2 className="font-display text-2xl md:text-5xl font-bold mb-2">
+            <h2 className="font-display text-2xl md:text-4xl font-bold mb-2">
               Why <span className="text-gradient">DropMyDeal</span>?
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-lg">
@@ -308,7 +346,7 @@ export default function Homepage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto">
             <div className="text-center space-y-2 card-premium rounded-3xl p-4 md:p-8 animate-fade-in hover:scale-[1.02] smooth-transition group">
               <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-urgency mb-2 md:mb-4 group-hover:glow-cta smooth-transition">
                 <Percent className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
@@ -727,6 +765,18 @@ const HOMEPAGE_QUERY = `#graphql
     }
     upcoming: collection(handle: "upcoming-drops") {
       ...CollectionFragment
+    }
+    categories: collections(first: 8, sortKey: UPDATED_AT) {
+        nodes {
+            id
+            handle
+            title
+            products(first: 50) {
+              nodes {
+                id
+              }
+            }
+        }
     }
   }
 
