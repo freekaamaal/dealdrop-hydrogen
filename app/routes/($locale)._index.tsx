@@ -242,7 +242,7 @@ export default function Homepage() {
 
               <CountdownTimer targetDate={dealEndTime} />
 
-              <StockBar remaining={23} total={100} />
+              <StockBar remaining={heroProduct?.variants?.nodes[0]?.quantityAvailable ?? 23} total={100} />
 
               {/* Features (Dynamic) */}
               {heroProduct?.tags && (
@@ -751,7 +751,7 @@ const HOMEPAGE_QUERY = `#graphql
             image {
               url
               altText
-              width
+                width
               height
             }
             price {
@@ -762,6 +762,7 @@ const HOMEPAGE_QUERY = `#graphql
               amount
               currencyCode
             }
+            quantityAvailable
           }
         }
       }
