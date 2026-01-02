@@ -1,4 +1,4 @@
-import {TrendingDown, Sparkles} from 'lucide-react';
+import { TrendingDown, Sparkles } from 'lucide-react';
 
 interface PriceDisplayProps {
   mrp: number;
@@ -20,22 +20,20 @@ const PriceDisplay = ({
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-4 flex-wrap">
         <span
-          className={`text-muted-foreground line-through font-medium ${
-            isLarge ? 'text-xl md:text-2xl' : 'text-lg'
-          }`}
+          className={`text-muted-foreground line-through font-medium ${isLarge ? 'text-xl md:text-2xl' : 'text-lg'
+            }`}
         >
           ₹{mrp.toLocaleString('en-IN')}
         </span>
         <span
-          className={`font-display font-bold text-foreground ${
-            isLarge ? 'text-4xl md:text-5xl lg:text-6xl' : 'text-3xl'
-          }`}
+          className={`font-display font-bold text-foreground ${isLarge ? 'text-4xl md:text-5xl lg:text-6xl' : 'text-3xl'
+            }`}
         >
           ₹{dealPrice.toLocaleString('en-IN')}
         </span>
         <span
           className={`
-          gradient-rose text-primary-foreground rounded-full font-bold flex items-center gap-1.5 button-glow
+          gradient-urgency text-primary-foreground rounded-full font-bold flex items-center gap-1.5 button-glow
           ${isLarge ? 'text-base px-4 py-2' : 'text-sm px-3 py-1.5'}
         `}
         >

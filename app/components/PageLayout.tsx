@@ -1,18 +1,18 @@
-import {useParams, Form, Await, useRouteLoaderData} from '@remix-run/react';
+import { useParams, Form, Await, useRouteLoaderData } from '@remix-run/react';
 import useWindowScroll from 'react-use/esm/useWindowScroll';
-import {Disclosure} from '@headlessui/react';
-import {Suspense, useEffect, useMemo} from 'react';
-import {CartForm} from '@shopify/hydrogen';
+import { Disclosure } from '@headlessui/react';
+import { Suspense, useEffect, useMemo } from 'react';
+import { CartForm } from '@shopify/hydrogen';
 
-import {type LayoutQuery} from 'storefrontapi.generated';
-import {Text, Heading, Section} from '~/components/Text';
-import {Link} from '~/components/Link';
-import {Cart} from '~/components/Cart';
-import {CartLoading} from '~/components/CartLoading';
-import {Input} from '~/components/Input';
-import {Drawer, useDrawer} from '~/components/Drawer';
-import {AsideProvider, useAside} from '~/components/Aside';
-import {CountrySelector} from '~/components/CountrySelector';
+import { type LayoutQuery } from 'storefrontapi.generated';
+import { Text, Heading, Section } from '~/components/Text';
+import { Link } from '~/components/Link';
+import { Cart } from '~/components/Cart';
+import { CartLoading } from '~/components/CartLoading';
+import { Input } from '~/components/Input';
+import { Drawer, useDrawer } from '~/components/Drawer';
+import { AsideProvider, useAside } from '~/components/Aside';
+import { CountrySelector } from '~/components/CountrySelector';
 import {
   IconMenu,
   IconCaret,
@@ -26,11 +26,11 @@ import {
   type ChildEnhancedMenuItem,
   useIsHomePath,
 } from '~/lib/utils';
-import {useIsHydrated} from '~/hooks/useIsHydrated';
-import {useCartFetchers} from '~/hooks/useCartFetchers';
-import type {RootLoader} from '~/root';
-import {Navbar} from '~/components/Navbar';
-import {Footer} from '~/components/Footer';
+import { useIsHydrated } from '~/hooks/useIsHydrated';
+import { useCartFetchers } from '~/hooks/useCartFetchers';
+import type { RootLoader } from '~/root';
+import { Navbar } from '~/components/Navbar';
+import { Footer } from '~/components/Footer';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -39,13 +39,9 @@ type LayoutProps = {
     footerMenu?: EnhancedMenu | null;
   };
 };
-// CartDrawer import removed
-// Note: I need to verify where CartDrawer is. In the original PageLayout it was defined inline.
-// The original PageLayout had `function CartDrawer`. I should keep that or export it.
 
-// Let's modify the PageLayout component to render my Header.
-export function PageLayout({children, layout}: LayoutProps) {
-  const {headerMenu, footerMenu} = layout || {};
+export function PageLayout({ children, layout }: LayoutProps) {
+  const { headerMenu, footerMenu } = layout || {};
   return (
     <AsideProvider>
       <div className="flex flex-col min-h-screen">
@@ -56,7 +52,7 @@ export function PageLayout({children, layout}: LayoutProps) {
         </div>
         <HeaderWrapper layout={layout} />
 
-        <main role="main" id="mainContent" className="flex-grow">
+        <main role="main" id="mainContent" className="flex-grow pb-24 md:pb-0">
           {children}
         </main>
       </div>
@@ -65,8 +61,8 @@ export function PageLayout({children, layout}: LayoutProps) {
   );
 }
 
-function HeaderWrapper({layout}: {layout: any}) {
-  const {type, open, close, isOpen} = useAside();
+function HeaderWrapper({ layout }: { layout: any }) {
+  const { type, open, close, isOpen } = useAside();
   const isCartOpen = type === 'cart';
   const openCart = () => open('cart');
   const closeCart = close;
@@ -81,7 +77,7 @@ function HeaderWrapper({layout}: {layout: any}) {
   );
 }
 
-function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
+function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const rootData = useRouteLoaderData<RootLoader>('root');
   if (!rootData) return null;
 
@@ -97,8 +93,6 @@ function CartDrawer({isOpen, onClose}: {isOpen: boolean; onClose: () => void}) {
     </Drawer>
   );
 }
-
-// CartDrawer removed (duplicate)
 
 export function MenuDrawer({
   isOpen,
@@ -134,7 +128,7 @@ function MenuMobileNav({
             to={item.to}
             target={item.target}
             onClick={onClose}
-            className={({isActive}) =>
+            className={({ isActive }) =>
               isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
             }
           >
@@ -159,18 +153,15 @@ function MobileHeader({
   openCart: () => void;
   openMenu: () => void;
 }) {
-  // useHeaderStyleFix(containerStyle, setContainerStyle, isHome);
-
   const params = useParams();
 
   return (
     <header
       role="banner"
-      className={`${
-        isHome
-          ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
-          : 'bg-contrast/80 text-primary'
-      } flex lg:hidden items-center h-nav sticky backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8`}
+      className={`${isHome
+        ? 'bg-white/80 text-foreground shadow-sm'
+        : 'bg-white/80 text-foreground'
+        } flex lg:hidden items-center h-nav sticky backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-4 px-4 md:px-8`}
     >
       <div className="flex items-center justify-start w-full gap-4">
         <button
@@ -191,11 +182,7 @@ function MobileHeader({
             <IconSearch />
           </button>
           <Input
-            className={
-              isHome
-                ? 'focus:border-contrast/20 dark:focus:border-primary/20'
-                : 'focus:border-primary/20'
-            }
+            className="focus:border-primary/20"
             type="search"
             variant="minisearch"
             placeholder="Search"
@@ -236,17 +223,15 @@ function DesktopHeader({
   title: string;
 }) {
   const params = useParams();
-  const {y} = useWindowScroll();
+  const { y } = useWindowScroll();
   return (
     <header
       role="banner"
-      className={`${
-        isHome
-          ? 'bg-primary/80 dark:bg-contrast/60 text-contrast dark:text-primary shadow-darkHeader'
-          : 'bg-contrast/80 text-primary'
-      } ${
-        !isHome && y > 50 && ' shadow-lightHeader'
-      } hidden h-nav lg:flex items-center sticky transition duration-300 backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-8`}
+      className={`${isHome
+        ? 'bg-white/80 text-foreground shadow-sm'
+        : 'bg-white/80 text-foreground'
+        } ${!isHome && y > 50 && ' shadow-lightHeader'
+        } hidden h-nav lg:flex items-center sticky transition duration-300 backdrop-blur-lg z-40 top-0 justify-between w-full leading-none gap-8 px-12 py-8`}
     >
       <div className="flex gap-12">
         <Link className="font-bold" to="/" prefetch="intent">
@@ -260,7 +245,7 @@ function DesktopHeader({
               to={item.to}
               target={item.target}
               prefetch="intent"
-              className={({isActive}) =>
+              className={({ isActive }) =>
                 isActive ? 'pb-1 border-b -mb-px' : 'pb-1'
               }
             >
@@ -276,11 +261,7 @@ function DesktopHeader({
           className="flex items-center gap-2"
         >
           <Input
-            className={
-              isHome
-                ? 'focus:border-contrast/20 dark:focus:border-primary/20'
-                : 'focus:border-primary/20'
-            }
+            className="focus:border-primary/20"
             type="search"
             variant="minisearch"
             placeholder="Search"
@@ -300,7 +281,7 @@ function DesktopHeader({
   );
 }
 
-function AccountLink({className}: {className?: string}) {
+function AccountLink({ className }: { className?: string }) {
   const rootData = useRouteLoaderData<RootLoader>('root');
   const isLoggedIn = rootData?.isLoggedIn;
 
@@ -356,11 +337,10 @@ function Badge({
       <>
         <IconBag />
         <div
-          className={`${
-            dark
-              ? 'text-primary bg-contrast dark:text-contrast dark:bg-primary'
-              : 'text-contrast bg-primary'
-          } absolute bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
+          className={`${dark
+            ? 'text-primary bg-contrast dark:text-contrast dark:bg-primary'
+            : 'text-contrast bg-primary'
+            } absolute bottom-1 right-1 text-[0.625rem] font-medium subpixel-antialiased h-3 min-w-[0.75rem] flex items-center justify-center leading-none text-center rounded-full w-auto px-[0.125rem] pb-px`}
         >
           <span>{count || 0}</span>
         </div>

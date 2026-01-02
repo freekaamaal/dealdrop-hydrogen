@@ -221,7 +221,10 @@ export type HomepageQuery = {
           > & {
             variants: {
               nodes: Array<
-                Pick<StorefrontAPI.ProductVariant, 'id'> & {
+                Pick<
+                  StorefrontAPI.ProductVariant,
+                  'id' | 'quantityAvailable'
+                > & {
                   image?: StorefrontAPI.Maybe<
                     Pick<
                       StorefrontAPI.Image,
@@ -256,7 +259,10 @@ export type HomepageQuery = {
           > & {
             variants: {
               nodes: Array<
-                Pick<StorefrontAPI.ProductVariant, 'id'> & {
+                Pick<
+                  StorefrontAPI.ProductVariant,
+                  'id' | 'quantityAvailable'
+                > & {
                   image?: StorefrontAPI.Maybe<
                     Pick<
                       StorefrontAPI.Image,
@@ -291,7 +297,10 @@ export type HomepageQuery = {
           > & {
             variants: {
               nodes: Array<
-                Pick<StorefrontAPI.ProductVariant, 'id'> & {
+                Pick<
+                  StorefrontAPI.ProductVariant,
+                  'id' | 'quantityAvailable'
+                > & {
                   image?: StorefrontAPI.Maybe<
                     Pick<
                       StorefrontAPI.Image,
@@ -330,7 +339,7 @@ export type CollectionFragmentFragment = Pick<
       > & {
         variants: {
           nodes: Array<
-            Pick<StorefrontAPI.ProductVariant, 'id'> & {
+            Pick<StorefrontAPI.ProductVariant, 'id' | 'quantityAvailable'> & {
               image?: StorefrontAPI.Maybe<
                 Pick<
                   StorefrontAPI.Image,
@@ -1207,7 +1216,7 @@ interface GeneratedQueryTypes {
     return: GetShopPrimaryDomainQuery;
     variables: GetShopPrimaryDomainQueryVariables;
   };
-  '#graphql\n  query Homepage($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    hero: collection(handle: "hero-deal") {\n      ...CollectionFragment\n    }\n    featured: collection(handle: "featured-products") {\n      ...CollectionFragment\n    }\n    upcoming: collection(handle: "upcoming-drops") {\n      ...CollectionFragment\n    }\n  }\n\n  fragment CollectionFragment on Collection {\n    id\n    handle\n    title\n    products(first: 8, sortKey: MANUAL) {\n      nodes {\n        id\n        title\n        description\n        descriptionHtml\n        publishedAt\n        handle\n        tags\n        variants(first: 1) {\n          nodes {\n            id\n            image {\n              url\n              altText\n              width\n              height\n            }\n            price {\n              amount\n              currencyCode\n            }\n            compareAtPrice {\n              amount\n              currencyCode\n            }\n          }\n        }\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query Homepage($country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    hero: collection(handle: "hero-deal") {\n      ...CollectionFragment\n    }\n    featured: collection(handle: "featured-products") {\n      ...CollectionFragment\n    }\n    upcoming: collection(handle: "upcoming-drops") {\n      ...CollectionFragment\n    }\n  }\n\n  fragment CollectionFragment on Collection {\n    id\n    handle\n    title\n    products(first: 8, sortKey: MANUAL) {\n      nodes {\n        id\n        title\n        description\n        descriptionHtml\n        publishedAt\n        handle\n        tags\n        variants(first: 1) {\n          nodes {\n            id\n            image {\n              url\n              altText\n                width\n              height\n            }\n            price {\n              amount\n              currencyCode\n            }\n            compareAtPrice {\n              amount\n              currencyCode\n            }\n            quantityAvailable\n          }\n        }\n      }\n    }\n  }\n\n': {
     return: HomepageQuery;
     variables: HomepageQueryVariables;
   };

@@ -42,7 +42,7 @@ export function NewsletterForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto relative z-10">
             <input
                 type="email"
                 placeholder="Enter your email"
@@ -55,7 +55,7 @@ export function NewsletterForm() {
             <Button
                 type="submit"
                 size="lg"
-                className="h-14 rounded-2xl gradient-rose text-primary-foreground font-bold px-8 shadow-md hover:shadow-lg transition-all active:scale-95"
+                className="absolute right-1.5 top-1.5 bottom-1.5 gradient-urgency text-primary-foreground font-bold px-6 rounded-xl hover:scale-105 active:scale-95 smooth-transition shadow-lg"
                 disabled={status === 'submitting'}
             >
                 {status === 'submitting' ? 'Joining...' : 'Join Drop Club'}

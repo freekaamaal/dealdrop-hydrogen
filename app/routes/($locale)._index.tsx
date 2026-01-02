@@ -164,12 +164,12 @@ export default function Homepage() {
     <>
       <section className="relative py-8 md:py-16 overflow-hidden">
         {/* Background Glow Effect */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/8 rounded-full blur-[150px] pointer-events-none" />
+        {/* Background Glow Effect - Removed for cleaner look */}
 
         <div className="container mx-auto px-4 relative z-10">
           {/* Live Badge */}
           <div className="flex items-center justify-center gap-3 mb-6 animate-fade-in">
-            <div className="flex items-center gap-2 gradient-rose text-primary-foreground px-4 py-2 rounded-full">
+            <div className="flex items-center gap-2 gradient-urgency text-primary-foreground px-4 py-2 rounded-full">
               <span className="w-2 h-2 bg-primary-foreground rounded-full animate-pulse" />
               <span className="text-sm font-bold uppercase tracking-wider">
                 Live Now
@@ -183,18 +183,18 @@ export default function Homepage() {
             <div className="hidden lg:block order-last lg:order-first animate-scale-in">
               <div className="relative">
                 {/* Glow behind image */}
-                <div className="absolute inset-0 gradient-rose rounded-3xl blur-3xl opacity-15 scale-95" />
+                <div className="absolute inset-0 gradient-urgency rounded-3xl blur-3xl opacity-5 scale-95" />
                 <div className="relative card-premium rounded-3xl overflow-hidden p-10">
                   <img
                     src={heroData.image}
                     alt={heroData.title}
                     className="w-full h-auto object-contain animate-float"
                   />
-                  <div className="absolute top-6 left-6 flex items-center gap-2 gradient-rose text-primary-foreground px-4 py-2 rounded-full font-bold text-sm shadow-lg">
+                  <div className="absolute top-6 left-6 flex items-center gap-2 gradient-urgency text-primary-foreground px-4 py-2 rounded-full font-bold text-sm shadow-lg">
                     <Zap className="h-4 w-4" />
                     Flash Deal
                   </div>
-                  <div className="absolute top-6 right-6 w-16 h-16 gradient-rose rounded-full flex items-center justify-center glow-rose">
+                  <div className="absolute top-6 right-6 w-16 h-16 gradient-urgency rounded-full flex items-center justify-center glow-cta">
                     <span className="text-primary-foreground font-display font-bold text-lg">
                       {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
                     </span>
@@ -209,7 +209,7 @@ export default function Homepage() {
                 <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-3">
                   Today's Drop
                 </p>
-                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+                <h1 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold text-foreground leading-tight tracking-tight">
                   <span className="block">{heroData.title}</span>
                 </h1>
 
@@ -221,11 +221,11 @@ export default function Homepage() {
                       alt={heroData.title}
                       className="w-full h-auto object-contain"
                     />
-                    <div className="absolute top-4 left-4 flex items-center gap-2 gradient-rose text-primary-foreground px-3 py-1 rounded-full font-bold text-xs shadow-lg">
+                    <div className="absolute top-4 left-4 flex items-center gap-2 gradient-urgency text-primary-foreground px-3 py-1 rounded-full font-bold text-xs shadow-lg">
                       <Zap className="h-3 w-3" />
                       Flash Deal
                     </div>
-                    <div className="absolute top-4 right-4 w-12 h-12 gradient-rose rounded-full flex items-center justify-center glow-rose shadow-lg">
+                    <div className="absolute top-4 right-4 w-12 h-12 gradient-urgency rounded-full flex items-center justify-center glow-cta shadow-lg">
                       <span className="text-primary-foreground font-display font-bold text-sm">
                         {Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100)}%
                       </span>
@@ -272,7 +272,7 @@ export default function Homepage() {
               <div className="space-y-4 pt-4">
                 <Button
                   size="lg"
-                  className="w-full gradient-rose text-primary-foreground font-bold text-lg h-16 rounded-2xl button-glow smooth-transition hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full gradient-urgency text-primary-foreground font-bold text-lg h-16 rounded-2xl button-glow smooth-transition hover:scale-[1.02] active:scale-[0.98]"
                   onClick={handleBuyNow}
                 >
                   Buy Now - Limited Time!
@@ -311,7 +311,7 @@ export default function Homepage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             <div className="text-center space-y-4 card-premium rounded-3xl p-8 animate-fade-in hover:scale-[1.02] smooth-transition group">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-rose mb-4 group-hover:glow-rose smooth-transition">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-urgency mb-4 group-hover:glow-cta smooth-transition">
                 <Percent className="h-8 w-8 text-primary-foreground" />
               </div>
               <h3 className="font-display text-xl font-bold">
@@ -326,7 +326,7 @@ export default function Homepage() {
               className="text-center space-y-4 card-premium rounded-3xl p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
               style={{ animationDelay: '0.1s' }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-rose mb-4 group-hover:glow-rose smooth-transition">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl gradient-urgency mb-4 group-hover:glow-cta smooth-transition">
                 <Timer className="h-8 w-8 text-primary-foreground" />
               </div>
               <h3 className="font-display text-xl font-bold">Flash Sales</h3>
@@ -776,7 +776,7 @@ function NotifyCard() {
 
   return (
     <div className="card-premium rounded-3xl p-8 flex flex-col items-center justify-center text-center space-y-4 h-full">
-      <div className="w-16 h-16 rounded-full gradient-rose flex items-center justify-center">
+      <div className="w-16 h-16 rounded-full gradient-urgency flex items-center justify-center">
         <Gift className="h-8 w-8 text-primary-foreground" />
       </div>
       <h3 className="font-display font-bold text-xl">Get Notified</h3>
@@ -787,7 +787,7 @@ function NotifyCard() {
       {!showInput ? (
         <Button
           onClick={() => setShowInput(true)}
-          className="gradient-rose text-primary-foreground button-glow"
+          className="gradient-urgency text-primary-foreground button-glow"
         >
           Enable Alerts
         </Button>

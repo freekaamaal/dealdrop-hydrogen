@@ -1,8 +1,8 @@
-import {Image, Money} from '@shopify/hydrogen';
-import type {Product} from '@shopify/hydrogen/storefront-api-types';
-import {useEffect, useState} from 'react';
+import { Image, Money } from '@shopify/hydrogen';
+import type { Product } from '@shopify/hydrogen/storefront-api-types';
+import { useEffect, useState } from 'react';
 
-export function DropHero({product}: {product: Product}) {
+export function DropHero({ product }: { product: Product }) {
   const [timeLeft, setTimeLeft] = useState({
     hours: 4,
     minutes: 32,
@@ -15,11 +15,11 @@ export function DropHero({product}: {product: Product}) {
     description:
       'The ultimate sneaker collaboration. These verified authentic replicas bring you the Virgil Abloh design language at an accessible price point. Limited stock available.',
     handle: 'replica-off-white-virgil-abloh-jordan-1',
-    priceRange: {minVariantPrice: {amount: '190.00', currencyCode: 'USD'}},
+    priceRange: { minVariantPrice: { amount: '190.00', currencyCode: 'USD' } },
     compareAtPriceRange: {
-      minVariantPrice: {amount: '1500.00', currencyCode: 'USD'},
+      minVariantPrice: { amount: '1500.00', currencyCode: 'USD' },
     },
-    featuredImage: {url: '/assets/hero-deal.jpg'},
+    featuredImage: { url: '/assets/hero-deal.jpg' },
   };
 
   const activeProduct = product || MOCK_PRODUCT;
@@ -55,41 +55,41 @@ export function DropHero({product}: {product: Product}) {
       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const s = Math.floor((difference % (1000 * 60)) / 1000);
 
-      setTimeLeft({hours: h, minutes: m, seconds: s});
+      setTimeLeft({ hours: h, minutes: m, seconds: s });
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="relative w-full py-20 bg-background overflow-hidden">
-      {/* Background Glow Effect */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-accent/20 blur-[120px] rounded-full pointer-events-none" />
+    <section className="relative w-full py-12 md:py-16 bg-background overflow-hidden">
+      {/* Background Glow Effect - Made subtle and warm */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16 items-center relative z-10">
         {/* Hero Content */}
-        <div className="flex flex-col items-start space-y-8 animate-fade-up">
+        <div className="flex flex-col items-start space-y-8 animate-fade-in">
           <div className="flex items-center gap-3">
             {/* Status Tags */}
-            <span className="inline-block px-4 py-1.5 text-xs font-bold tracking-wider uppercase bg-accent text-white rounded-full shadow-lg shadow-accent/20">
+            <span className="inline-block px-4 py-1.5 text-xs font-bold tracking-wider uppercase bg-accent text-accent-foreground rounded-full shadow-lg shadow-accent/20">
               Live Now
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-display font-medium leading-[1.1] text-primary">
+          <h1 className="text-5xl md:text-7xl font-display font-medium leading-[1.1] text-foreground">
             Today's Drop: <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-urgency-red font-bold">
               {activeProduct.title}
             </span>
           </h1>
 
-          <p className="text-xl text-secondary font-sans leading-relaxed max-w-lg">
+          <p className="text-xl text-muted-foreground font-sans leading-relaxed max-w-lg">
             {activeProduct.description}
           </p>
 
           <div className="flex items-end gap-6">
             <div className="flex flex-col">
-              <span className="text-sm text-secondary mb-1">Current Price</span>
+              <span className="text-sm text-muted-foreground mb-1">Current Price</span>
               <Money
                 data={activeProduct.priceRange.minVariantPrice}
                 className="text-5xl font-bold font-display text-primary"
@@ -97,10 +97,10 @@ export function DropHero({product}: {product: Product}) {
             </div>
             {activeProduct.compareAtPriceRange?.minVariantPrice && (
               <div className="flex flex-col pb-2">
-                <span className="text-sm text-secondary mb-1">Original</span>
+                <span className="text-sm text-muted-foreground mb-1">Original</span>
                 <Money
                   data={activeProduct.compareAtPriceRange.minVariantPrice}
-                  className="text-2xl text-secondary line-through font-display"
+                  className="text-2xl text-muted-foreground line-through font-display"
                 />
               </div>
             )}
@@ -110,28 +110,28 @@ export function DropHero({product}: {product: Product}) {
           </div>
 
           {/* Timer */}
-          <div className="p-4 rounded-xl bg-surface border border-white/5 backdrop-blur-sm shadow-xl inline-flex flex-col gap-2 min-w-[300px]">
-            <span className="text-xs uppercase tracking-widest text-secondary font-bold">
+          <div className="p-4 rounded-xl bg-card border border-border/50 backdrop-blur-sm shadow-xl inline-flex flex-col gap-2 min-w-[300px]">
+            <span className="text-xs uppercase tracking-widest text-muted-foreground font-bold">
               Offer Ends In
             </span>
             <div className="flex items-center gap-4 text-3xl font-mono text-accent font-bold tabular-nums">
               <div>
                 {String(timeLeft.hours).padStart(2, '0')}
-                <span className="text-xs text-secondary block font-sans font-normal mt-1">
+                <span className="text-xs text-muted-foreground block font-sans font-normal mt-1">
                   Hrs
                 </span>
               </div>
               <span>:</span>
               <div>
                 {String(timeLeft.minutes).padStart(2, '0')}
-                <span className="text-xs text-secondary block font-sans font-normal mt-1">
+                <span className="text-xs text-muted-foreground block font-sans font-normal mt-1">
                   Mins
                 </span>
               </div>
               <span>:</span>
               <div>
                 {String(timeLeft.seconds).padStart(2, '0')}
-                <span className="text-xs text-secondary block font-sans font-normal mt-1">
+                <span className="text-xs text-muted-foreground block font-sans font-normal mt-1">
                   Secs
                 </span>
               </div>
@@ -141,15 +141,9 @@ export function DropHero({product}: {product: Product}) {
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <a
               href={`/products/${activeProduct.handle}`}
-              className="flex-1 sm:flex-none sm:w-auto px-10 py-5 text-lg font-bold text-white bg-gradient-to-br from-accent to-[#ea580c] hover:scale-105 transition-transform duration-300 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(238,99,74,0.5)]"
+              className="flex-1 sm:flex-none sm:w-auto px-10 py-4 text-lg font-bold text-white gradient-cta hover:scale-105 transition-transform duration-300 rounded-xl text-center shadow-[0_10px_30px_-10px_rgba(238,99,74,0.5)] flex items-center justify-center gap-2"
             >
               Secure This Deal
-            </a>
-            <a
-              href="#details"
-              className="flex-1 sm:flex-none sm:w-auto px-10 py-5 text-lg font-bold text-primary bg-surface border border-white/10 hover:bg-white/5 transition-colors rounded-xl text-center"
-            >
-              View Details
             </a>
           </div>
         </div>
@@ -157,7 +151,7 @@ export function DropHero({product}: {product: Product}) {
         {/* Hero Image */}
         <div className="relative group">
           <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl bg-surface">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border shadow-2xl bg-card">
             {activeProduct.featuredImage ? (
               <Image
                 data={activeProduct.featuredImage}

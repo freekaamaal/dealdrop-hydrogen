@@ -1,14 +1,14 @@
 import clsx from 'clsx';
-import {MediaFile} from '@shopify/hydrogen';
+import { MediaFile } from '@shopify/hydrogen';
 import type {
   MediaImage,
   Media,
   Video as MediaVideo,
 } from '@shopify/hydrogen/storefront-api-types';
 
-import type {CollectionContentFragment} from 'storefrontapi.generated';
-import {Heading, Text} from '~/components/Text';
-import {Link} from '~/components/Link';
+import type { CollectionContentFragment } from 'storefrontapi.generated';
+import { Heading, Text } from '~/components/Text';
+import { Link } from '~/components/Link';
 
 type HeroProps = CollectionContentFragment & {
   height?: 'full';
@@ -65,7 +65,7 @@ export function Hero({
             </div>
           )}
         </div>
-        <div className="flex flex-col items-baseline justify-between gap-4 px-6 py-8 sm:px-8 md:px-12 bg-gradient-to-t dark:from-contrast/60 dark:text-primary from-primary/60 text-contrast">
+        <div className="flex flex-col items-baseline justify-between gap-4 px-6 py-8 sm:px-8 md:px-12 bg-gradient-to-t from-white/90 via-white/50 to-transparent text-foreground">
           {heading?.value && (
             <Heading format as="h2" size="display" className="max-w-md">
               {heading.value}
@@ -89,7 +89,7 @@ type SpreadMediaProps = {
   sizes: string;
 };
 
-function SpreadMedia({data, loading, sizes}: SpreadMediaProps) {
+function SpreadMedia({ data, loading, sizes }: SpreadMediaProps) {
   return (
     <MediaFile
       data={data}
@@ -101,7 +101,7 @@ function SpreadMedia({data, loading, sizes}: SpreadMediaProps) {
           loop: true,
           playsInline: true,
           autoPlay: true,
-          previewImageOptions: {src: data.previewImage?.url ?? ''},
+          previewImageOptions: { src: data.previewImage?.url ?? '' },
         },
         image: {
           loading,

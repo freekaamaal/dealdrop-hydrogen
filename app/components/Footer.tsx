@@ -4,7 +4,7 @@ import { Button } from '~/components/ui/button';
 
 export function Footer() {
   return (
-    <footer className="bg-card border-t border-border mt-20 pt-16 pb-8">
+    <footer className="bg-card border-t border-border mt-10 pt-10 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-16 lg:gap-24 mb-16">
           {/* Left Column: About & Newsletter */}

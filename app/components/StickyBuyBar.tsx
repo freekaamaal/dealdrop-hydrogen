@@ -54,7 +54,7 @@ export function StickyBuyBar({ product, selectedVariant }) {
           lines={[{ merchandiseId: selectedVariant?.id, quantity: 1 }]}
           redirectTo="/checkout"
           variant="primary"
-          className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-12 rounded-xl button-glow smooth-transition active:scale-95"
+          className="flex-1 gradient-urgency hover:opacity-90 text-primary-foreground font-bold h-12 rounded-xl button-glow smooth-transition active:scale-95 flex items-center justify-center"
         >
           <Zap className="mr-2 h-4 w-4 inline-block" />
           Buy Now

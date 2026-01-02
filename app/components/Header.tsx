@@ -9,12 +9,12 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
   // So we should accept `openCart` as a prop.
 
   const activeLinkStyle =
-    "text-primary font-medium transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-full after:h-px after:bg-accent after:scale-x-100 transition-transform duration-300";
+    "text-primary font-medium transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-full after:h-px after:bg-primary after:scale-x-100 transition-transform duration-300";
   const linkStyle =
-    "text-secondary hover:text-primary font-medium transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-full after:h-px after:bg-accent after:scale-x-0 hover:after:scale-x-100 transition-transform duration-300";
+    "text-secondary-foreground/80 hover:text-primary font-medium transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-full after:h-px after:bg-primary after:scale-x-0 hover:after:scale-x-100 transition-transform duration-300";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#070708]/80 backdrop-blur-xl transition-all duration-300">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-white/80 backdrop-blur-xl transition-all duration-300">
       <div className="container mx-auto px-4 h-[73px] flex items-center justify-between relative">
         {/* Mobile: Logo Centered absolutely. Desktop: Static left */}
         <div

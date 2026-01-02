@@ -156,7 +156,7 @@ function CartButtonContent({ count, openCart }: { count: number; openCart?: () =
     >
       <ShoppingBag className={`h-5 w-5 ${isColored ? 'fill-primary/10' : ''}`} />
       {count > 0 && (
-        <span className="absolute -top-1 -right-1 w-4 h-4 gradient-rose text-primary-foreground text-xs rounded-full flex items-center justify-center font-bold">
+        <span className="absolute -top-1 -right-1 w-4 h-4 gradient-urgency text-primary-foreground text-xs rounded-full flex items-center justify-center font-bold">
           {count}
         </span>
       )}

@@ -88,7 +88,7 @@ export function ProductCard({
           {/* Discount Badge */}
           {discount > 0 && (
             <div className="absolute top-4 left-4">
-              <div className="gradient-rose text-primary-foreground px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-1">
+              <div className="gradient-urgency text-primary-foreground px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-1">
                 <TrendingDown className="w-4 h-4" />
                 {discount}%
               </div>
