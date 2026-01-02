@@ -94,7 +94,7 @@ const DealCard = ({
           </h3>
 
           <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 hidden md:block">
-            {description}
+            {description?.length > 60 ? description.substring(0, 60) + '...' : description}
           </p>
 
           <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 pt-1 md:pt-2">
