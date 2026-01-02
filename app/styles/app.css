@@ -120,14 +120,6 @@
     box-shadow: var(--shadow-cta);
   }
 
-  .gradient-rose {
-    background: var(--gradient-rose);
-  }
-
-  .glow-rose {
-    box-shadow: var(--shadow-rose);
-  }
-
   .card-premium {
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border));

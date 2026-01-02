@@ -338,7 +338,7 @@ export default function Homepage() {
               className="text-center space-y-2 card-premium rounded-3xl p-4 md:p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
               style={{ animationDelay: '0.2s' }}
             >
-              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-rose mb-2 md:mb-4 group-hover:glow-rose smooth-transition">
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-urgency mb-2 md:mb-4 group-hover:glow-cta smooth-transition">
                 <Award className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
               </div>
               <h3 className="font-display text-sm md:text-xl font-bold">Curated Brands</h3>
@@ -351,7 +351,7 @@ export default function Homepage() {
               className="text-center space-y-2 card-premium rounded-3xl p-4 md:p-8 animate-fade-in hover:scale-[1.02] smooth-transition group"
               style={{ animationDelay: '0.3s' }}
             >
-              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-rose mb-2 md:mb-4 group-hover:glow-rose smooth-transition">
+              <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl gradient-urgency mb-2 md:mb-4 group-hover:glow-cta smooth-transition">
                 <Users className="h-6 w-6 md:h-8 md:w-8 text-primary-foreground" />
               </div>
               <h3 className="font-display text-sm md:text-xl font-bold">Win-Win Model</h3>
@@ -385,7 +385,7 @@ export default function Homepage() {
             <div className="relative">
               <div className="text-center space-y-3 md:space-y-6">
                 <div className="relative inline-block">
-                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full gradient-rose flex items-center justify-center glow-rose">
+                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full gradient-urgency flex items-center justify-center glow-cta">
                     <span className="text-primary-foreground font-display text-xl md:text-3xl font-bold">
                       1
                     </span>
@@ -427,7 +427,7 @@ export default function Homepage() {
             <div className="relative col-span-2 md:col-span-1 border-t pt-4 md:border-0 md:pt-0 mt-2 md:mt-0">
               <div className="text-center space-y-3 md:space-y-6">
                 <div className="relative inline-block">
-                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full gradient-rose flex items-center justify-center glow-rose">
+                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-full gradient-urgency flex items-center justify-center glow-cta">
                     <span className="text-primary-foreground font-display text-xl md:text-3xl font-bold">
                       3
                     </span>
@@ -566,7 +566,7 @@ export default function Homepage() {
 
                 {/* User */}
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full gradient-rose flex items-center justify-center text-primary-foreground font-bold">
+                  <div className="w-12 h-12 rounded-full gradient-urgency flex items-center justify-center text-primary-foreground font-bold">
                     {testimonial.avatar}
                   </div>
                   <div>
