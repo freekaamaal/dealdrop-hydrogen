@@ -233,7 +233,7 @@ export default function Homepage() {
               <StockBar remaining={heroProduct?.variants?.nodes[0]?.quantityAvailable ?? 23} total={100} dark />
 
               {/* CTA */}
-              <div className="flex gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button
                   size="lg"
                   className="flex-1 gradient-urgency text-white font-bold text-lg h-14 rounded-2xl hover:scale-[1.02] active:scale-[0.98] smooth-transition shadow-lg shadow-orange-500/25"
@@ -539,12 +539,11 @@ export default function Homepage() {
           </div>
 
           {/* Filters */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {/* Category filter */}
+          <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+              className="flex-shrink-0 bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
             >
               <option value="all">All Categories</option>
               {productCategories.map((cat: any) => (
@@ -552,11 +551,10 @@ export default function Homepage() {
               ))}
             </select>
 
-            {/* Brand filter */}
             <select
               value={filterBrand}
               onChange={(e) => setFilterBrand(e.target.value)}
-              className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+              className="flex-shrink-0 bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
             >
               <option value="all">All Brands</option>
               {brands.map((b: any) => (
@@ -564,13 +562,12 @@ export default function Homepage() {
               ))}
             </select>
 
-            {/* Sort */}
             {(filterCategory !== 'all' || filterBrand !== 'all') && (
               <button
                 onClick={() => { setFilterCategory('all'); setFilterBrand('all'); }}
-                className="bg-red-50 border border-red-200 text-red-600 rounded-lg px-3 py-2 text-xs font-semibold hover:bg-red-100 smooth-transition"
+                className="flex-shrink-0 bg-red-50 border border-red-200 text-red-600 rounded-lg px-3 py-2 text-xs font-semibold hover:bg-red-100 smooth-transition"
               >
-                Clear filters
+                Clear
               </button>
             )}
           </div>
@@ -736,6 +733,9 @@ export default function Homepage() {
           </div>
         </div>
       </section>
+
+      {/* Spacer for sticky mobile CTA */}
+      <div className="h-20 lg:hidden" />
 
       {/* Sticky Mobile CTA */}
       <div className="fixed bottom-0 left-0 right-0 p-3 bg-gray-950/95 backdrop-blur-xl border-t border-white/10 lg:hidden z-40">

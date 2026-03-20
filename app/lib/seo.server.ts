@@ -31,9 +31,9 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name,
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | DropMyDeal',
     description: truncate(shop?.description ?? ''),
-    handle: '@shopify',
+    handle: '@freekaamaal',
     url,
     robots: {
       noIndex: false,
@@ -64,7 +64,7 @@ function root({
 function home({url}: {url: Request['url']}): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: '%s | Hydrogen Demo Store',
+    titleTemplate: '%s | DropMyDeal',
     description: 'The best place to buy snowboarding products',
     url,
     robots: {

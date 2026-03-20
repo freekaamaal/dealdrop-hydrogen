@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-950 text-white pt-10 pb-6">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* About */}
           <div className="col-span-2 md:col-span-1">
             <span className="font-display font-bold text-lg">
