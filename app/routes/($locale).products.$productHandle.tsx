@@ -572,34 +572,15 @@ export function ProductForm({
               Buy Now — ₹{parseFloat(selectedVariant?.price?.amount || '0').toLocaleString('en-IN')}
             </AddToCartButton>
 
-            {/* Quantity + Add to Cart Row */}
-            <div className="flex gap-3 items-stretch">
-              <div className="flex items-center border border-gray-200 rounded-2xl bg-white h-12 px-1">
-                <button
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg rounded-l-xl hover:bg-gray-50"
-                  disabled={quantity <= 1}
-                >
-                  −
-                </button>
-                <div className="w-9 text-center font-bold text-sm">{quantity}</div>
-                <button
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg rounded-r-xl hover:bg-gray-50"
-                >
-                  +
-                </button>
-              </div>
-
-              <AddToCartButton
-                lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
-                rawButton
-                className="flex-1 h-12 rounded-2xl font-semibold text-sm transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center"
-                style={{background: '#111827', color: 'white'}}
-              >
-                Add to Cart
-              </AddToCartButton>
-            </div>
+            {/* Add to Cart */}
+            <AddToCartButton
+              lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
+              rawButton
+              className="w-full h-14 rounded-2xl font-bold text-base transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center"
+              style={{background: '#111827', color: 'white'}}
+            >
+              Add to Cart
+            </AddToCartButton>
 
             <div className="flex items-center gap-4 text-[11px] text-muted-foreground mt-1">
               <span className="flex items-center gap-1.5">
