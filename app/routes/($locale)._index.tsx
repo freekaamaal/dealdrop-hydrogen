@@ -86,35 +86,6 @@ export default function Homepage() {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterBrand, setFilterBrand] = useState<string>('all');
 
-  const [dealEndTime, setDealEndTime] = useState<Date | null>(null);
-
-  useEffect(() => {
-    // Use deal_end: tag from hero product if available
-    if (heroSource?.tags) {
-      const dealEndTag = heroSource.tags.find((t: string) => t.startsWith('deal_end:'));
-      if (dealEndTag) {
-        const dateStr = dealEndTag.split('deal_end:')[1];
-        const date = new Date(dateStr + 'Z');
-        if (!isNaN(date.getTime()) && date > new Date()) {
-          setDealEndTime(date);
-          return;
-        }
-      }
-    }
-    // Fallback: 6 hours from now
-    const endTime = new Date();
-    endTime.setHours(endTime.getHours() + 6);
-    setDealEndTime(endTime);
-  }, [heroSource]);
-
-  const handleBuyNow = () => {
-    if (hasHero && heroData) {
-      window.location.href = `/products/${heroData.handle}`;
-    } else {
-      window.location.href = '#all-deals';
-    }
-  };
-
   // Hero: use hero-deal collection product, or auto-pick the best deal from featured
   const heroSource = heroProduct || featuredProducts.find((p: any) => {
     const v = p.variants?.nodes?.[0];
@@ -130,6 +101,33 @@ export default function Homepage() {
     handle: heroSource.handle
   } : null;
   const hasHero = !!heroData;
+
+  const [dealEndTime, setDealEndTime] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (heroSource?.tags) {
+      const dealEndTag = heroSource.tags.find((t: string) => t.startsWith('deal_end:'));
+      if (dealEndTag) {
+        const dateStr = dealEndTag.split('deal_end:')[1];
+        const date = new Date(dateStr + 'Z');
+        if (!isNaN(date.getTime()) && date > new Date()) {
+          setDealEndTime(date);
+          return;
+        }
+      }
+    }
+    const endTime = new Date();
+    endTime.setHours(endTime.getHours() + 6);
+    setDealEndTime(endTime);
+  }, [heroSource]);
+
+  const handleBuyNow = () => {
+    if (hasHero && heroData) {
+      window.location.href = `/products/${heroData.handle}`;
+    } else {
+      window.location.href = '#all-deals';
+    }
+  };
 
   const mapProductToDeal = (product: any, status: 'live' | 'upcoming') => {
     const variant = product.variants.nodes[0];
