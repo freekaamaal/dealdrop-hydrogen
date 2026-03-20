@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLoaderData } from '@remix-run/react';
 import {
   Sparkles,
@@ -86,23 +86,26 @@ export default function Homepage() {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterBrand, setFilterBrand] = useState<string>('all');
 
-  const [dealEndTime] = useState(() => {
+  const [dealEndTime, setDealEndTime] = useState<Date | null>(null);
+
+  useEffect(() => {
     // Use deal_end: tag from hero product if available
     if (heroSource?.tags) {
       const dealEndTag = heroSource.tags.find((t: string) => t.startsWith('deal_end:'));
       if (dealEndTag) {
         const dateStr = dealEndTag.split('deal_end:')[1];
-        const date = new Date(dateStr + 'Z'); // UTC
+        const date = new Date(dateStr + 'Z');
         if (!isNaN(date.getTime()) && date > new Date()) {
-          return date;
+          setDealEndTime(date);
+          return;
         }
       }
     }
     // Fallback: 6 hours from now
     const endTime = new Date();
     endTime.setHours(endTime.getHours() + 6);
-    return endTime;
-  });
+    setDealEndTime(endTime);
+  }, [heroSource]);
 
   const handleBuyNow = () => {
     if (hasHero && heroData) {
@@ -229,7 +232,7 @@ export default function Homepage() {
               </div>
 
               {/* Timer + Stock — Dark variants */}
-              <CountdownTimer targetDate={dealEndTime} variant="compact" dark />
+              {dealEndTime && <CountdownTimer targetDate={dealEndTime} variant="compact" dark />}
               <StockBar remaining={heroProduct?.variants?.nodes[0]?.quantityAvailable ?? 23} total={100} dark />
 
               {/* CTA */}
