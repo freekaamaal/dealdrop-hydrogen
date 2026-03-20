@@ -219,7 +219,7 @@ export default function Product() {
                 {/* Brand + Badge */}
                 <div className="flex items-center gap-3 mb-3 flex-wrap">
                   {vendor && (
-                    <Link to={`/collections/${vendor.toLowerCase().replace(/\s+/g, '-')}`} className="text-primary text-sm font-semibold uppercase tracking-wider hover:underline">
+                    <Link to={`/search?q=${encodeURIComponent(vendor)}`} className="text-primary text-sm font-semibold uppercase tracking-wider hover:underline">
                       {vendor}
                     </Link>
                   )}
@@ -328,7 +328,7 @@ export default function Product() {
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <Link
-                        to={`/collections/${vendor.toLowerCase().replace(/\s+/g, '-')}`}
+                        to={`/search?q=${encodeURIComponent(vendor)}`}
                         className="inline-flex items-center gap-2 bg-white border border-orange-200 text-orange-700 font-semibold text-sm px-4 py-2 rounded-xl hover:shadow-md smooth-transition"
                       >
                         View all {vendor} deals →
@@ -565,9 +565,9 @@ export function ProductForm({
             <AddToCartButton
               lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
               redirectTo="/checkout"
-              variant="inline"
-              className="w-full h-14 rounded-2xl font-bold text-lg shadow-lg transition-all active:scale-[0.98] border-0 leading-normal pb-0"
-              style={{background: 'linear-gradient(135deg, #f97316, #ef4444)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+              rawButton
+              className="w-full h-14 rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/25 transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center"
+              style={{background: 'linear-gradient(135deg, #f97316, #ef4444)', color: 'white'}}
             >
               Buy Now — ₹{parseFloat(selectedVariant?.price?.amount || '0').toLocaleString('en-IN')}
             </AddToCartButton>
@@ -593,9 +593,9 @@ export function ProductForm({
 
               <AddToCartButton
                 lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
-                variant="inline"
-                className="flex-1 h-12 rounded-2xl font-semibold text-sm transition-all active:scale-[0.98] border-0 leading-normal pb-0"
-                style={{background: '#111827', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+                rawButton
+                className="flex-1 h-12 rounded-2xl font-semibold text-sm transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center"
+                style={{background: '#111827', color: 'white'}}
               >
                 Add to Cart
               </AddToCartButton>

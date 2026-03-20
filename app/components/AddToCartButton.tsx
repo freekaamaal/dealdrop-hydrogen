@@ -12,6 +12,7 @@ export function AddToCartButton({
   variant = 'primary',
   width = 'full',
   disabled,
+  rawButton,
   ...props
 }: {
   children: React.ReactNode;
@@ -20,6 +21,7 @@ export function AddToCartButton({
   variant?: 'primary' | 'secondary' | 'inline';
   width?: 'auto' | 'full';
   disabled?: boolean;
+  rawButton?: boolean;
   [key: string]: any;
 }) {
   return (
@@ -34,13 +36,11 @@ export function AddToCartButton({
       {(fetcher: FetcherWithComponents<any>) => {
         const { open } = useAside();
 
-        // Handle client-side redirect for Buy Now
         useEffect(() => {
           if (fetcher.state === 'idle' && fetcher.data) {
             if (fetcher.data.checkoutUrl) {
               window.location.href = fetcher.data.checkoutUrl;
             } else if (!props.redirectTo) {
-              // Open cart drawer if not redirecting (Standard Add to Cart)
               open('cart');
             }
           }
@@ -51,17 +51,28 @@ export function AddToCartButton({
             {props.redirectTo && (
               <input type="hidden" name="redirectTo" value={props.redirectTo} />
             )}
-            <Button
-              as="button"
-              type="submit"
-              width={width}
-              variant={variant}
-              className={className}
-              disabled={disabled ?? fetcher.state !== 'idle'}
-              {...props}
-            >
-              {children}
-            </Button>
+            {rawButton ? (
+              <button
+                type="submit"
+                className={className}
+                style={props.style}
+                disabled={disabled ?? fetcher.state !== 'idle'}
+              >
+                {children}
+              </button>
+            ) : (
+              <Button
+                as="button"
+                type="submit"
+                width={width}
+                variant={variant}
+                className={className}
+                disabled={disabled ?? fetcher.state !== 'idle'}
+                {...props}
+              >
+                {children}
+              </Button>
+            )}
           </>
         );
       }}
