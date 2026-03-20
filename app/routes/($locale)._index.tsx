@@ -37,13 +37,14 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   const { hero, featured, upcoming, categories, allProducts } = await storefront.query(HOMEPAGE_QUERY);
 
   const brandMap = new Map<string, { name: string; count: number; handle: string; image: string }>();
+  const categoryMap = new Map<string, number>();
   const allNodes = [
     ...(featured?.products.nodes || []),
     ...(upcoming?.products.nodes || []),
   ];
   allNodes.forEach((product: any) => {
     const vendor = product.vendor;
-    if (vendor && vendor !== 'DropMyDeal') {
+    if (vendor && vendor !== 'DropMyDeal' && vendor !== 'DealDrop') {
       const existing = brandMap.get(vendor);
       if (existing) {
         existing.count++;
@@ -56,7 +57,16 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
         });
       }
     }
+    // Extract product types for categories
+    const pType = product.productType;
+    if (pType && pType.trim() !== '' && pType !== 'Others') {
+      categoryMap.set(pType, (categoryMap.get(pType) || 0) + 1);
+    }
   });
+
+  const productCategories = Array.from(categoryMap.entries())
+    .sort((a, b) => b[1] - a[1])
+    .map(([name, count]) => ({ name, count }));
 
   return defer({
     seo,
@@ -65,13 +75,16 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
     upcomingDeals: upcoming?.products.nodes || [],
     heroProduct: hero?.products.nodes[0] || null,
     categories: categories?.nodes || [],
+    productCategories,
     brands: Array.from(brandMap.values()),
   });
 }
 
 export default function Homepage() {
-  const { featuredProducts, upcomingDeals, heroProduct, categories, brands } = useLoaderData<typeof loader>();
+  const { featuredProducts, upcomingDeals, heroProduct, categories, brands, productCategories } = useLoaderData<typeof loader>();
   const [activeTab, setActiveTab] = useState<'live' | 'upcoming'>('live');
+  const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [filterBrand, setFilterBrand] = useState<string>('all');
 
   const [dealEndTime] = useState(() => {
     const endTime = new Date();
@@ -474,10 +487,11 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* ===== ALL DEALS (Tabbed) ===== */}
+      {/* ===== ALL DEALS (Tabbed + Filtered) ===== */}
       <section className="py-6 md:py-10 bg-gray-50" id="all-deals">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          {/* Header row */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-5">
             <div>
               <div className="flex items-center gap-2 text-primary mb-1">
                 <Flame className="h-5 w-5" />
@@ -512,28 +526,65 @@ export default function Homepage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-            {activeTab === 'live' ? (
-              featuredProducts.length > 0 ? (
-                featuredProducts.map((product: any) => (
-                  <DealCard key={product.id} {...mapProductToDeal(product, 'live')} />
-                ))
-              ) : (
-                <div className="col-span-full text-center py-10 text-muted-foreground">
-                  <p>No live deals right now. Check back soon!</p>
-                </div>
-              )
-            ) : (
-              upcomingDeals.length > 0 ? (
-                upcomingDeals.map((deal: any) => (
-                  <DealCard key={deal.id} {...mapProductToDeal(deal, 'upcoming')} />
-                ))
-              ) : (
-                <div className="col-span-full text-center py-10 text-muted-foreground">
-                  <p>No upcoming deals scheduled yet.</p>
-                </div>
-              )
+          {/* Filters */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {/* Category filter */}
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+            >
+              <option value="all">All Categories</option>
+              {productCategories.map((cat: any) => (
+                <option key={cat.name} value={cat.name}>{cat.name} ({cat.count})</option>
+              ))}
+            </select>
+
+            {/* Brand filter */}
+            <select
+              value={filterBrand}
+              onChange={(e) => setFilterBrand(e.target.value)}
+              className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+            >
+              <option value="all">All Brands</option>
+              {brands.map((b: any) => (
+                <option key={b.name} value={b.name}>{b.name} ({b.count})</option>
+              ))}
+            </select>
+
+            {/* Sort */}
+            {(filterCategory !== 'all' || filterBrand !== 'all') && (
+              <button
+                onClick={() => { setFilterCategory('all'); setFilterBrand('all'); }}
+                className="bg-red-50 border border-red-200 text-red-600 rounded-lg px-3 py-2 text-xs font-semibold hover:bg-red-100 smooth-transition"
+              >
+                Clear filters
+              </button>
             )}
+          </div>
+
+          {/* Deal Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+            {(() => {
+              const sourceProducts = activeTab === 'live' ? featuredProducts : upcomingDeals;
+              const filtered = sourceProducts.filter((p: any) => {
+                if (filterCategory !== 'all' && p.productType !== filterCategory) return false;
+                if (filterBrand !== 'all' && p.vendor !== filterBrand) return false;
+                return true;
+              });
+
+              if (filtered.length === 0) {
+                return (
+                  <div className="col-span-full text-center py-10 text-muted-foreground">
+                    <p>No deals match your filters. Try changing or clearing filters.</p>
+                  </div>
+                );
+              }
+
+              return filtered.map((product: any) => (
+                <DealCard key={product.id} {...mapProductToDeal(product, activeTab === 'live' ? 'live' : 'upcoming')} />
+              ));
+            })()}
           </div>
 
           <div className="text-center mt-8">
@@ -548,8 +599,8 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* ===== CATEGORIES ===== */}
-      {categories && categories.length > 0 && (
+      {/* ===== CATEGORIES (from product types) ===== */}
+      {productCategories.length > 0 && (
         <section className="py-6 md:py-8 bg-background">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-5">
@@ -560,7 +611,7 @@ export default function Homepage() {
                 <h2 className="font-display text-xl md:text-2xl font-bold">Shop by Category</h2>
               </div>
               <Link
-                to="/collections"
+                to="/categories"
                 className="flex items-center gap-1 text-primary text-sm font-semibold hover:underline"
               >
                 View All <ChevronRight className="h-4 w-4" />
@@ -568,22 +619,22 @@ export default function Homepage() {
             </div>
 
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
-              {categories.filter((c: any) => !['featured', 'hero-deal', 'upcoming-drops', 'featured-products', 'soldout', 'upcoming', 'dealdrop-exclusive'].includes(c.handle) && !c.title.toLowerCase().includes('soldout') && !c.title.toLowerCase().includes('dealdrop exc')).map((category: any, i: number) => {
+              {productCategories.map((cat: any, i: number) => {
                 const bgColors = ['bg-orange-50 border-orange-200 hover:border-orange-400', 'bg-blue-50 border-blue-200 hover:border-blue-400', 'bg-green-50 border-green-200 hover:border-green-400', 'bg-purple-50 border-purple-200 hover:border-purple-400', 'bg-pink-50 border-pink-200 hover:border-pink-400', 'bg-amber-50 border-amber-200 hover:border-amber-400'];
                 const textColors = ['group-hover:text-orange-600', 'group-hover:text-blue-600', 'group-hover:text-green-600', 'group-hover:text-purple-600', 'group-hover:text-pink-600', 'group-hover:text-amber-600'];
                 return (
-                  <Link
-                    key={category.id}
-                    to={`/collections/${category.handle}`}
-                    className={`group flex-shrink-0 ${bgColors[i % bgColors.length]} border rounded-2xl px-6 py-4 hover:shadow-md smooth-transition min-w-[140px] text-center hover:scale-[1.03]`}
+                  <button
+                    key={cat.name}
+                    onClick={() => { setFilterCategory(cat.name); document.getElementById('all-deals')?.scrollIntoView({behavior: 'smooth'}); }}
+                    className={`group flex-shrink-0 ${bgColors[i % bgColors.length]} border rounded-2xl px-5 py-3 hover:shadow-md smooth-transition min-w-[130px] text-center hover:scale-[1.03] cursor-pointer`}
                   >
                     <h3 className={`font-semibold text-sm ${textColors[i % textColors.length]} smooth-transition`}>
-                      {category.title}
+                      {cat.name}
                     </h3>
-                    <p className="text-[10px] text-muted-foreground mt-1 font-medium">
-                      Explore deals
+                    <p className="text-[10px] text-muted-foreground mt-0.5 font-medium">
+                      {cat.count} {cat.count === 1 ? 'deal' : 'deals'}
                     </p>
-                  </Link>
+                  </button>
                 );
               })}
             </div>
@@ -743,6 +794,7 @@ const HOMEPAGE_QUERY = `#graphql
         handle
         tags
         vendor
+        productType
         variants(first: 1) {
           nodes {
             id
