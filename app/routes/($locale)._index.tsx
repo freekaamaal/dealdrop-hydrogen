@@ -738,7 +738,7 @@ const HOMEPAGE_QUERY = `#graphql
     id
     handle
     title
-    products(first: 8, sortKey: MANUAL) {
+    products(first: 50, sortKey: MANUAL) {
       nodes {
         id
         title
