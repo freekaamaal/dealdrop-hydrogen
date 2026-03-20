@@ -87,6 +87,18 @@ export default function Homepage() {
   const [filterBrand, setFilterBrand] = useState<string>('all');
 
   const [dealEndTime] = useState(() => {
+    // Use deal_end: tag from hero product if available
+    if (heroSource?.tags) {
+      const dealEndTag = heroSource.tags.find((t: string) => t.startsWith('deal_end:'));
+      if (dealEndTag) {
+        const dateStr = dealEndTag.split('deal_end:')[1];
+        const date = new Date(dateStr + 'Z'); // UTC
+        if (!isNaN(date.getTime()) && date > new Date()) {
+          return date;
+        }
+      }
+    }
+    // Fallback: 6 hours from now
     const endTime = new Date();
     endTime.setHours(endTime.getHours() + 6);
     return endTime;
