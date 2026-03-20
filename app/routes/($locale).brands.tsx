@@ -1,85 +1,161 @@
 import { useLoaderData, Link } from '@remix-run/react';
-import { Image } from '@shopify/hydrogen';
 import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
 import { seoPayload } from '~/lib/seo.server';
+import { ArrowRight, Store } from 'lucide-react';
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
-    const { storefront } = context;
-    const seo = seoPayload.page({ url: request.url, page: { title: 'Our Brands' } });
+  const { storefront } = context;
+  const seo = seoPayload.page({ url: request.url, page: { title: 'Shop by Brand | DropMyDeal' } });
 
-    // In a real scenario, this would filter by 'type:Brand' or similar
-    const { collections } = await storefront.query(BRANDS_QUERY);
+  // Fetch all products to extract vendors
+  const { products } = await storefront.query(ALL_PRODUCTS_QUERY);
 
-    return defer({
-        seo,
-        brands: collections.nodes,
-    });
+  // Build brand map from vendor field
+  const brandMap = new Map<string, { name: string; count: number; handle: string; image: string; products: any[] }>();
+
+  for (const product of products.nodes) {
+    const vendor = product.vendor;
+    if (!vendor || vendor === 'DropMyDeal' || vendor === 'DealDrop') continue;
+
+    const existing = brandMap.get(vendor);
+    const productData = {
+      title: product.title,
+      image: product.variants?.nodes?.[0]?.image?.url || '',
+      handle: product.handle,
+      price: product.variants?.nodes?.[0]?.price,
+      compareAtPrice: product.variants?.nodes?.[0]?.compareAtPrice,
+    };
+
+    if (existing) {
+      existing.count++;
+      existing.products.push(productData);
+    } else {
+      brandMap.set(vendor, {
+        name: vendor,
+        count: 1,
+        handle: vendor.toLowerCase().replace(/\s+/g, '-'),
+        image: productData.image,
+        products: [productData],
+      });
+    }
+  }
+
+  return defer({
+    seo,
+    brands: Array.from(brandMap.values()).sort((a, b) => b.count - a.count),
+  });
 }
 
 export default function Brands() {
-    const { brands } = useLoaderData<typeof loader>();
+  const { brands } = useLoaderData<typeof loader>();
 
-    return (
-        <div className="container mx-auto px-4 py-12 md:py-24 bg-background">
-            <div className="text-center mb-12">
-                <span className="text-orange-500 font-bold tracking-wider uppercase text-sm mb-2 block">
-                    BROWSE BY
-                </span>
-                <h1 className="text-4xl md:text-5xl font-display font-bold text-foreground">
-                    Shop Brands
-                </h1>
-            </div>
+  const gradients = [
+    'from-orange-500 to-amber-500',
+    'from-blue-500 to-indigo-500',
+    'from-green-500 to-emerald-500',
+    'from-purple-500 to-pink-500',
+    'from-red-500 to-rose-500',
+    'from-teal-500 to-cyan-500',
+  ];
 
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-8">
-                {brands.map((brand: any) => (
-                    <Link
-                        key={brand.id}
-                        to={`/collections/${brand.handle}`}
-                        className="group bg-white border border-gray-100 rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:border-orange-100 smooth-transition aspect-square"
-                    >
-                        <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center overflow-hidden mb-4 group-hover:scale-110 smooth-transition">
-                            {brand.image ? (
-                                <Image
-                                    data={brand.image}
-                                    className="object-contain w-full h-full p-2"
-                                    sizes="100px"
-                                />
-                            ) : (
-                                <span className="text-2xl font-bold text-gray-400 group-hover:text-orange-500 smooth-transition">
-                                    {brand.title.charAt(0)}
-                                </span>
-                            )}
-                        </div>
-                        <h2 className="font-bold text-gray-900 group-hover:text-orange-600 smooth-transition">
-                            {brand.title}
-                        </h2>
-                        <p className="text-gray-500 text-xs mt-1">
-                            {brand.products?.nodes?.length ? `${brand.products.nodes.length} items` : 'View Brand'}
-                        </p>
-                    </Link>
-                ))}
-            </div>
+  return (
+    <div className="bg-background min-h-screen">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 py-12 md:py-16">
+        <div className="container mx-auto px-4 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 text-orange-400 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
+            <Store className="w-3.5 h-3.5" />
+            Our Partner Brands
+          </div>
+          <h1 className="text-3xl md:text-5xl font-display font-bold text-white mb-3">
+            Shop by Brand
+          </h1>
+          <p className="text-gray-400 text-sm md:text-base max-w-lg mx-auto">
+            We work directly with {brands.length} premium brands to bring you exclusive deals at unbeatable prices.
+          </p>
         </div>
-    );
+      </div>
+
+      {/* Brand Grid */}
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {brands.map((brand, i) => {
+            const gradient = gradients[i % gradients.length];
+            return (
+              <Link
+                key={brand.name}
+                to={`/collections/${brand.handle}`}
+                className="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl smooth-transition hover:scale-[1.02]"
+              >
+                {/* Brand header */}
+                <div className={`bg-gradient-to-r ${gradient} p-5 flex items-center gap-4`}>
+                  {brand.image ? (
+                    <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm overflow-hidden flex-shrink-0">
+                      <img src={brand.image} alt={brand.name} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                      <span className="text-white font-display font-bold text-2xl">{brand.name.charAt(0)}</span>
+                    </div>
+                  )}
+                  <div>
+                    <h2 className="font-display font-bold text-white text-lg">{brand.name}</h2>
+                    <p className="text-white/70 text-xs">{brand.count} {brand.count === 1 ? 'product' : 'products'}</p>
+                  </div>
+                </div>
+
+                {/* Product preview thumbnails */}
+                <div className="p-4">
+                  <div className="flex gap-2 mb-3">
+                    {brand.products.slice(0, 4).map((p: any, j: number) => (
+                      <div key={j} className="w-14 h-14 rounded-lg bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0">
+                        {p.image && <img src={p.image} alt={p.title} className="w-full h-full object-cover" />}
+                      </div>
+                    ))}
+                    {brand.count > 4 && (
+                      <div className="w-14 h-14 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center flex-shrink-0">
+                        <span className="text-xs text-muted-foreground font-semibold">+{brand.count - 4}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary smooth-transition">View all deals</span>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 smooth-transition" />
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const BRANDS_QUERY = `#graphql
-  query Brands {
-    collections(first: 20, sortKey: TITLE) {
+const ALL_PRODUCTS_QUERY = `#graphql
+  query AllProducts($country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    products(first: 100, sortKey: VENDOR) {
       nodes {
         id
-        handle
         title
-        products(first: 50) {
+        vendor
+        handle
+        variants(first: 1) {
           nodes {
-            id
+            image {
+              url
+              altText
+            }
+            price {
+              amount
+              currencyCode
+            }
+            compareAtPrice {
+              amount
+              currencyCode
+            }
           }
-        }
-        image {
-          url
-          altText
-          width
-          height
         }
       }
     }

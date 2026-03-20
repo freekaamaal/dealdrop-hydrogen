@@ -80,30 +80,28 @@ export default function Homepage() {
   });
 
   const handleBuyNow = () => {
-    if (heroProduct) {
-      window.location.href = `/products/${heroProduct.handle}`;
+    if (hasHero && heroData) {
+      window.location.href = `/products/${heroData.handle}`;
     } else {
       window.location.href = '#all-deals';
     }
   };
 
-  const fallbackHeroImage = '/assets/hero-deal.jpg';
+  // Hero: use hero-deal collection product, or auto-pick the best deal from featured
+  const heroSource = heroProduct || featuredProducts.find((p: any) => {
+    const v = p.variants?.nodes?.[0];
+    return v && parseFloat(v.compareAtPrice?.amount || '0') > parseFloat(v.price?.amount || '0');
+  }) || featuredProducts[0];
 
-  const heroData = heroProduct ? {
-    title: heroProduct.title,
-    image: heroProduct.variants.nodes[0]?.image?.url || fallbackHeroImage,
-    price: heroProduct.variants.nodes[0]?.price,
-    compareAtPrice: heroProduct.variants.nodes[0]?.compareAtPrice,
-    description: heroProduct.descriptionHtml ? heroProduct.description.substring(0, 100) + '...' : "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
-    handle: heroProduct.handle
-  } : {
-    title: "Premium Wireless Headphones",
-    image: fallbackHeroImage,
-    price: { amount: '7999.00', currencyCode: 'INR' },
-    compareAtPrice: { amount: '12999.00', currencyCode: 'INR' },
-    description: "Studio-quality sound meets all-day comfort. Active noise cancellation and 30-hour battery life.",
-    handle: "v2-snowboard"
-  };
+  const heroData = heroSource ? {
+    title: heroSource.title,
+    image: heroSource.variants.nodes[0]?.image?.url || '/assets/hero-deal.jpg',
+    price: heroSource.variants.nodes[0]?.price,
+    compareAtPrice: heroSource.variants.nodes[0]?.compareAtPrice,
+    description: heroSource.description ? heroSource.description.substring(0, 120) : '',
+    handle: heroSource.handle
+  } : null;
+  const hasHero = !!heroData;
 
   const mapProductToDeal = (product: any, status: 'live' | 'upcoming') => {
     const variant = product.variants.nodes[0];
@@ -121,7 +119,7 @@ export default function Homepage() {
     };
   };
 
-  const heroDiscount = Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100);
+  const heroDiscount = heroData ? Math.round(((parseFloat(heroData.compareAtPrice?.amount || '0') - parseFloat(heroData.price?.amount || '0')) / parseFloat(heroData.compareAtPrice?.amount || '1')) * 100) : 0;
 
   const testimonials = [
     {
@@ -153,6 +151,7 @@ export default function Homepage() {
   return (
     <>
       {/* ===== HERO ===== */}
+      {hasHero && heroData ? (
       <section className="relative bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500/15 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-600/8 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/4" />
@@ -265,6 +264,7 @@ export default function Homepage() {
           </div>
         </div>
       </section>
+      ) : null}
 
       {/* ===== TRUST BAR (Stats) ===== */}
       <section className="bg-gray-900 border-y border-white/5 py-4">
