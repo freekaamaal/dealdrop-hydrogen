@@ -53,7 +53,7 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
             Brands
           </Link>
           <Link
-            to="/collections"
+            to="/categories"
             className="text-sm font-medium text-gray-400 hover:text-white smooth-transition"
           >
             Categories
@@ -113,7 +113,7 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
               Brands
             </Link>
             <Link
-              to="/collections"
+              to="/categories"
               className="text-lg font-medium py-2 text-gray-400"
               onClick={() => setMobileMenuOpen(false)}
             >
