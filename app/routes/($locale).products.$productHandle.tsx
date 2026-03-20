@@ -557,19 +557,19 @@ export function ProductForm({
             <AddToCartButton
               lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
               redirectTo="/checkout"
-              variant="primary"
-              className="w-full h-14 rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all active:scale-[0.98] gradient-urgency text-white hover:brightness-110 relative z-20"
+              variant="inline"
+              className="w-full h-14 rounded-2xl font-bold text-lg shadow-lg transition-all active:scale-[0.98] border-0 leading-normal pb-0"
+              style={{background: 'linear-gradient(135deg, #f97316, #ef4444)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             >
               Buy Now — ₹{parseFloat(selectedVariant?.price?.amount || '0').toLocaleString('en-IN')}
             </AddToCartButton>
 
             {/* Quantity + Add to Cart Row */}
             <div className="flex gap-3 items-stretch">
-              {/* Quantity Selector */}
-              <div className="flex items-center border border-gray-200 rounded-2xl bg-white h-12 px-1 shadow-sm">
+              <div className="flex items-center border border-gray-200 rounded-2xl bg-white h-12 px-1">
                 <button
                   onClick={() => handleQuantityChange(quantity - 1)}
-                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg font-medium rounded-l-xl hover:bg-gray-50"
+                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg rounded-l-xl hover:bg-gray-50"
                   disabled={quantity <= 1}
                 >
                   −
@@ -577,17 +577,17 @@ export function ProductForm({
                 <div className="w-9 text-center font-bold text-sm">{quantity}</div>
                 <button
                   onClick={() => handleQuantityChange(quantity + 1)}
-                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg font-medium rounded-r-xl hover:bg-gray-50"
+                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg rounded-r-xl hover:bg-gray-50"
                 >
                   +
                 </button>
               </div>
 
-              {/* Add To Cart */}
               <AddToCartButton
                 lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
-                variant="secondary"
-                className="flex-1 bg-gray-900 hover:bg-gray-800 text-white font-semibold h-12 rounded-2xl text-sm shadow-sm transition-all active:scale-[0.98] relative z-20"
+                variant="inline"
+                className="flex-1 h-12 rounded-2xl font-semibold text-sm transition-all active:scale-[0.98] border-0 leading-normal pb-0"
+                style={{background: '#111827', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
               >
                 Add to Cart
               </AddToCartButton>
