@@ -1,11 +1,10 @@
 import { Link } from '@remix-run/react';
 import { flattenConnection, Money } from '@shopify/hydrogen';
-import { TrendingDown, Clock } from 'lucide-react';
+import { TrendingDown } from 'lucide-react';
 import type { MoneyV2 } from '@shopify/hydrogen/storefront-api-types';
 
 import { Badge } from '~/components/ui/badge';
 import type { ProductCardFragment } from 'storefrontapi.generated';
-import { isDiscounted } from '~/lib/utils';
 import { getProductPlaceholder } from '~/lib/placeholders';
 
 export function ProductCard({
@@ -25,70 +24,53 @@ export function ProductCard({
 
   const { image, price, compareAtPrice } = firstVariant;
   const title = product.title;
-  const description = product.description || '';
+  const vendor = product.vendor;
 
-  // Calculate discount logic
   const mrp = compareAtPrice ? parseFloat(compareAtPrice.amount) : 0;
   const dealPrice = parseFloat(price.amount);
-  const discount =
-    mrp > dealPrice ? Math.round(((mrp - dealPrice) / mrp) * 100) : 0;
+  const discount = mrp > dealPrice ? Math.round(((mrp - dealPrice) / mrp) * 100) : 0;
+  const savings = mrp > dealPrice ? mrp - dealPrice : 0;
 
-  // Status logic (simplified for now, can be enhanced with tags/inventory)
   const isSoldOut = !firstVariant.availableForSale;
-  const status = isSoldOut ? 'sold-out' : 'live';
 
-  const getStatusBadge = () => {
-    switch (status) {
-      case 'live':
-        return (
-          <Badge className="bg-primary text-primary-foreground animate-pulse-soft">
-            <span className="w-2 h-2 bg-primary-foreground rounded-full mr-2 animate-pulse" />
-            LIVE
-          </Badge>
-        );
-      case 'sold-out':
-        return <Badge variant="destructive">Sold Out</Badge>;
-      default:
-        return null; // Handle other statuses if needed
-    }
-  };
+  if (isSoldOut) return null; // Hide sold out products
 
   return (
     <Link to={`/products/${product.handle}`} prefetch="intent">
       <div
         className={`
-        group relative card-premium rounded-3xl overflow-hidden
-        hover:scale-[1.02] smooth-transition
-        ${status === 'sold-out' ? 'opacity-70' : ''}
+        group relative bg-white rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100
+        hover:shadow-xl hover:scale-[1.02] smooth-transition
         ${className || ''}
       `}
       >
-        {/* Image Container */}
-        <div className="aspect-square overflow-hidden bg-secondary relative">
-          {image && (
+        {/* Image */}
+        <div className="aspect-square overflow-hidden bg-gray-50 relative">
+          {image ? (
             <img
               src={image.url}
               alt={image.altText || title}
               className="w-full h-full object-cover group-hover:scale-110 smooth-transition"
               loading={loading}
             />
-          )}
-          {!image && (
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+          ) : (
+            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
               No Image
             </div>
           )}
 
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent opacity-60" />
-
           {/* Status Badge */}
-          <div className="absolute top-4 right-4">{getStatusBadge()}</div>
+          <div className="absolute top-2 right-2 md:top-3 md:right-3">
+            <Badge className="bg-green-500 text-white border-0 shadow-md shadow-green-500/30 text-[10px] md:text-xs px-2 py-0.5">
+              <span className="w-1.5 h-1.5 bg-white rounded-full mr-1.5 animate-pulse" />
+              LIVE
+            </Badge>
+          </div>
 
           {/* Discount Badge */}
           {discount > 0 && (
             <div className="absolute top-2 left-2 md:top-3 md:left-3">
-              <div className="gradient-urgency text-primary-foreground px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+              <div className="bg-red-500 text-white px-2 py-1 rounded-lg text-[10px] md:text-xs font-bold flex items-center gap-0.5 shadow-md shadow-red-500/30">
                 <TrendingDown className="w-3 h-3" />
                 {discount}%
               </div>
@@ -97,27 +79,35 @@ export function ProductCard({
         </div>
 
         {/* Content */}
-        <div className="p-2 md:p-3 space-y-1.5 md:space-y-2">
-          <h3 className="font-display font-bold text-sm md:text-base line-clamp-2 group-hover:text-primary smooth-transition leading-tight">
+        <div className="p-2.5 md:p-4 space-y-1.5">
+          {vendor && (
+            <p className="text-[10px] md:text-xs text-primary font-semibold uppercase tracking-wider">
+              {vendor}
+            </p>
+          )}
+
+          <h3 className="font-semibold text-xs md:text-sm line-clamp-2 text-gray-900 group-hover:text-primary smooth-transition leading-snug">
             {title}
           </h3>
 
-          <p className="text-xs text-muted-foreground line-clamp-1 hidden md:block">
-            {description?.length > 60 ? description.substring(0, 60) + '...' : description}
-          </p>
-
-          <div className="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-2 pt-1 md:pt-1">
-            {compareAtPrice && (
+          <div className="flex items-baseline gap-2 pt-1">
+            {compareAtPrice && mrp > dealPrice && (
               <Money
                 data={compareAtPrice}
-                className="text-xs text-muted-foreground line-through"
+                className="text-[10px] md:text-xs text-gray-400 line-through"
               />
             )}
             <Money
               data={price}
-              className="text-base md:text-xl font-display font-bold text-foreground"
+              className="text-base md:text-lg font-display font-bold text-gray-900"
             />
           </div>
+
+          {savings > 0 && (
+            <span className="inline-block bg-green-50 text-green-700 text-[10px] md:text-xs font-semibold px-2 py-0.5 rounded-md">
+              Save ₹{savings.toLocaleString('en-IN')}
+            </span>
+          )}
         </div>
       </div>
     </Link>

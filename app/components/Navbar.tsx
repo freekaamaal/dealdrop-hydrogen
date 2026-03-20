@@ -1,5 +1,5 @@
 import { Link, NavLink } from '@remix-run/react';
-import { ShoppingBag, Menu, X, User } from 'lucide-react';
+import { ShoppingBag, Menu, X, User, Search } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '~/components/ui/button';
@@ -8,12 +8,12 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
 
   return (
 
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-background/80 border-b border-border/50">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-gray-950/90 border-b border-white/5">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         {/* Mobile Menu Button (Left) */}
         <div className="md:hidden flex items-center">
           <button
-            className="text-foreground p-2"
+            className="text-white p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -26,50 +26,62 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
 
         <Link
           to="/"
-          className="flex items-center gap-3 group"
+          className="flex flex-col group"
         >
-          <img
-            src="/assets/logo-v2.png"
-            alt="DropMyDeal"
-            className="w-[160px] md:w-auto h-auto md:h-16 smooth-transition group-hover:scale-105"
-          />
+          <span className="font-display font-bold text-xl md:text-2xl tracking-tight">
+            <span className="text-white">DropMy</span>
+            <span className="text-orange-500">Deal</span>
+            <span className="text-gray-400 text-base md:text-lg">.com</span>
+          </span>
+          <span className="text-[9px] md:text-[10px] text-gray-500 -mt-0.5 tracking-wide">
+            by <span className="text-gray-400">FreeKaaMaal.com</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           <Link
-            to="/"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground smooth-transition"
+            to="/#all-deals"
+            className="text-sm font-medium text-gray-400 hover:text-white smooth-transition"
           >
             Live Deals
           </Link>
           <Link
-            to="/past-deals"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground smooth-transition"
+            to="/brands"
+            className="text-sm font-medium text-gray-400 hover:text-white smooth-transition"
           >
-            Past Drops
+            Brands
           </Link>
           <Link
-            to="#how-it-works"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground smooth-transition"
+            to="/collections"
+            className="text-sm font-medium text-gray-400 hover:text-white smooth-transition"
           >
-            How It Works
+            Categories
           </Link>
           <a
             href="https://freekaamaal.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground smooth-transition"
+            className="text-sm font-medium text-gray-400 hover:text-white smooth-transition"
           >
             FreeKaaMaal
           </a>
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-2">
+          <Link to="/search">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gray-400 hover:text-white"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+          </Link>
           <Button
             variant="ghost"
             size="icon"
-            className="text-muted-foreground hover:text-foreground"
+            className="text-gray-400 hover:text-white"
           >
             <User className="h-5 w-5" />
           </Button>
@@ -84,28 +96,28 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border animate-fade-in">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-gray-950/95 backdrop-blur-xl border-b border-white/5 animate-fade-in">
           <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
             <Link
-              to="/"
-              className="text-lg font-medium py-2"
+              to="/#all-deals"
+              className="text-lg font-medium py-2 text-white"
               onClick={() => setMobileMenuOpen(false)}
             >
               Live Deals
             </Link>
             <Link
-              to="/past-deals"
-              className="text-lg font-medium py-2 text-muted-foreground"
+              to="/brands"
+              className="text-lg font-medium py-2 text-gray-400"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Past Drops
+              Brands
             </Link>
             <Link
-              to="#how-it-works"
-              className="text-lg font-medium py-2 text-muted-foreground"
+              to="/collections"
+              className="text-lg font-medium py-2 text-gray-400"
               onClick={() => setMobileMenuOpen(false)}
             >
-              How It Works
+              Categories
             </Link>
             <a
               href="https://freekaamaal.com"
@@ -151,7 +163,7 @@ function CartButtonContent({ count, openCart }: { count: number; openCart?: () =
     <Button
       variant="ghost"
       size="icon"
-      className={`active:scale-95 transition-all relative ${isColored ? 'text-primary' : 'text-muted-foreground'}`}
+      className={`active:scale-95 transition-all relative ${isColored ? 'text-orange-400' : 'text-gray-400 hover:text-white'}`}
       onClick={openCart}
     >
       <ShoppingBag className={`h-5 w-5 ${isColored ? 'fill-primary/10' : ''}`} />

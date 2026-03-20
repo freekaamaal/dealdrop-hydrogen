@@ -115,7 +115,7 @@ export const meta = ({ matches }: MetaArgs<typeof loader>) => {
 export default function Product() {
   const { product, shop, recommended, variants, storeDomain } =
     useLoaderData<typeof loader>();
-  const { media, title, vendor, descriptionHtml, tags } = product;
+  const { media, title, vendor, descriptionHtml, description, tags } = product;
 
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -180,8 +180,10 @@ export default function Product() {
                 </div>
 
                 <div className="absolute top-4 left-4 z-20">
-                  <span className="bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">
-                    Flash Deal
+                  <span className="bg-red-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-500/30">
+                    {selectedVariant?.compareAtPrice && parseFloat(selectedVariant.compareAtPrice.amount) > parseFloat(selectedVariant.price.amount)
+                      ? `${Math.round(((parseFloat(selectedVariant.compareAtPrice.amount) - parseFloat(selectedVariant.price.amount)) / parseFloat(selectedVariant.compareAtPrice.amount)) * 100)}% OFF`
+                      : 'Flash Deal'}
                   </span>
                 </div>
               </div>
@@ -206,33 +208,42 @@ export default function Product() {
             {/* Right Column: Product Info */}
             <div className="space-y-8 animate-fade-in">
               <div>
-                <Badge className="mb-4 bg-accent/10 text-accent hover:bg-accent/20 border-accent/20">
-                  Featured Deal
-                </Badge>
-                <h1 className="text-3xl md:text-5xl font-display font-bold mb-4 leading-tight">
+                {/* Brand + Badge */}
+                <div className="flex items-center gap-3 mb-3 flex-wrap">
+                  {vendor && (
+                    <Link to={`/collections/${vendor.toLowerCase().replace(/\s+/g, '-')}`} className="text-primary text-sm font-semibold uppercase tracking-wider hover:underline">
+                      {vendor}
+                    </Link>
+                  )}
+                  <Badge className="bg-green-500/10 text-green-700 hover:bg-green-500/20 border-green-500/20 text-xs">
+                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5 animate-pulse" />
+                    Live Deal
+                  </Badge>
+                </div>
+
+                <h1 className="text-2xl md:text-4xl font-display font-bold mb-4 leading-tight text-gray-900">
                   {title}
                 </h1>
 
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="flex items-center gap-1">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <IconStar
                         key={i}
-                        className="h-5 w-5 fill-primary text-primary"
+                        className="h-4 w-4 fill-orange-400 text-orange-400"
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-muted-foreground font-medium">
+                  <span className="text-xs text-muted-foreground font-medium">
                     (2,847 reviews)
                   </span>
                 </div>
 
-                <div className="text-lg text-muted-foreground leading-relaxed font-light">
-                  {getExcerpt(title)} - Experience studio-quality sound with our
-                  premium wireless headphones. Featuring advanced active noise
-                  cancellation, 30-hour battery life, and ultra-comfortable
-                  design for all-day wear.
-                </div>
+                {description && (
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-3">
+                    {description.length > 200 ? description.substring(0, 200) + '...' : description}
+                  </p>
+                )}
               </div>
 
               <div className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm space-y-6">
@@ -285,23 +296,65 @@ export default function Product() {
             </div>
           </div>
 
-          {/* Long Description Section */}
-          <div className="mt-16 md:mt-24">
-            <div className="bg-card rounded-3xl p-8 md:p-12 border border-border animate-fade-in relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[100px]" />
-
-              <h2 className="text-3xl font-display font-bold mb-8 relative z-10">
-                Product Description
-              </h2>
-              <div className="prose prose-lg prose-invert max-w-none text-muted-foreground space-y-4 relative z-10">
-                {descriptionHtml ? (
-                  <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
-                ) : (
-                  <p>No description available.</p>
-                )}
+          {/* About the Brand */}
+          {vendor && (
+            <div className="mt-12 md:mt-16">
+              <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl p-6 md:p-10 border border-orange-100">
+                <div className="flex items-start gap-5">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <span className="text-white font-display font-bold text-2xl">
+                      {vendor.charAt(0)}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h2 className="text-xl md:text-2xl font-display font-bold text-gray-900">
+                        About {vendor}
+                      </h2>
+                      <Badge className="bg-orange-500/10 text-orange-700 border-orange-200 text-[10px]">
+                        Verified Brand
+                      </Badge>
+                    </div>
+                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-4">
+                      {vendor} is one of our trusted partner brands on DropMyDeal. We work directly with {vendor} to bring you exclusive deals at prices you won't find anywhere else. Every product is 100% genuine with full brand warranty.
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      <Link
+                        to={`/collections/${vendor.toLowerCase().replace(/\s+/g, '-')}`}
+                        className="inline-flex items-center gap-2 bg-white border border-orange-200 text-orange-700 font-semibold text-sm px-4 py-2 rounded-xl hover:shadow-md smooth-transition"
+                      >
+                        View all {vendor} deals →
+                      </Link>
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <IconCheckCircle className="w-4 h-4 text-green-500" />
+                          Genuine Products
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <IconShield className="w-4 h-4 text-blue-500" />
+                          Brand Warranty
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Product Description */}
+          {descriptionHtml && (
+            <div className="mt-8 md:mt-12">
+              <div className="bg-white rounded-3xl p-6 md:p-10 border border-gray-100">
+                <h2 className="text-xl md:text-2xl font-display font-bold mb-6 text-gray-900">
+                  Product Details
+                </h2>
+                <div className="prose prose-sm md:prose-base max-w-none text-muted-foreground">
+                  <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

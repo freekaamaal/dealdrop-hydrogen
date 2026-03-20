@@ -140,6 +140,14 @@
     transition: var(--transition-smooth);
   }
 
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   .bounce-transition {
     transition: var(--transition-bounce);
   }
