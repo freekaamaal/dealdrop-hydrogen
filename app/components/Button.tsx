@@ -37,8 +37,9 @@ export const Button = forwardRef(
       full: 'w-full',
     };
 
+    const hasInlineStyle = props.style && (props.style.background || props.style.backgroundColor);
     const styles = clsx(
-      missingClass(className, 'bg-') && variants[variant],
+      !hasInlineStyle && missingClass(className, 'bg-') && variants[variant],
       missingClass(className, 'w-') && widths[width],
       className,
     );

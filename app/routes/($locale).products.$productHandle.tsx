@@ -116,6 +116,7 @@ export default function Product() {
   const { product, shop, recommended, variants, storeDomain } =
     useLoaderData<typeof loader>();
   const { media, title, vendor, descriptionHtml, description, tags } = product;
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -168,10 +169,10 @@ export default function Product() {
 
                 {/* Main Image */}
                 <div className="relative z-10 aspect-square flex items-center justify-center">
-                  {selectedVariant.image?.url ? (
+                  {(media.nodes[selectedImageIndex]?.image?.url || selectedVariant.image?.url) ? (
                     <img
-                      src={selectedVariant.image.url}
-                      alt={selectedVariant.image.altText || title}
+                      src={media.nodes[selectedImageIndex]?.image?.url || selectedVariant.image?.url}
+                      alt={media.nodes[selectedImageIndex]?.alt || title}
                       className="w-full h-full object-contain hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
@@ -188,21 +189,28 @@ export default function Product() {
                 </div>
               </div>
 
-              {/* Thumbnails (using media nodes) */}
-              <div className="grid grid-cols-4 gap-4">
-                {media.nodes.slice(0, 4).map((med, i) => (
-                  <div
-                    key={med.id || i}
-                    className="aspect-square rounded-xl overflow-hidden bg-card border border-border cursor-pointer hover:border-primary smooth-transition relative"
-                  >
-                    <img
-                      src={med.image?.url}
-                      alt={med.alt || `View ${i}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
+              {/* Thumbnails */}
+              {media.nodes.length > 1 && (
+                <div className="grid grid-cols-4 gap-3">
+                  {media.nodes.slice(0, 4).map((med: any, i: number) => (
+                    <button
+                      key={med.id || i}
+                      onClick={() => setSelectedImageIndex(i)}
+                      className={`aspect-square rounded-xl overflow-hidden bg-white cursor-pointer smooth-transition ${
+                        selectedImageIndex === i
+                          ? 'border-2 border-orange-500 shadow-md'
+                          : 'border border-gray-200 hover:border-gray-400'
+                      }`}
+                    >
+                      <img
+                        src={med.image?.url}
+                        alt={med.alt || `View ${i + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Right Column: Product Info */}
