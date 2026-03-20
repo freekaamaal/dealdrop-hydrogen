@@ -312,39 +312,34 @@ export default function Homepage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
               {brands.map((brand, i) => {
-                const gradients = [
-                  'from-orange-500 to-amber-500',
-                  'from-blue-500 to-indigo-500',
-                  'from-green-500 to-emerald-500',
+                const bgColors = [
+                  'from-orange-500 to-amber-500', 'from-blue-500 to-indigo-500',
+                  'from-green-500 to-emerald-500', 'from-purple-500 to-pink-500',
+                  'from-red-500 to-rose-500', 'from-teal-500 to-cyan-500',
+                  'from-violet-500 to-purple-500', 'from-sky-500 to-blue-500',
                 ];
                 return (
                   <Link
                     key={brand.name}
-                    to={`/collections/${brand.handle}`}
-                    className="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl smooth-transition hover:scale-[1.02]"
+                    to={`/search?q=${encodeURIComponent(brand.name)}`}
+                    className="group flex-shrink-0 w-[140px] md:w-[160px] bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg smooth-transition hover:scale-[1.03]"
                   >
-                    {/* Brand header with gradient */}
-                    <div className={`bg-gradient-to-r ${gradients[i % gradients.length]} p-4 flex items-center gap-3`}>
+                    <div className={`bg-gradient-to-br ${bgColors[i % bgColors.length]} p-4 flex items-center justify-center h-20`}>
                       {brand.image ? (
-                        <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm overflow-hidden flex-shrink-0">
+                        <div className="w-12 h-12 rounded-xl bg-white/25 backdrop-blur-sm overflow-hidden">
                           <img src={brand.image} alt={brand.name} className="w-full h-full object-cover" />
                         </div>
                       ) : (
-                        <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-display font-bold text-xl">{brand.name.charAt(0)}</span>
+                        <div className="w-12 h-12 rounded-xl bg-white/25 backdrop-blur-sm flex items-center justify-center">
+                          <span className="text-white font-display font-bold text-2xl">{brand.name.charAt(0)}</span>
                         </div>
                       )}
-                      <div>
-                        <h3 className="font-display font-bold text-white text-base">{brand.name}</h3>
-                        <p className="text-white/70 text-xs">{brand.count} {brand.count === 1 ? 'product' : 'products'}</p>
-                      </div>
                     </div>
-                    {/* CTA */}
-                    <div className="p-3 flex items-center justify-between">
-                      <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary smooth-transition">View all deals</span>
-                      <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 smooth-transition" />
+                    <div className="p-3 text-center">
+                      <h3 className="font-bold text-xs md:text-sm truncate group-hover:text-primary smooth-transition">{brand.name}</h3>
+                      <p className="text-[10px] text-muted-foreground">{brand.count} deals</p>
                     </div>
                   </Link>
                 );

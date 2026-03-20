@@ -84,7 +84,7 @@ export default function Brands() {
             return (
               <Link
                 key={brand.name}
-                to={`/collections/${brand.handle}`}
+                to={`/search?q=${encodeURIComponent(brand.name)}`}
                 className="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl smooth-transition hover:scale-[1.02]"
               >
                 {/* Brand header */}
