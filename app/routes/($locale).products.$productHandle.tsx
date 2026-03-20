@@ -553,50 +553,60 @@ export function ProductForm({
           </div>
         ) : (
           <>
+            {/* Buy Now (Primary) */}
+            <AddToCartButton
+              lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
+              redirectTo="/checkout"
+              variant="primary"
+              className="w-full h-14 rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all active:scale-[0.98] gradient-urgency text-white hover:brightness-110 relative z-20"
+            >
+              Buy Now — ₹{parseFloat(selectedVariant?.price?.amount || '0').toLocaleString('en-IN')}
+            </AddToCartButton>
+
             {/* Quantity + Add to Cart Row */}
-            <div className="flex gap-4 items-stretch">
+            <div className="flex gap-3 items-stretch">
               {/* Quantity Selector */}
-              <div className="flex items-center border border-border rounded-xl bg-card h-14 px-2 shadow-sm">
+              <div className="flex items-center border border-gray-200 rounded-2xl bg-white h-12 px-1 shadow-sm">
                 <button
                   onClick={() => handleQuantityChange(quantity - 1)}
-                  className="w-10 h-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors text-xl font-medium"
+                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg font-medium rounded-l-xl hover:bg-gray-50"
                   disabled={quantity <= 1}
                 >
                   −
                 </button>
-                <div className="w-10 text-center font-bold text-lg">{quantity}</div>
+                <div className="w-9 text-center font-bold text-sm">{quantity}</div>
                 <button
                   onClick={() => handleQuantityChange(quantity + 1)}
-                  className="w-10 h-full flex items-center justify-center text-muted-foreground hover:text-primary transition-colors text-xl font-medium"
+                  className="w-9 h-full flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors text-lg font-medium rounded-r-xl hover:bg-gray-50"
                 >
                   +
                 </button>
               </div>
 
-              {/* Add To Cart (Secondary) */}
+              {/* Add To Cart */}
               <AddToCartButton
                 lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
                 variant="secondary"
-                className="flex-1 bg-[#1A1A1A] hover:bg-black text-white font-bold h-14 rounded-xl text-base shadow-md transition-transform transform active:scale-[0.98] relative z-20"
+                className="flex-1 bg-gray-900 hover:bg-gray-800 text-white font-semibold h-12 rounded-2xl text-sm shadow-sm transition-all active:scale-[0.98] relative z-20"
               >
-                Add to cart
+                Add to Cart
               </AddToCartButton>
             </div>
 
-            {/* Buy Now (Primary - Checkout) */}
-            <AddToCartButton
-              lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
-              redirectTo="/checkout"
-              variant="primary"
-              className="w-full h-14 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98] bg-gradient-to-r from-[#FF6B6B] to-[#FF8E53] text-white hover:brightness-110 relative z-20"
-            >
-              Buy it now
-            </AddToCartButton>
-
-            <p className="text-xs text-muted-foreground/80 flex items-center gap-2 mt-2">
-              <IconCheckCircle className="w-4 h-4 text-green-500" />
-              Waitlist is typically 1-2 months. Secure yours now.
-            </p>
+            <div className="flex items-center gap-4 text-[11px] text-muted-foreground mt-1">
+              <span className="flex items-center gap-1.5">
+                <IconCheckCircle className="w-3.5 h-3.5 text-green-500" />
+                100% Genuine
+              </span>
+              <span className="flex items-center gap-1.5">
+                <IconShield className="w-3.5 h-3.5 text-blue-500" />
+                Brand Warranty
+              </span>
+              <span className="flex items-center gap-1.5">
+                <IconTruck className="w-3.5 h-3.5 text-orange-500" />
+                Fast Delivery
+              </span>
+            </div>
           </>
         )}
       </div>
