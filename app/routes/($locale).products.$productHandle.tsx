@@ -233,19 +233,6 @@ export default function Product() {
                   {title}
                 </h1>
 
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <IconStar
-                        key={i}
-                        className="h-4 w-4 fill-orange-400 text-orange-400"
-                      />
-                    ))}
-                  </div>
-                  <span className="text-xs text-muted-foreground font-medium">
-                    (2,847 reviews)
-                  </span>
-                </div>
 
                 {description && (
                   <p className="text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-3">
