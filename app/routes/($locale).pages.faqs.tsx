@@ -4,7 +4,7 @@ import { Disclosure } from '@headlessui/react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export const meta: MetaFunction = () => {
-    return [{ title: 'FAQs | DropMyDeal' }];
+    return [{ title: 'FAQs | DealDrop by FreeKaaMaal.com' }];
 };
 
 const faqs = [
@@ -69,7 +69,7 @@ export default function FaqPage() {
                     Frequently Asked Questions
                 </Heading>
                 <Text className="text-lg text-muted-foreground">
-                    Everything you need to know about DropMyDeal
+                    Everything you need to know about DealDrop by FreeKaaMaal.com
                 </Text>
             </div>
 

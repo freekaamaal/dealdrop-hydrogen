@@ -27,8 +27,8 @@ export function Header({ cart, openCart }: { cart: any; openCart: () => void }) 
             className="pointer-events-auto hover:opacity-90 transition-opacity flex items-center justify-center h-full"
           >
             <img
-              src="/assets/logo-v2.png?v=10"
-              alt="DropMyDeal"
+              src="/assets/dealdrop-fkm-logo.png"
+              alt="DealDrop by FreeKaaMaal.com"
               className="w-[200px] md:w-[280px] max-w-[80vw] h-auto object-contain py-2"
             />
           </Link>

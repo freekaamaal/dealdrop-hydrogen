@@ -25,7 +25,7 @@ export function FeaturesGrid() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-4">
-            Why DropMyDeal?
+            Why DealDrop by FreeKaaMaal.com?
           </h2>
           <p className="text-secondary text-lg max-w-2xl mx-auto">
             We're not just another marketplace. We're a secret club for smart

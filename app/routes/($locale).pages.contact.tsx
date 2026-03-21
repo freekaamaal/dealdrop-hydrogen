@@ -4,7 +4,7 @@ import { Button } from '~/components/ui/button';
 import { Mail, MapPin, Phone } from 'lucide-react';
 
 export const meta: MetaFunction = () => {
-    return [{ title: 'Contact Us | DropMyDeal' }];
+    return [{ title: 'Contact Us | DealDrop by FreeKaaMaal.com' }];
 };
 
 export default function ContactPage() {

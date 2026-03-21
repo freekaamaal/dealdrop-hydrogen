@@ -324,7 +324,7 @@ export default function Product() {
                       </Badge>
                     </div>
                     <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-4">
-                      {vendor} is one of our trusted partner brands on DropMyDeal. We work directly with {vendor} to bring you exclusive deals at prices you won't find anywhere else. Every product is 100% genuine with full brand warranty.
+                      {vendor} is one of our trusted partner brands on DealDrop by FreeKaaMaal.com. We work directly with {vendor} to bring you exclusive deals at prices you won't find anywhere else. Every product is 100% genuine with full brand warranty.
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <Link

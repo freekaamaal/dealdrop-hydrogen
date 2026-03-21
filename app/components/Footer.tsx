@@ -8,9 +8,9 @@ export function Footer() {
           {/* About */}
           <div className="col-span-2 md:col-span-1">
             <span className="font-display font-bold text-lg">
-              <span className="text-white">DropMy</span>
-              <span className="text-orange-500">Deal</span>
-              <span className="text-gray-500">.com</span>
+              <span className="text-white">Deal</span>
+              <span className="text-orange-500">Drop</span>
+              <span className="text-gray-500"> by FreeKaaMaal.com</span>
             </span>
             <p className="text-gray-400 text-xs leading-relaxed mt-3 max-w-xs">
               Flash deals marketplace by FreeKaaMaal.com — India's largest deal community with 50 lakh+ members since 2010. Genuine products, wholesale prices, brand-direct.
@@ -74,7 +74,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-6 text-center text-[11px] text-gray-500">
-          © {new Date().getFullYear()} DropMyDeal.com — Powered by FreeKaaMaal.com (Woost Internet Private Limited)
+          © {new Date().getFullYear()} DealDrop by FreeKaaMaal.com — Powered by FreeKaaMaal.com (Woost Internet Private Limited)
         </div>
       </div>
     </footer>

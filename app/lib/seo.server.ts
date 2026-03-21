@@ -31,7 +31,7 @@ function root({
 }): SeoConfig {
   return {
     title: shop?.name,
-    titleTemplate: '%s | DropMyDeal',
+    titleTemplate: '%s | DealDrop by FreeKaaMaal.com',
     description: truncate(shop?.description ?? ''),
     handle: '@freekaamaal',
     url,
@@ -64,7 +64,7 @@ function root({
 function home({url}: {url: Request['url']}): SeoConfig {
   return {
     title: 'Home',
-    titleTemplate: '%s | DropMyDeal',
+    titleTemplate: '%s | DealDrop by FreeKaaMaal.com',
     description: 'The best place to buy snowboarding products',
     url,
     robots: {

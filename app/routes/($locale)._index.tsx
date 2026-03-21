@@ -27,7 +27,7 @@ import { Button } from '~/components/ui/button';
 import { NewsletterForm } from '~/components/NewsletterForm';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'DropMyDeal | Biggest Deals on Premium Brands' }];
+  return [{ title: 'DealDrop by FreeKaaMaal.com | Biggest Deals on Premium Brands' }];
 };
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
@@ -44,7 +44,7 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   ];
   allNodes.forEach((product: any) => {
     const vendor = product.vendor;
-    if (vendor && vendor !== 'DropMyDeal' && vendor !== 'DealDrop') {
+    if (vendor && vendor !== 'DropMyDeal' && vendor !== 'DealDrop' && vendor !== 'DealDrop by FreeKaaMaal.com') {
       const existing = brandMap.get(vendor);
       if (existing) {
         existing.count++;

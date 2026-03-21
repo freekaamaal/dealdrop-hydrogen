@@ -5,7 +5,7 @@ import { ArrowRight, Store } from 'lucide-react';
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
-  const seo = seoPayload.page({ url: request.url, page: { title: 'Shop by Brand | DropMyDeal' } });
+  const seo = seoPayload.page({ url: request.url, page: { title: 'Shop by Brand | DealDrop by FreeKaaMaal.com' } });
 
   // Fetch all products to extract vendors
   const { products } = await storefront.query(ALL_PRODUCTS_QUERY);
@@ -15,7 +15,7 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
 
   for (const product of products.nodes) {
     const vendor = product.vendor;
-    if (!vendor || vendor === 'DropMyDeal' || vendor === 'DealDrop') continue;
+    if (!vendor || vendor === 'DropMyDeal' || vendor === 'DealDrop' || vendor === 'DealDrop by FreeKaaMaal.com') continue;
 
     const existing = brandMap.get(vendor);
     const productData = {

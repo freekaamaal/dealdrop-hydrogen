@@ -5,7 +5,7 @@ import { Tag, ArrowRight } from 'lucide-react';
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
-  const seo = seoPayload.page({ url: request.url, page: { title: 'Shop by Category | DropMyDeal' } });
+  const seo = seoPayload.page({ url: request.url, page: { title: 'Shop by Category | DealDrop by FreeKaaMaal.com' } });
 
   const { products } = await storefront.query(ALL_PRODUCTS_QUERY);
 

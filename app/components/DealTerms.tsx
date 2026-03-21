@@ -11,7 +11,7 @@ export function DealTerms() {
         </h4>
         <ul className="space-y-2 text-primary/80">
           <li className="flex gap-2">
-            ✅ <span>Lifetime access to DropMyDeal Plan</span>
+            ✅ <span>Lifetime access to DealDrop by FreeKaaMaal.com Plan</span>
           </li>
           <li className="flex gap-2">
             ✅{' '}
