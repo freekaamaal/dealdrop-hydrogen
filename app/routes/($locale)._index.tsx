@@ -189,7 +189,7 @@ export default function Homepage() {
             <div className="space-y-5 animate-fade-in order-2 lg:order-1">
               {/* Value prop for new visitors */}
               <p className="text-orange-400 text-xs md:text-sm font-semibold tracking-wide">
-                India's Best Flash Deals. Premium Brands. Unreal Prices.
+                Try New Brands at Unbeatable Prices. Direct from Brands. Bulk Savings Passed to You.
               </p>
 
               <div className="flex items-center gap-3 flex-wrap">
@@ -454,10 +454,10 @@ export default function Homepage() {
               {/* Steps - visual flow */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
                 {[
-                  { num: '1', icon: Store, color: 'blue', bg: 'from-blue-500/20 to-blue-600/10', accent: 'bg-blue-500', iconColor: 'text-blue-400', title: 'Brands Approach Us', desc: 'They want new customers & honest product reviews' },
+                  { num: '1', icon: Store, color: 'blue', bg: 'from-blue-500/20 to-blue-600/10', accent: 'bg-blue-500', iconColor: 'text-blue-400', title: 'Brands Approach Us', desc: 'They want to acquire new customers & grow their user base' },
                   { num: '2', icon: Handshake, color: 'orange', bg: 'from-orange-500/20 to-orange-600/10', accent: 'bg-orange-500', iconColor: 'text-orange-400', title: 'We Get Exclusive Pricing', desc: 'Deep discounts on limited quantities — direct from brand' },
                   { num: '3', icon: BadgePercent, color: 'green', bg: 'from-green-500/20 to-green-600/10', accent: 'bg-green-500', iconColor: 'text-green-400', title: 'You Buy at Cost', desc: 'No markup, no middlemen — we pass savings to you' },
-                  { num: '4', icon: Trophy, color: 'purple', bg: 'from-purple-500/20 to-purple-600/10', accent: 'bg-purple-500', iconColor: 'text-purple-400', title: 'Everyone Wins', desc: 'Brands get customers & reviews. You get unreal prices.' },
+                  { num: '4', icon: Trophy, color: 'purple', bg: 'from-purple-500/20 to-purple-600/10', accent: 'bg-purple-500', iconColor: 'text-purple-400', title: 'Everyone Wins', desc: 'Brands get new customers. You get to try premium products at unreal prices.' },
                 ].map((step) => {
                   const StepIcon = step.icon;
                   return (
@@ -483,7 +483,7 @@ export default function Homepage() {
                   { label: '100% Genuine', color: 'text-green-400' },
                   { label: 'Brand Warranty', color: 'text-blue-400' },
                   { label: 'Direct from Brand', color: 'text-orange-400' },
-                  { label: 'Easy Returns', color: 'text-purple-400' },
+                  { label: 'Bulk Savings', color: 'text-purple-400' },
                 ].map((badge) => (
                   <div key={badge.label} className="flex items-center gap-1.5 text-[11px] md:text-xs">
                     <svg className={`w-3.5 h-3.5 ${badge.color}`} fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/><polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/></svg>
