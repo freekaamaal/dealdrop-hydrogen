@@ -110,8 +110,10 @@ export default function Search() {
       ) : (
         <Section>
           <Pagination connection={products}>
-            {({nodes, isLoading, NextLink, PreviousLink}) => {
-              const itemsMarkup = nodes.map((product, i) => (
+            {({nodes, isLoading, NextLink, PreviousLink, state}) => {
+              // Only show current page nodes, not accumulated
+              const currentNodes = products.nodes;
+              const itemsMarkup = currentNodes.map((product, i) => (
                 <ProductCard
                   key={product.id}
                   product={product}
