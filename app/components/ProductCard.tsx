@@ -33,14 +33,13 @@ export function ProductCard({
 
   const isSoldOut = !firstVariant.availableForSale;
 
-  if (isSoldOut) return null; // Hide sold out products
-
   return (
     <Link to={`/products/${product.handle}`} prefetch="intent">
       <div
         className={`
         group relative bg-white rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100
         hover:shadow-xl hover:scale-[1.02] smooth-transition
+        ${isSoldOut ? 'opacity-60 grayscale-[30%]' : ''}
         ${className || ''}
       `}
       >
@@ -61,10 +60,16 @@ export function ProductCard({
 
           {/* Status Badge */}
           <div className="absolute top-2 right-2 md:top-3 md:right-3">
-            <Badge className="bg-green-500 text-white border-0 shadow-md shadow-green-500/30 text-[10px] md:text-xs px-2 py-0.5">
-              <span className="w-1.5 h-1.5 bg-white rounded-full mr-1.5 animate-pulse" />
-              LIVE
-            </Badge>
+            {isSoldOut ? (
+              <Badge className="bg-red-600 text-white border-0 shadow-md shadow-red-500/30 text-[10px] md:text-xs px-2 py-0.5">
+                SOLD OUT
+              </Badge>
+            ) : (
+              <Badge className="bg-green-500 text-white border-0 shadow-md shadow-green-500/30 text-[10px] md:text-xs px-2 py-0.5">
+                <span className="w-1.5 h-1.5 bg-white rounded-full mr-1.5 animate-pulse" />
+                LIVE
+              </Badge>
+            )}
           </div>
 
           {/* Discount Badge */}
