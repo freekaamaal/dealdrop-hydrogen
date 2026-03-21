@@ -12,6 +12,8 @@ import { CartLoading } from '~/components/CartLoading';
 import { Input } from '~/components/Input';
 import { Drawer, useDrawer } from '~/components/Drawer';
 import { AsideProvider, useAside } from '~/components/Aside';
+import { SpinWheel } from '~/components/SpinWheel';
+import { FirstPurchaseBanner } from '~/components/FirstPurchaseBanner';
 import { CountrySelector } from '~/components/CountrySelector';
 import {
   IconMenu,
@@ -50,6 +52,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
             Skip to content
           </a>
         </div>
+        <FirstPurchaseBanner />
         <HeaderWrapper layout={layout} />
 
         <main role="main" id="mainContent" className="flex-grow pb-24 md:pb-0">
@@ -57,6 +60,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
         </main>
       </div>
       <Footer />
+      <SpinWheel />
     </AsideProvider>
   );
 }
