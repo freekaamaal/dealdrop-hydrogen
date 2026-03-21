@@ -268,7 +268,9 @@ export default function Product() {
                   <CountdownTimer targetDate={dealEndTime} />
                 )}
 
-                <StockBar remaining={selectedVariant.quantityAvailable} total={selectedVariant.quantityAvailable <= 50 ? Math.ceil(selectedVariant.quantityAvailable * 1.1) : 100} />
+                {selectedVariant.quantityAvailable != null && (
+                  <StockBar remaining={selectedVariant.quantityAvailable} total={selectedVariant.quantityAvailable <= 50 ? Math.ceil(selectedVariant.quantityAvailable * 1.1) : 100} />
+                )}
               </div>
 
               {/* Variants / Options */}

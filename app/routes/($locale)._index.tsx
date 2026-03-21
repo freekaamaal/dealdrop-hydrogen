@@ -231,7 +231,11 @@ export default function Homepage() {
 
               {/* Timer + Stock — Dark variants */}
               {dealEndTime && <CountdownTimer targetDate={dealEndTime} variant="compact" dark />}
-              <StockBar remaining={heroProduct?.variants?.nodes[0]?.quantityAvailable ?? 23} total={100} dark />
+              {(() => {
+                const qty = heroProduct?.variants?.nodes[0]?.quantityAvailable;
+                if (qty == null) return null;
+                return <StockBar remaining={qty} total={qty <= 50 ? Math.ceil(qty * 1.1) : 100} dark />;
+              })()}
 
               {/* CTA */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
