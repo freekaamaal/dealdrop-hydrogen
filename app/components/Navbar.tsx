@@ -26,16 +26,13 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
 
         <Link
           to="/"
-          className="flex flex-col group"
+          className="flex items-center group"
         >
-          <span className="font-display font-bold text-xl md:text-2xl tracking-tight">
-            <span className="text-white">DropMy</span>
-            <span className="text-orange-500">Deal</span>
-            <span className="text-gray-400 text-base md:text-lg">.com</span>
-          </span>
-          <span className="text-[9px] md:text-[10px] text-gray-500 -mt-0.5 tracking-wide">
-            by <span className="text-gray-400">FreeKaaMaal.com</span>
-          </span>
+          <img
+            src="/assets/dealdrop-fkm-logo.png"
+            alt="DealDrop by FreeKaaMaal.com"
+            className="h-10 md:h-12 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop Navigation */}
