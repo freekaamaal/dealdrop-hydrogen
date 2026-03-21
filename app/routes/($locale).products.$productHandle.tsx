@@ -496,8 +496,10 @@ export function ProductForm({
 
   return (
     <div className="grid gap-6">
-      {/* Options */}
-      {productOptions.map((option) => (
+      {/* Options — hide "Title: Default Title" for single-variant products */}
+      {productOptions
+        .filter((option) => !(option.name === 'Title' && option.optionValues.length === 1 && option.optionValues[0].name === 'Default Title'))
+        .map((option) => (
         <div key={option.name} className="flex flex-col space-y-2">
           <h4 className="font-bold text-sm text-foreground">{option.name}</h4>
           <div className="flex flex-wrap gap-2">
