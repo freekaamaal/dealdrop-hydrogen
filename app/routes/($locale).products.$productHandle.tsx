@@ -672,6 +672,8 @@ const PRODUCT_FRAGMENT = `#graphql
     adjacentVariants (selectedOptions: $selectedOptions) {
       ...ProductVariant
     }
+    encodedVariantExistence
+    encodedVariantAvailability
     seo {
       description
       title
