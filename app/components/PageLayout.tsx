@@ -83,7 +83,7 @@ function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
   return (
     <Drawer open={isOpen} onClose={onClose} heading="Cart" openFrom="right">
-      <div className="grid">
+      <div className="grid overflow-hidden">
         <Suspense fallback={<CartLoading />}>
           <Await resolve={rootData?.cart}>
             {(cart) => <Cart layout="drawer" onClose={onClose} cart={cart} />}

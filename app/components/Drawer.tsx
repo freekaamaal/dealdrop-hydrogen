@@ -60,9 +60,9 @@ export function Drawer({
                 leaveFrom="translate-x-0"
                 leaveTo={offScreen[openFrom]}
               >
-                <Dialog.Panel className="w-screen max-w-lg text-left align-middle transition-all transform shadow-xl h-screen-dynamic bg-white dark:bg-neutral-900 text-foreground">
+                <Dialog.Panel className="w-screen max-w-lg text-left align-middle transition-all transform shadow-xl h-screen-dynamic bg-white dark:bg-neutral-900 text-foreground flex flex-col">
                   <header
-                    className={`sticky top-0 flex items-center px-6 h-nav sm:px-8 md:px-12 ${heading ? 'justify-between' : 'justify-end'
+                    className={`sticky top-0 flex items-center px-6 h-nav sm:px-8 md:px-12 shrink-0 z-[100] bg-white dark:bg-neutral-900 ${heading ? 'justify-between' : 'justify-end'
                       }`}
                   >
                     {heading !== null && (
@@ -74,14 +74,16 @@ export function Drawer({
                     )}
                     <button
                       type="button"
-                      className="p-4 -mr-2 transition text-primary hover:text-primary/50 relative z-[100]"
+                      className="p-4 -mr-2 transition text-primary hover:text-primary/50"
                       onClick={onClose}
                       data-test="close-cart"
                     >
                       <IconClose aria-label="Close panel" />
                     </button>
                   </header>
-                  {children}
+                  <div className="flex-1 overflow-hidden">
+                    {children}
+                  </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
