@@ -911,10 +911,10 @@ const SALE_QUERY = `#graphql
     id handle title
     products(first: 50, sortKey: MANUAL) {
       nodes {
-        id title description handle tags vendor productType publishedAt
+        id title description handle tags vendor productType publishedAt availableForSale
         variants(first: 1) {
           nodes {
-            id
+            id availableForSale
             image { url altText width height }
             price { amount currencyCode }
             compareAtPrice { amount currencyCode }
