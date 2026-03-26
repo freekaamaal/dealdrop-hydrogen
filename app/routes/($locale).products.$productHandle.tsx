@@ -187,6 +187,15 @@ export default function Product() {
                       : 'Flash Deal'}
                   </span>
                 </div>
+
+                {/* SOLD OUT overlay */}
+                {!selectedVariant?.availableForSale && (
+                  <div className="absolute inset-0 z-30 bg-black/40 flex items-center justify-center rounded-3xl">
+                    <div className="bg-red-600 text-white font-display font-black text-2xl px-8 py-3 rounded-2xl -rotate-12 shadow-2xl border-2 border-white/20">
+                      SOLD OUT
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Thumbnails */}
@@ -255,9 +264,7 @@ export default function Product() {
                   <CountdownTimer targetDate={dealEndTime} />
                 )}
 
-                {selectedVariant.quantityAvailable != null && (
-                  <StockBar remaining={selectedVariant.quantityAvailable} total={selectedVariant.quantityAvailable <= 50 ? Math.ceil(selectedVariant.quantityAvailable * 1.1) : 100} />
-                )}
+                {/* Stock bar hidden during sale — only shown on ₹9 deals in sale page */}
               </div>
 
               {/* Variants / Options */}

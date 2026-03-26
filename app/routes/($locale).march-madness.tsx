@@ -483,10 +483,12 @@ function SlotMachine() {
 export default function MarchMadness() {
   const {flat99Products, re9Products, flat149Products, brands} = useLoaderData<typeof loader>();
   const [saleEndDate] = useState(SALE_END_DATE);
-  // "bought today" counter: starts at 500, increases ~10% every hour from midnight
-  const hourNow = new Date().getHours();
-  const boughtBase = 500;
-  const boughtToday = Math.round(boughtBase * Math.pow(1.1, hourNow));
+  // "bought today" counter: starts at 127 at midnight, grows ~40-70 per hour
+  // Uses date as seed so it's consistent across refreshes but changes daily
+  const now = new Date();
+  const hourNow = now.getHours();
+  const daySeed = now.getDate() * 7 + now.getMonth() * 13; // changes daily
+  const boughtToday = 127 + (hourNow * 47) + ((daySeed + hourNow * 3) % 29);
 
   const ordersCount = useAnimatedCounter(boughtToday, 2500);
   const savingsCount = useAnimatedCounter(12, 2000);
