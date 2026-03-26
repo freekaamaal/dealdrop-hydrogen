@@ -483,7 +483,12 @@ function SlotMachine() {
 export default function MarchMadness() {
   const {flat99Products, re9Products, flat149Products, brands} = useLoaderData<typeof loader>();
   const [saleEndDate] = useState(SALE_END_DATE);
-  const ordersCount = useAnimatedCounter(8547, 2500);
+  // "bought today" counter: starts at 500, increases ~10% every hour from midnight
+  const hourNow = new Date().getHours();
+  const boughtBase = 500;
+  const boughtToday = Math.round(boughtBase * Math.pow(1.1, hourNow));
+
+  const ordersCount = useAnimatedCounter(boughtToday, 2500);
   const savingsCount = useAnimatedCounter(12, 2000);
 
   const mapProduct = (product: any) => {
@@ -495,7 +500,8 @@ export default function MarchMadness() {
       mrp: parseFloat(variant.compareAtPrice?.amount || variant.price?.amount || '0'),
       dealPrice: parseFloat(variant.price?.amount || '0'),
       handle: product.handle, vendor: product.vendor || '',
-      quantityAvailable: variant.quantityAvailable ?? 50,
+      availableForSale: product.availableForSale ?? variant.availableForSale ?? true,
+      quantityAvailable: variant.quantityAvailable,
     };
   };
 
@@ -681,8 +687,11 @@ export default function MarchMadness() {
                   const disc = deal.mrp > 0 ? Math.round(((deal.mrp - deal.dealPrice) / deal.mrp) * 100) : 0;
                   const price = Math.round(deal.dealPrice);
                   const mrp = Math.round(deal.mrp);
-                  const stock = deal.quantityAvailable ?? 0;
-                  const isOOS = stock <= 0;
+                  const isOOS = deal.availableForSale === false;
+                  // Real stock if available, otherwise generate realistic number from product ID
+                  const realStock = deal.quantityAvailable;
+                  const fakeStock = realStock != null ? realStock : (((deal.id.charCodeAt(deal.id.length - 2) * 7 + deal.id.charCodeAt(deal.id.length - 3) * 3) % 35) + 8);
+                  const stock = isOOS ? 0 : fakeStock;
                   const stockPct = isOOS ? 0 : Math.min((stock / 50) * 100, 100);
                   return (
                     <Link key={deal.id} to={`/products/${deal.handle}`} className="group snap-start flex-shrink-0 w-[260px] md:w-[300px]">
@@ -817,7 +826,7 @@ export default function MarchMadness() {
               </h2>
             </div>
             <div className="flex items-center gap-1.5 text-gray-400 text-xs">
-              <Users className="w-3.5 h-3.5" /><span>1,234 bought today</span>
+              <Users className="w-3.5 h-3.5" /><span>{boughtToday.toLocaleString()}+ bought today</span>
             </div>
           </div>
 
@@ -1181,10 +1190,10 @@ const MARCH_MADNESS_QUERY = `#graphql
     title
     products(first: 50, sortKey: MANUAL) {
       nodes {
-        id title description handle tags vendor productType publishedAt
+        id title description handle tags vendor productType publishedAt availableForSale
         variants(first: 1) {
           nodes {
-            id
+            id availableForSale
             image { url altText width height }
             price { amount currencyCode }
             compareAtPrice { amount currencyCode }
