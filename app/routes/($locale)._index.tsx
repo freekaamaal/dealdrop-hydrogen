@@ -17,6 +17,7 @@ import {
   Handshake,
 } from 'lucide-react';
 import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import type { MetaFunction } from '@remix-run/react';
 import { AnalyticsPageType } from '@shopify/hydrogen';
 
 import { seoPayload } from '~/lib/seo.server';
@@ -27,12 +28,53 @@ import { Button } from '~/components/ui/button';
 import { NewsletterForm } from '~/components/NewsletterForm';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'DealDrop by FreeKaaMaal.com | Biggest Deals on Premium Brands' }];
+  return [{ title: 'March Madness Sale LIVE | DealDrop by FreeKaaMaal.com' }];
 };
+
+// ⚡ MARCH MADNESS SALE FLAG — set to false after 29 March 2026 to revert homepage
+const SALE_ACTIVE = true;
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
   const seo = seoPayload.home({ url: request.url });
+
+  // During sale: fetch sale collection data for the MarchMadness component
+  if (SALE_ACTIVE) {
+    const saleData = await storefront.query(SALE_QUERY);
+    const allProducts = saleData.allCatalogue?.products.nodes || [];
+    let re9Products = saleData.re9?.products.nodes || [];
+    let flat99Products = saleData.flat99?.products.nodes || [];
+    let flat149Products = saleData.flat149?.products.nodes || [];
+
+    // Fallback if collections not published
+    if (re9Products.length === 0 && allProducts.length > 0) {
+      re9Products = allProducts.filter((p: any) => parseFloat(p.variants?.nodes?.[0]?.price?.amount || '0') <= 9).slice(0, 8);
+    }
+    if (flat99Products.length === 0 && allProducts.length > 0) {
+      flat99Products = allProducts.filter((p: any) => { const pr = parseFloat(p.variants?.nodes?.[0]?.price?.amount || '0'); return pr > 0 && pr <= 99; });
+    }
+    if (flat149Products.length === 0 && allProducts.length > 0) {
+      flat149Products = allProducts.filter((p: any) => { const pr = parseFloat(p.variants?.nodes?.[0]?.price?.amount || '0'); return pr > 100 && pr <= 299; });
+    }
+
+    // Build brands
+    const brandMap = new Map<string, {name: string; count: number; image: string}>();
+    [...flat99Products, ...re9Products, ...flat149Products].forEach((p: any) => {
+      const v = p.vendor;
+      if (v && !['DealDrop', 'DealDrop by FreeKaaMaal.com', 'DropMyDeal'].includes(v)) {
+        const ex = brandMap.get(v);
+        if (ex) ex.count++;
+        else brandMap.set(v, {name: v, count: 1, image: p.variants?.nodes?.[0]?.image?.url || ''});
+      }
+    });
+
+    return defer({
+      analytics: { pageType: AnalyticsPageType.home },
+      flat99Products, re9Products, flat149Products,
+      brands: Array.from(brandMap.values()),
+      isSaleLive: true,
+    });
+  }
 
   const { hero, featured, upcoming, categories, allProducts } = await storefront.query(HOMEPAGE_QUERY);
 
@@ -77,11 +119,21 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
     categories: categories?.nodes || [],
     productCategories,
     brands: Array.from(brandMap.values()),
+    isSaleLive: SALE_ACTIVE,
   });
 }
 
+// Import the March Madness sale page component
+import MarchMadnessPage from './($locale).march-madness';
+
 export default function Homepage() {
-  const { featuredProducts, upcomingDeals, heroProduct, categories, brands, productCategories } = useLoaderData<typeof loader>();
+  const data = useLoaderData<any>();
+  const { featuredProducts = [], upcomingDeals = [], heroProduct = null, categories = [], brands = [], productCategories = [], isSaleLive = false } = data || {};
+
+  // During sale: render the March Madness page instead of normal homepage
+  if (isSaleLive) {
+    return <MarchMadnessPage />;
+  }
   const [activeTab, setActiveTab] = useState<'live' | 'upcoming'>('live');
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterBrand, setFilterBrand] = useState<string>('all');
@@ -343,7 +395,7 @@ export default function Homepage() {
             </div>
 
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
-              {brands.map((brand, i) => {
+              {brands.map((brand: any, i: number) => {
                 const bgColors = [
                   'from-orange-500 to-amber-500', 'from-blue-500 to-indigo-500',
                   'from-green-500 to-emerald-500', 'from-purple-500 to-pink-500',
@@ -836,4 +888,40 @@ const HOMEPAGE_QUERY = `#graphql
     }
   }
 
+` as const;
+
+// Sale collections query — used when SALE_ACTIVE = true
+const SALE_QUERY = `#graphql
+  query SaleHomepage($country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    flat99: collection(handle: "collection-of-99-sale-1") {
+      ...SaleFragment
+    }
+    re9: collection(handle: "collection-of-99-sale") {
+      ...SaleFragment
+    }
+    flat149: collection(handle: "collection-of-rs-149-sale") {
+      ...SaleFragment
+    }
+    allCatalogue: collection(handle: "featured-products") {
+      ...SaleFragment
+    }
+  }
+  fragment SaleFragment on Collection {
+    id handle title
+    products(first: 50, sortKey: MANUAL) {
+      nodes {
+        id title description handle tags vendor productType publishedAt
+        variants(first: 1) {
+          nodes {
+            id
+            image { url altText width height }
+            price { amount currencyCode }
+            compareAtPrice { amount currencyCode }
+            quantityAvailable
+          }
+        }
+      }
+    }
+  }
 ` as const;

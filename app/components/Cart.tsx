@@ -333,15 +333,25 @@ function CartLineQuantityAdjust({ line }: { line: CartLine }) {
 
   const optimisticQuantity = optimisticData?.quantity || line.quantity;
 
-  const { id: lineId } = line;
+  const { id: lineId, merchandise } = line;
   const prevQuantity = Number(Math.max(0, optimisticQuantity - 1).toFixed(0));
   const nextQuantity = Number((optimisticQuantity + 1).toFixed(0));
+
+  // Sale products: limit to max 1 qty (₹9, ₹99, ₹149 — all sale products ≤₹299)
+  const price = parseFloat((merchandise as any)?.price?.amount || '0');
+  const isSaleProduct = price > 0 && price <= 299;
+  const maxQtyReached = isSaleProduct && optimisticQuantity >= 1;
 
   return (
     <>
       <label htmlFor={`quantity-${lineId}`} className="sr-only">
         Quantity, {optimisticQuantity}
       </label>
+      {isSaleProduct && (
+        <div className="text-[10px] text-red-500 font-semibold mb-1">
+          Limited to 1 qty per product
+        </div>
+      )}
       <div className="flex items-center border rounded">
         <UpdateCartButton lines={[{ id: lineId, quantity: prevQuantity }]}>
           <button
@@ -363,18 +373,21 @@ function CartLineQuantityAdjust({ line }: { line: CartLine }) {
           {optimisticQuantity}
         </div>
 
-        <UpdateCartButton lines={[{ id: lineId, quantity: nextQuantity }]}>
+        <UpdateCartButton lines={[{ id: lineId, quantity: maxQtyReached ? optimisticQuantity : nextQuantity }]}>
           <button
-            className="w-10 h-10 transition text-neutral-600 hover:text-neutral-900"
+            className={`w-10 h-10 transition ${maxQtyReached ? 'text-neutral-300 cursor-not-allowed' : 'text-neutral-600 hover:text-neutral-900'}`}
             name="increase-quantity"
-            value={nextQuantity}
+            value={maxQtyReached ? optimisticQuantity : nextQuantity}
             aria-label="Increase quantity"
+            disabled={maxQtyReached}
           >
             <span>&#43;</span>
-            <OptimisticInput
-              id={optimisticId}
-              data={{ quantity: nextQuantity }}
-            />
+            {!maxQtyReached && (
+              <OptimisticInput
+                id={optimisticId}
+                data={{ quantity: nextQuantity }}
+              />
+            )}
           </button>
         </UpdateCartButton>
       </div>

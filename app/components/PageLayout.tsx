@@ -52,7 +52,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
             Skip to content
           </a>
         </div>
-        <FirstPurchaseBanner />
+        {/* <FirstPurchaseBanner /> — Hidden for March Madness sale */}
         <HeaderWrapper layout={layout} />
 
         <main role="main" id="mainContent" className="flex-grow pb-24 md:pb-0">
@@ -60,7 +60,7 @@ export function PageLayout({ children, layout }: LayoutProps) {
         </main>
       </div>
       <Footer />
-      <SpinWheel />
+      {/* <SpinWheel /> — Disabled during March Madness (slot machine replaces it) */}
     </AsideProvider>
   );
 }

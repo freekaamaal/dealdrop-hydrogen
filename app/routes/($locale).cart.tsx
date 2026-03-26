@@ -11,7 +11,7 @@ import { isLocalPath } from '~/lib/utils';
 import { Cart } from '~/components/Cart';
 
 export async function action({ request, context }: ActionFunctionArgs) {
-  const { cart } = context;
+  const { cart, storefront } = context;
 
   const formData = await request.formData();
 
@@ -22,12 +22,97 @@ export async function action({ request, context }: ActionFunctionArgs) {
   let result: CartQueryDataReturn;
 
   switch (action) {
-    case CartForm.ACTIONS.LinesAdd:
-      result = await cart.addLines(inputs.lines);
+    case CartForm.ACTIONS.LinesAdd: {
+      // === MARCH MADNESS SALE LIMITS ===
+      // All sale products (≤₹299): max 1 qty per product
+      // ₹9 products: only 1 ₹9 product allowed in entire cart
+      const SALE_PRICE_THRESHOLD = 299;
+      const RS9_THRESHOLD = 9;
+
+      const currentCart = await cart.get();
+      const incomingLines = inputs.lines as any[];
+
+      let hasIncoming9 = false;
+      if (incomingLines?.length) {
+        for (const line of incomingLines) {
+          try {
+            const variantId = line.merchandiseId;
+            if (variantId) {
+              const { node } = await storefront.query(
+                `#graphql
+                  query VariantPrice($id: ID!) {
+                    node(id: $id) {
+                      ... on ProductVariant {
+                        price { amount }
+                      }
+                    }
+                  }
+                `,
+                { variables: { id: variantId } },
+              );
+              const price = parseFloat((node as any)?.price?.amount || '0');
+
+              // All sale products: force qty to 1
+              if (price > 0 && price <= SALE_PRICE_THRESHOLD) {
+                line.quantity = 1;
+              }
+
+              // Track if it's a ₹9 product
+              if (price > 0 && price <= RS9_THRESHOLD) {
+                hasIncoming9 = true;
+              }
+            }
+          } catch (e) {
+            // If query fails, proceed normally
+          }
+        }
+      }
+
+      // ₹9 rule: only 1 ₹9 product allowed in entire cart
+      if (hasIncoming9 && currentCart?.lines?.edges?.length) {
+        const existing9 = currentCart.lines.edges.some((edge: any) => {
+          const price = parseFloat(edge.node?.merchandise?.price?.amount || '0');
+          return price > 0 && price <= RS9_THRESHOLD;
+        });
+        if (existing9) {
+          return json(
+            {
+              cart: currentCart,
+              userErrors: [{message: 'Only 1 ₹9 deal allowed per order. Remove the existing ₹9 product first to add a different one.'}],
+              errors: [],
+              checkoutUrl: null,
+            },
+            { status: 400, headers: cart.setCartId(currentCart.id) },
+          );
+        }
+      }
+
+      result = await cart.addLines(incomingLines);
       break;
-    case CartForm.ACTIONS.LinesUpdate:
-      result = await cart.updateLines(inputs.lines);
+    }
+    case CartForm.ACTIONS.LinesUpdate: {
+      // === SALE LIMIT: Block qty increase above 1 for all sale products ===
+      const SALE_PRICE_THRESHOLD_UPDATE = 299;
+      const updateLines = inputs.lines as any[];
+      if (updateLines?.length) {
+        const currentCartForUpdate = await cart.get();
+        for (const line of updateLines) {
+          if (line.quantity > 1 && currentCartForUpdate?.lines?.edges?.length) {
+            const cartLine = currentCartForUpdate.lines.edges.find(
+              (edge: any) => edge.node.id === line.id,
+            );
+            if (cartLine) {
+              const price = parseFloat(cartLine.node?.merchandise?.price?.amount || '0');
+              if (price > 0 && price <= SALE_PRICE_THRESHOLD_UPDATE) {
+                line.quantity = 1; // Force back to 1 for all sale products
+              }
+            }
+          }
+        }
+      }
+      result = await cart.updateLines(updateLines);
       break;
+    }
     case CartForm.ACTIONS.LinesRemove:
       result = await cart.removeLines(inputs.lineIds);
       break;

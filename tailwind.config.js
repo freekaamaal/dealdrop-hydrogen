@@ -131,6 +131,10 @@ export default {
           '50%': { transform: 'scale(1.05)' },
           '100%': { transform: 'scale(1)' },
         },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-33.33%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -143,6 +147,7 @@ export default {
         float: 'float 6s ease-in-out infinite',
         'urgency-pulse': 'urgency-pulse 2s ease-in-out infinite',
         'countdown-tick': 'countdown-tick 1s ease-in-out infinite',
+        marquee: 'marquee 30s linear infinite',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

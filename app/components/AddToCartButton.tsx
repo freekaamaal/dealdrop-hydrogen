@@ -37,10 +37,16 @@ export function AddToCartButton({
         const { open } = useAside();
         const lastDataRef = useRef<any>(null);
 
+        // Show error alert for ₹9 limit violations
+        const hasUserError = fetcher.state === 'idle' && fetcher.data?.userErrors?.length > 0;
+
         useEffect(() => {
           if (fetcher.state === 'idle' && fetcher.data && fetcher.data !== lastDataRef.current) {
             lastDataRef.current = fetcher.data;
-            if (fetcher.data.checkoutUrl) {
+            if (fetcher.data.userErrors?.length > 0) {
+              // Show the error message (₹9 limit etc.)
+              alert(fetcher.data.userErrors[0].message);
+            } else if (fetcher.data.checkoutUrl) {
               window.location.href = fetcher.data.checkoutUrl;
             } else if (!props.redirectTo) {
               open('cart');

@@ -478,8 +478,14 @@ export function ProductForm({
     setNotifySent(true);
   };
 
+  // Sale products: limit to 1 qty (all sale products ≤₹299)
+  const productPrice = parseFloat(selectedVariant?.price?.amount || '0');
+  const isSaleProduct = productPrice > 0 && productPrice <= 299;
+  const isRs9Product = productPrice > 0 && productPrice <= 9;
+
   const handleQuantityChange = (val: number) => {
     if (val < 1) return;
+    if (isSaleProduct && val > 1) return; // Block qty > 1 for all sale products
     setQuantity(val);
   };
 
@@ -552,9 +558,24 @@ export function ProductForm({
           </div>
         ) : (
           <>
+            {/* Sale limit notice */}
+            {isSaleProduct && (
+              <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-sm">
+                <span className="text-amber-500 font-bold text-base">⚠️</span>
+                <div>
+                  <p className="text-amber-700 font-semibold text-xs">Limited to 1 qty per product</p>
+                  <p className="text-amber-600 text-[10px]">
+                    {isRs9Product
+                      ? 'Only 1 ₹9 deal allowed per order. Add a ₹99 or ₹149 product for FREE shipping!'
+                      : 'March Madness Sale — limited stock, 1 qty per product per order.'}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Buy Now (Primary) */}
             <AddToCartButton
-              lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
+              lines={[{ merchandiseId: selectedVariant?.id!, quantity: isSaleProduct ? 1 : quantity }]}
               redirectTo="/checkout"
               rawButton
               className="w-full h-14 rounded-2xl font-bold text-lg shadow-lg shadow-orange-500/25 transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center"
@@ -565,7 +586,7 @@ export function ProductForm({
 
             {/* Add to Cart */}
             <AddToCartButton
-              lines={[{ merchandiseId: selectedVariant?.id!, quantity }]}
+              lines={[{ merchandiseId: selectedVariant?.id!, quantity: isSaleProduct ? 1 : quantity }]}
               rawButton
               className="w-full h-14 rounded-2xl font-bold text-base transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center"
               style={{background: '#111827', color: 'white'}}
