@@ -25,8 +25,8 @@ export async function loader({context}: LoaderFunctionArgs) {
   // Pull from dedicated sale collections, fallback to featured-products until collections are published to Storefront API
   const allProducts = data.allCatalogue?.products.nodes || [];
   let re9Products = data.re9?.products.nodes || [];
-  let flat99Products = [...(data.flat99?.products.nodes || [])].reverse();
-  let flat149Products = [...(data.flat149?.products.nodes || [])].reverse();
+  let flat99Products = [...(data.flat99?.products.nodes || [])].sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  let flat149Products = [...(data.flat149?.products.nodes || [])].sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
   // Fallback: sale collections not yet published to Storefront API channel
   if (re9Products.length === 0 && allProducts.length > 0) {
