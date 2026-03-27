@@ -43,8 +43,8 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
     const saleData = await storefront.query(SALE_QUERY);
     const allProducts = saleData.allCatalogue?.products.nodes || [];
     let re9Products = saleData.re9?.products.nodes || [];
-    let flat99Products = saleData.flat99?.products.nodes || [];
-    let flat149Products = saleData.flat149?.products.nodes || [];
+    let flat99Products = [...(saleData.flat99?.products.nodes || [])].sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    let flat149Products = [...(saleData.flat149?.products.nodes || [])].sort((a: any, b: any) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
     // Fallback if collections not published
     if (re9Products.length === 0 && allProducts.length > 0) {
