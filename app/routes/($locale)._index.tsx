@@ -28,11 +28,11 @@ import { Button } from '~/components/ui/button';
 import { NewsletterForm } from '~/components/NewsletterForm';
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'March Madness Sale LIVE | DealDrop by FreeKaaMaal.com' }];
+  return [{ title: 'DealDrop by FreeKaaMaal.com — Best Deals & Drops' }];
 };
 
 // ⚡ MARCH MADNESS SALE FLAG — set to false after 29 March 2026 to revert homepage
-const SALE_ACTIVE = true;
+const SALE_ACTIVE = false;
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
   const { storefront } = context;
@@ -78,11 +78,17 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
 
   const { hero, featured, upcoming, categories, allProducts } = await storefront.query(HOMEPAGE_QUERY);
 
+  // Filter out sold-out products
+  const isAvailable = (p: any) => p.availableForSale !== false;
+  const featuredNodes = (featured?.products.nodes || []).filter(isAvailable);
+  const upcomingNodes = (upcoming?.products.nodes || []).filter(isAvailable);
+  const heroNodes = (hero?.products.nodes || []).filter(isAvailable);
+
   const brandMap = new Map<string, { name: string; count: number; handle: string; image: string }>();
   const categoryMap = new Map<string, number>();
   const allNodes = [
-    ...(featured?.products.nodes || []),
-    ...(upcoming?.products.nodes || []),
+    ...featuredNodes,
+    ...upcomingNodes,
   ];
   allNodes.forEach((product: any) => {
     const vendor = product.vendor;
@@ -113,9 +119,9 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
   return defer({
     seo,
     analytics: { pageType: AnalyticsPageType.home },
-    featuredProducts: featured?.products.nodes || [],
-    upcomingDeals: upcoming?.products.nodes || [],
-    heroProduct: hero?.products.nodes[0] || null,
+    featuredProducts: featuredNodes,
+    upcomingDeals: upcomingNodes,
+    heroProduct: heroNodes[0] || null,
     categories: categories?.nodes || [],
     productCategories,
     brands: Array.from(brandMap.values()),
@@ -882,8 +888,10 @@ const HOMEPAGE_QUERY = `#graphql
               currencyCode
             }
             quantityAvailable
+            availableForSale
           }
         }
+        availableForSale
       }
     }
   }
