@@ -992,7 +992,7 @@ export default function MarchMadness() {
             </div>
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
               {(brands as any[]).map((brand: any) => (
-                <Link key={brand.name} to={`/search?q=${encodeURIComponent(brand.name)}`} className="flex-shrink-0 group">
+                <Link key={brand.name} to={`/brand/${brand.name.toLowerCase().replace(/\s+/g, '-')}`} className="flex-shrink-0 group">
                   <div className="w-28 bg-gray-50 rounded-2xl p-3 text-center border border-gray-100 hover:border-orange-200 hover:shadow-md smooth-transition">
                     {brand.image && (
                       <div className="w-14 h-14 rounded-xl overflow-hidden mx-auto mb-2 bg-white border border-gray-100">

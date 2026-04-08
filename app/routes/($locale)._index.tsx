@@ -411,7 +411,7 @@ export default function Homepage() {
                 return (
                   <Link
                     key={brand.name}
-                    to={`/search?q=${encodeURIComponent(brand.name)}`}
+                    to={`/brand/${brand.handle}`}
                     className="group flex-shrink-0 w-[140px] md:w-[160px] bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg smooth-transition hover:scale-[1.03]"
                   >
                     <div className={`bg-gradient-to-br ${bgColors[i % bgColors.length]} p-4 flex items-center justify-center h-20`}>
@@ -859,7 +859,7 @@ const HOMEPAGE_QUERY = `#graphql
     id
     handle
     title
-    products(first: 50, sortKey: MANUAL) {
+    products(first: 100, sortKey: MANUAL) {
       nodes {
         id
         title

@@ -228,7 +228,7 @@ export default function Product() {
                 {/* Brand + Badge */}
                 <div className="flex items-center gap-3 mb-3 flex-wrap">
                   {vendor && (
-                    <Link to={`/search?q=${encodeURIComponent(vendor)}`} className="text-primary text-sm font-semibold uppercase tracking-wider hover:underline">
+                    <Link to={`/brand/${vendor.toLowerCase().replace(/\s+/g, '-')}`} className="text-primary text-sm font-semibold uppercase tracking-wider hover:underline">
                       {vendor}
                     </Link>
                   )}
@@ -324,7 +324,7 @@ export default function Product() {
                     </p>
                     <div className="flex flex-wrap gap-3">
                       <Link
-                        to={`/search?q=${encodeURIComponent(vendor)}`}
+                        to={`/brand/${vendor.toLowerCase().replace(/\s+/g, '-')}`}
                         className="inline-flex items-center gap-2 bg-white border border-orange-200 text-orange-700 font-semibold text-sm px-4 py-2 rounded-xl hover:shadow-md smooth-transition"
                       >
                         View all {vendor} deals →
