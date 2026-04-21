@@ -1,8 +1,9 @@
-import { Link, NavLink } from '@remix-run/react';
-import { ShoppingBag, Menu, X, User, Search } from 'lucide-react';
-import { useState } from 'react';
+import { Link, NavLink, useRouteLoaderData, Await } from '@remix-run/react';
+import { ShoppingBag, Menu, X, User, UserCheck, Search } from 'lucide-react';
+import { useState, Suspense } from 'react';
 
 import { Button } from '~/components/ui/button';
+import type { RootLoader } from '~/root';
 export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -75,13 +76,7 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
               <Search className="h-5 w-5" />
             </Button>
           </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-400 hover:text-white"
-          >
-            <User className="h-5 w-5" />
-          </Button>
+          <AccountButton />
           <AsyncCartButton cart={cart} openCart={openCart} />
         </div>
 
@@ -125,9 +120,11 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
               FreeKaaMaal
             </a>
             <div className="flex items-center gap-4 pt-4 border-t border-border">
-              <Button variant="outline" className="flex-1">
-                <User className="h-4 w-4 mr-2" /> Account
-              </Button>
+              <Link to="/account" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline" className="w-full">
+                  <AccountIcon className="h-4 w-4 mr-2" /> <AccountLabel />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -136,8 +133,60 @@ export function Navbar({ cart, openCart }: { cart?: any; openCart?: () => void }
   );
 }
 
-import { Await } from '@remix-run/react';
-import { Suspense } from 'react';
+function AccountButton() {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const isLoggedIn = rootData?.isLoggedIn;
+
+  return (
+    <Link to="/account" prefetch="intent" aria-label="Account">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="text-gray-400 hover:text-white"
+      >
+        <Suspense fallback={<User className="h-5 w-5" />}>
+          <Await resolve={isLoggedIn} errorElement={<User className="h-5 w-5" />}>
+            {(loggedIn) =>
+              loggedIn ? (
+                <UserCheck className="h-5 w-5 text-orange-400" />
+              ) : (
+                <User className="h-5 w-5" />
+              )
+            }
+          </Await>
+        </Suspense>
+      </Button>
+    </Link>
+  );
+}
+
+function AccountIcon({ className }: { className?: string }) {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const isLoggedIn = rootData?.isLoggedIn;
+
+  return (
+    <Suspense fallback={<User className={className} />}>
+      <Await resolve={isLoggedIn} errorElement={<User className={className} />}>
+        {(loggedIn) =>
+          loggedIn ? <UserCheck className={className} /> : <User className={className} />
+        }
+      </Await>
+    </Suspense>
+  );
+}
+
+function AccountLabel() {
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const isLoggedIn = rootData?.isLoggedIn;
+
+  return (
+    <Suspense fallback={<span>Sign in</span>}>
+      <Await resolve={isLoggedIn} errorElement={<span>Sign in</span>}>
+        {(loggedIn) => <span>{loggedIn ? 'My Account' : 'Sign in'}</span>}
+      </Await>
+    </Suspense>
+  );
+}
 
 function AsyncCartButton({ cart, openCart }: { cart?: any; openCart?: () => void }) {
   return (
